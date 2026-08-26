@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { logoLetters } from "@/lib/logo-letters";
 
 type PathTiming = {
@@ -29,68 +29,71 @@ const timings = pathTimings();
 export function CompanyLogo() {
   const svgRef = useRef<SVGSVGElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const svg = svgRef.current;
     if (!svg) {
       return;
     }
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const strokes = [
-      ...svg.querySelectorAll<SVGPathElement>("[data-logo-stroke]"),
-    ];
     const fills = [...svg.querySelectorAll<SVGPathElement>("[data-logo-fill]")];
-
     const showStatic = () => {
       fills.forEach((path) => path.removeAttribute("mask"));
       svg.dataset.state = "static";
     };
 
-    if (reduce) {
-      showStatic();
-      return;
-    }
+    try {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const strokes = [
+        ...svg.querySelectorAll<SVGPathElement>("[data-logo-stroke]"),
+      ];
 
-    svg.dataset.state = "animate";
-
-    const flatTimings = timings.flat();
-    const lengths = strokes.map((path) => path.getTotalLength());
-    strokes.forEach((path, index) => {
-      path.setAttribute("stroke-dasharray", `${lengths[index]}`);
-      path.setAttribute("stroke-dashoffset", `${lengths[index]}`);
-    });
-
-    const start = performance.now();
-    let frame = 0;
-
-    const tick = (now: number) => {
-      const elapsed = (now - start) / 1000;
-      let allDone = true;
-
-      strokes.forEach((path, index) => {
-        const timing = flatTimings[index];
-        const local = Math.min(
-          1,
-          Math.max(0, (elapsed - timing.delay) / timing.duration),
-        );
-        const offset = lengths[index] * (1 - easeInOut(local));
-        path.setAttribute("stroke-dashoffset", `${offset}`);
-        if (local < 1) {
-          allDone = false;
-        }
-      });
-
-      if (allDone) {
+      if (reduce) {
         showStatic();
         return;
       }
 
+      const flatTimings = timings.flat();
+      strokes.forEach((path) => {
+        path.setAttribute("pathLength", "1");
+        path.setAttribute("stroke-dasharray", "1");
+        path.setAttribute("stroke-dashoffset", "1");
+      });
+
+      svg.dataset.state = "animate";
+
+      const start = performance.now();
+      let frame = 0;
+
+      const tick = (now: number) => {
+        const elapsed = (now - start) / 1000;
+        let allDone = true;
+
+        strokes.forEach((path, index) => {
+          const timing = flatTimings[index];
+          const local = Math.min(
+            1,
+            Math.max(0, (elapsed - timing.delay) / timing.duration),
+          );
+          path.setAttribute("stroke-dashoffset", `${1 - easeInOut(local)}`);
+          if (local < 1) {
+            allDone = false;
+          }
+        });
+
+        if (allDone) {
+          showStatic();
+          return;
+        }
+
+        frame = window.requestAnimationFrame(tick);
+      };
+
       frame = window.requestAnimationFrame(tick);
-    };
 
-    frame = window.requestAnimationFrame(tick);
-
-    return () => window.cancelAnimationFrame(frame);
+      return () => window.cancelAnimationFrame(frame);
+    } catch {
+      showStatic();
+    }
   }, []);
 
   return (
@@ -121,6 +124,7 @@ export function CompanyLogo() {
                   <path
                     d={d}
                     data-logo-stroke=""
+                    pathLength={1}
                     fill="none"
                     stroke="white"
                     strokeWidth="6"
