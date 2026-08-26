@@ -2,8 +2,8 @@
 @import "tailwindcss";
 
 :root {
-  --page-bg: #fbfbfb;
-  --page-text: #000000;
+  --page-bg: #f4f2ef;
+  --page-text: #1a1a1a;
   --font-letter: "Gambetta", serif;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
