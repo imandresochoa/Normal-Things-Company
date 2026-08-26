@@ -9,7 +9,8 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --underline-trace-ms: 700ms;
-  --led-morph-ms: 500ms;
+  --led-blink-ms: 120ms;
+  --led-blink-open-ms: 160ms;
 }
 
 @theme inline {
@@ -195,6 +196,12 @@ body {
   background-position: var(--led-shift-x, 0px) var(--led-shift-y, 0px);
 }
 
+.led-gaze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
 .led-cell {
   position: absolute;
   left: calc(
@@ -208,15 +215,18 @@ body {
   border-radius: 50%;
   background-color: #2a2a2a;
   pointer-events: none;
-  transition: background-color var(--led-morph-ms) var(--ease-in-out);
-  transition-delay: var(--led-delay, 0ms);
+  transition: background-color var(--led-blink-open-ms) var(--ease-in-out);
 }
 
-.led-band[data-frame="eyes"] .led-cell[data-eyes] {
+.led-band[data-lid="closed"] .led-cell {
+  transition-duration: var(--led-blink-ms);
+}
+
+.led-band[data-lid="open"] .led-cell[data-open] {
   background-color: #ffffff;
 }
 
-.led-band[data-frame="text"] .led-cell[data-text] {
+.led-band[data-lid="closed"] .led-cell[data-closed] {
   background-color: #ffffff;
 }
 
@@ -288,8 +298,11 @@ body {
     opacity: 0;
   }
 
+  .led-gaze {
+    transform: none;
+  }
+
   .led-cell {
     transition: background-color 160ms ease;
-    transition-delay: 0ms;
   }
 }

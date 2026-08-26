@@ -27,69 +27,25 @@ const EYE: readonly string[] = [
   "  ####  ",
 ];
 
-const LETTER_N: readonly string[] = [
-  "#   #",
-  "##  #",
-  "# # #",
-  "#  ##",
-  "#   #",
-  "#   #",
-  "#   #",
-];
-
-const LETTER_O: readonly string[] = [
-  "     ",
-  " ### ",
-  "#   #",
-  "#   #",
-  "#   #",
-  " ### ",
-  "     ",
-];
-
-const LETTER_T: readonly string[] = [
-  "  #  ",
-  "#####",
-  "  #  ",
-  "  #  ",
-  "  #  ",
-  "  #  ",
-  "  ## ",
-];
-
-const LETTER_Y: readonly string[] = [
-  "     ",
-  "#   #",
-  "#   #",
-  " # # ",
-  "  #  ",
-  "  #  ",
-  " ##  ",
-];
-
-const LETTER_E: readonly string[] = [
-  "     ",
-  " ### ",
-  "#   #",
-  "#####",
-  "#    ",
-  " ### ",
-  "     ",
-];
-
-const PERIOD: readonly string[] = [
-  "  ",
-  "  ",
-  "  ",
-  "  ",
-  "  ",
-  "##",
-  "##",
+const BLINK: readonly string[] = [
+  "        ",
+  "        ",
+  "        ",
+  "        ",
+  "        ",
+  "        ",
+  "  ####  ",
+  " ###### ",
+  "        ",
+  "        ",
+  "        ",
+  "        ",
+  "        ",
+  "        ",
+  "        ",
 ];
 
 const EYE_GAP = 8;
-const LETTER_GAP = 1;
-const WORD_GAP = 3;
 
 function blit(
   pattern: readonly string[],
@@ -110,69 +66,24 @@ function blit(
   return cells;
 }
 
-function bounds(cells: readonly PixelCell[]): {
-  width: number;
-  height: number;
-} {
-  let maxX = -1;
-  let maxY = -1;
-
-  for (const cell of cells) {
-    if (cell.x > maxX) {
-      maxX = cell.x;
-    }
-    if (cell.y > maxY) {
-      maxY = cell.y;
-    }
-  }
-
-  return {
-    width: maxX + 1,
-    height: maxY + 1,
-  };
+function pairEyes(pattern: readonly string[]): PixelCell[] {
+  const eyeWidth = pattern[0].length;
+  return [
+    ...blit(pattern, 0, 0),
+    ...blit(pattern, eyeWidth + EYE_GAP, 0),
+  ];
 }
-
-const eyeWidth = EYE[0].length;
-const leftEye = blit(EYE, 0, 0);
-const rightEye = blit(EYE, eyeWidth + EYE_GAP, 0);
-const eyesCells: PixelCell[] = [...leftEye, ...rightEye];
-
-function layoutWords(
-  words: readonly (readonly (readonly string[])[])[],
-): PixelCell[] {
-  const cells: PixelCell[] = [];
-  let cursor = 0;
-
-  for (const [wordIndex, word] of words.entries()) {
-    if (wordIndex > 0) {
-      cursor += WORD_GAP;
-    }
-
-    for (const [letterIndex, pattern] of word.entries()) {
-      if (letterIndex > 0) {
-        cursor += LETTER_GAP;
-      }
-      cells.push(...blit(pattern, cursor, 0));
-      cursor += pattern[0].length;
-    }
-  }
-
-  return cells;
-}
-
-const notYetCells = layoutWords([
-  [LETTER_N, LETTER_O, LETTER_T],
-  [LETTER_Y, LETTER_E, LETTER_T, PERIOD],
-]);
 
 export const EYES_GLYPH: Glyph = {
-  cells: eyesCells,
-  ...bounds(eyesCells),
+  cells: pairEyes(EYE),
+  width: EYE[0].length * 2 + EYE_GAP,
+  height: EYE.length,
 };
 
-export const NOT_YET_GLYPH: Glyph = {
-  cells: notYetCells,
-  ...bounds(notYetCells),
+export const BLINK_GLYPH: Glyph = {
+  cells: pairEyes(BLINK),
+  width: EYES_GLYPH.width,
+  height: EYES_GLYPH.height,
 };
 
 export function centerGlyph(
