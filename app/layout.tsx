@@ -1,10 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const title = "Normal Things Company";
+const description =
+  "Normal Things Company takes care of the software we use every day, with humility and a deep love for the craft.";
+
 export const metadata: Metadata = {
-  title: "Normal Things Company",
-  description:
-    "Normal Things Company takes care of the software we use every day, with humility and a deep love for the craft.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
