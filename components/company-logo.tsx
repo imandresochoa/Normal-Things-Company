@@ -1,15 +1,7 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
-import logoLetters from "@/lib/logo-letters.json";
-
-type LogoLetter = {
-  id: string;
-  order: number;
-  paths: string[];
-};
-
-const letters = logoLetters as LogoLetter[];
+import { useEffect, useRef } from "react";
+import { logoLetters } from "@/lib/logo-letters";
 
 type PathTiming = {
   delay: number;
@@ -18,11 +10,11 @@ type PathTiming = {
 
 function pathTimings(): PathTiming[][] {
   let elapsed = 0.12;
-  return letters.map((letter) =>
+  return logoLetters.map((letter) =>
     letter.paths.map((path) => {
-      const duration = 0.2 + Math.min(0.42, path.length / 4200);
+      const duration = 0.22 + Math.min(0.45, path.length / 3800);
       const timing = { delay: elapsed, duration };
-      elapsed += duration * 0.68;
+      elapsed += duration * 0.7;
       return timing;
     }),
   );
@@ -31,51 +23,66 @@ function pathTimings(): PathTiming[][] {
 const timings = pathTimings();
 
 export function CompanyLogo() {
-  const [motion, setMotion] = useState<"pending" | "animate" | "static">(
-    "pending",
-  );
+  const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      setMotion("static");
+    const svg = svgRef.current;
+    if (!svg) {
       return;
     }
 
-    setMotion("animate");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const strokes = [
+      ...svg.querySelectorAll<SVGPathElement>("[data-logo-stroke]"),
+    ];
+
+    if (reduce) {
+      strokes.forEach((path) => {
+        path.style.strokeDasharray = "none";
+        path.style.strokeDashoffset = "0";
+      });
+      svg.dataset.state = "static";
+      return;
+    }
+
+    svg.dataset.state = "animate";
+
+    strokes.forEach((path, index) => {
+      const length = path.getTotalLength();
+      const timing = timings.flat()[index];
+      path.style.strokeDasharray = `${length}`;
+      path.style.strokeDashoffset = `${length}`;
+      path.style.transition = "none";
+      path.getBoundingClientRect();
+      path.style.transition = `stroke-dashoffset ${timing.duration}s cubic-bezier(0.37, 0, 0.63, 1) ${timing.delay}s`;
+      path.style.strokeDashoffset = "0";
+    });
+
     const last = timings.flat().reduce(
       (max, timing) => Math.max(max, timing.delay + timing.duration),
       0,
     );
     const timer = window.setTimeout(() => {
-      setMotion("static");
-    }, (last + 0.2) * 1000);
+      svg.dataset.state = "static";
+    }, (last + 0.15) * 1000);
 
     return () => window.clearTimeout(timer);
   }, []);
 
-  const readyClass =
-    motion === "animate"
-      ? "logo-is-ready"
-      : motion === "static"
-        ? "logo-is-static"
-        : "";
-
   return (
     <div className="relative h-[94.596px] w-[200px] shrink-0 overflow-hidden">
       <svg
-        className={`size-full ${readyClass}`}
+        ref={svgRef}
+        className="logo-mark size-full"
         viewBox="0 0 200 95"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
         aria-label="Normal Things Company"
-        style={{ opacity: motion === "pending" ? 0 : 1 }}
       >
         <defs>
-          {letters.flatMap((letter, letterIndex) =>
+          {logoLetters.flatMap((letter) =>
             letter.paths.map((d, pathIndex) => {
-              const timing = timings[letterIndex][pathIndex];
               const maskId = `logo-reveal-${letter.id}-${pathIndex}`;
               return (
                 <mask
@@ -89,26 +96,19 @@ export function CompanyLogo() {
                 >
                   <path
                     d={d}
+                    data-logo-stroke=""
                     fill="none"
                     stroke="white"
-                    strokeWidth="5"
+                    strokeWidth="6"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    pathLength={1}
-                    className="logo-path-reveal"
-                    style={
-                      {
-                        "--reveal-delay": `${timing.delay}s`,
-                        "--reveal-duration": `${timing.duration}s`,
-                      } as CSSProperties
-                    }
                   />
                 </mask>
               );
             }),
           )}
         </defs>
-        {letters.flatMap((letter, letterIndex) =>
+        {logoLetters.flatMap((letter) =>
           letter.paths.map((d, pathIndex) => (
             <path
               key={`${letter.id}-${pathIndex}`}

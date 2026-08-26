@@ -20,30 +20,17 @@ body {
   font-family: var(--font-letter);
 }
 
-.logo-path-reveal {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
+.logo-mark {
+  opacity: 0;
 }
 
-.logo-is-ready .logo-path-reveal {
-  animation: logo-path-reveal var(--reveal-duration) cubic-bezier(0.37, 0, 0.63, 1)
-    var(--reveal-delay) forwards;
-}
-
-.logo-is-static .logo-path-reveal {
-  stroke-dashoffset: 0;
-  animation: none;
-}
-
-@keyframes logo-path-reveal {
-  to {
-    stroke-dashoffset: 0;
-  }
+.logo-mark[data-state="animate"],
+.logo-mark[data-state="static"] {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .logo-path-reveal {
-    stroke-dashoffset: 0;
-    animation: none;
+  .logo-mark {
+    opacity: 1;
   }
 }
