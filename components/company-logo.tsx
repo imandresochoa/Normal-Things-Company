@@ -8,17 +8,14 @@ import {
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { logoSparks } from "@/lib/logo-sparks";
+import { logoFrenzySparks, logoSparks } from "@/lib/logo-sparks";
 import { logoStrokes } from "@/lib/logo-strokes";
 
 const HEAT_COOL_MS = 800;
 const HEAT_OVERHEAT = 6;
-const OVERHEAT_FRENZY_MS = 800;
-const OVERHEAT_FRENZY_INTERVAL_MS = 140;
+/** Base overheat window plus one extra second of continuous sparks. */
+const OVERHEAT_FRENZY_MS = 1800;
 const SPARK_DURATION_MS = 240;
-const SPARK_STAGGER_MS = 35;
-const SPARK_BURST_MS =
-  SPARK_DURATION_MS + (logoSparks.length - 1) * SPARK_STAGGER_MS;
 
 type LogoColor = "orange" | "blue";
 type LogoPhase = "idle" | "overheating";
@@ -28,20 +25,24 @@ type StrokeStyle = CSSProperties & {
 };
 
 type SparkStyle = CSSProperties & {
-  "--i": number;
   "--spark-dx": string;
   "--spark-dy": string;
+  "--spark-phase": string;
 };
 
 function strokeStyle(index: number): StrokeStyle {
   return { "--i": index };
 }
 
-function sparkStyle(index: number, dx: number, dy: number): SparkStyle {
+function sparkStyle(spark: {
+  dx: number;
+  dy: number;
+  phaseMs?: number;
+}): SparkStyle {
   return {
-    "--i": index,
-    "--spark-dx": `${dx}px`,
-    "--spark-dy": `${dy}px`,
+    "--spark-dx": `${spark.dx}px`,
+    "--spark-dy": `${spark.dy}px`,
+    "--spark-phase": `${spark.phaseMs ?? 0}ms`,
   };
 }
 
@@ -60,7 +61,6 @@ export function CompanyLogo() {
   const coolTimer = useRef<number | null>(null);
   const popTimer = useRef<number | null>(null);
   const burstTimer = useRef<number | null>(null);
-  const frenzyInterval = useRef<number | null>(null);
   const overheatTimer = useRef<number | null>(null);
   const activePointer = useRef<number | null>(null);
   const isPressed = useRef(false);
@@ -95,20 +95,12 @@ export function CompanyLogo() {
     }
   };
 
-  const clearIntervalRef = (ref: { current: number | null }) => {
-    if (ref.current !== null) {
-      window.clearInterval(ref.current);
-      ref.current = null;
-    }
-  };
-
   useEffect(() => {
     return () => {
       clearTimer(coolTimer);
       clearTimer(popTimer);
       clearTimer(burstTimer);
       clearTimer(overheatTimer);
-      clearIntervalRef(frenzyInterval);
     };
   }, []);
 
@@ -123,30 +115,20 @@ export function CompanyLogo() {
     }, HEAT_COOL_MS);
   }, []);
 
-  const triggerBurst = useCallback(
-    (mode: "burst" | "frenzy" = "burst") => {
-      setBurstId((id) => id + 1);
-      setSparkState(mode);
-      clearTimer(burstTimer);
-      const holdMs =
-        mode === "frenzy"
-          ? OVERHEAT_FRENZY_INTERVAL_MS
-          : reduceMotion
-            ? 160
-            : SPARK_BURST_MS;
-      burstTimer.current = window.setTimeout(() => {
-        if (phaseRef.current === "overheating" && mode === "frenzy") {
-          return;
-        }
-        setSparkState("idle");
-        burstTimer.current = null;
-      }, holdMs);
-    },
-    [reduceMotion],
-  );
+  const triggerBurst = useCallback(() => {
+    setBurstId((id) => id + 1);
+    setSparkState("burst");
+    clearTimer(burstTimer);
+    burstTimer.current = window.setTimeout(() => {
+      if (phaseRef.current === "overheating") {
+        return;
+      }
+      setSparkState("idle");
+      burstTimer.current = null;
+    }, reduceMotion ? 160 : SPARK_DURATION_MS);
+  }, [reduceMotion]);
 
   const finishOverheat = useCallback(() => {
-    clearIntervalRef(frenzyInterval);
     clearTimer(overheatTimer);
     clearTimer(burstTimer);
     setColor(colorRef.current === "orange" ? "blue" : "orange");
@@ -158,28 +140,29 @@ export function CompanyLogo() {
 
   const startOverheat = useCallback(() => {
     clearTimer(coolTimer);
+    clearTimer(burstTimer);
     setPhase("overheating");
     phaseRef.current = "overheating";
     setPressed(false);
     isPressed.current = false;
+    setPopping(false);
 
     if (reduceMotion) {
-      triggerBurst("burst");
+      setSparkState("burst");
+      setBurstId((id) => id + 1);
       overheatTimer.current = window.setTimeout(() => {
         finishOverheat();
       }, 200);
       return;
     }
 
-    triggerBurst("frenzy");
-    frenzyInterval.current = window.setInterval(() => {
-      triggerBurst("frenzy");
-    }, OVERHEAT_FRENZY_INTERVAL_MS);
-
+    // Continuous looping frenzy — do not remount/restart a one-shot burst.
+    setBurstId((id) => id + 1);
+    setSparkState("frenzy");
     overheatTimer.current = window.setTimeout(() => {
       finishOverheat();
     }, OVERHEAT_FRENZY_MS);
-  }, [finishOverheat, reduceMotion, triggerBurst]);
+  }, [finishOverheat, reduceMotion]);
 
   const registerPress = useCallback(() => {
     if (phaseRef.current === "overheating") {
@@ -190,7 +173,6 @@ export function CompanyLogo() {
     heatRef.current = next;
 
     if (next >= HEAT_OVERHEAT) {
-      triggerBurst("burst");
       if (!reduceMotion) {
         setPopping(true);
         clearTimer(popTimer);
@@ -199,14 +181,12 @@ export function CompanyLogo() {
           popTimer.current = null;
         }, 160);
       }
-      queueMicrotask(() => {
-        startOverheat();
-      });
+      startOverheat();
       return;
     }
 
     scheduleCool();
-    triggerBurst("burst");
+    triggerBurst();
 
     if (!reduceMotion) {
       setPopping(true);
@@ -272,6 +252,8 @@ export function CompanyLogo() {
   };
 
   const locked = phase === "overheating";
+  const activeSparks =
+    sparkState === "frenzy" ? logoFrenzySparks : logoSparks;
 
   return (
     <button
@@ -322,7 +304,7 @@ export function CompanyLogo() {
         overflow="visible"
         data-state={sparkState}
       >
-        {logoSparks.map((spark, index) => (
+        {activeSparks.map((spark) => (
           <line
             key={spark.id}
             x1={spark.x1}
@@ -333,7 +315,7 @@ export function CompanyLogo() {
             stroke="currentColor"
             strokeWidth="3.2"
             strokeLinecap="round"
-            style={sparkStyle(index, spark.dx, spark.dy)}
+            style={sparkStyle(spark)}
           />
         ))}
       </svg>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CopyToast } from "@/components/copy-toast";
 import "./globals.css";
 
 const title = "Normal Things Company";
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className="h-full">
       <body className="min-h-full bg-background text-foreground antialiased">
         {children}
+        <CopyToast />
       </body>
     </html>
   );
