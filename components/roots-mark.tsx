@@ -12,7 +12,7 @@ function strokeStyle(index: number): StrokeStyle {
 export function RootsMark() {
   return (
     <div
-      className="relative h-[72px] w-[min(92vw,420px)] shrink-0 text-[#f7452a]"
+      className="relative h-[72px] w-[min(92vw,480px)] shrink-0 text-[#f7452a]"
       role="img"
       aria-label="We are still on it"
     >
