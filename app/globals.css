@@ -21,11 +21,6 @@ body {
 }
 
 .logo-mark {
-  opacity: 0;
-}
-
-.logo-mark[data-state="animate"],
-.logo-mark[data-state="static"] {
   opacity: 1;
 }
 

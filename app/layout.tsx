@@ -12,12 +12,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className="h-full">
       <body className="min-h-full bg-[#fbfbfb] text-black antialiased">
         {children}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "setTimeout(function(){var e=document.querySelector('.logo-mark');if(e&&!e.getAttribute('data-state'))e.setAttribute('data-state','static');},1500);",
-          }}
-        />
       </body>
     </html>
   );
