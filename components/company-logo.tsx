@@ -1,4 +1,14 @@
+import type { CSSProperties } from "react";
 import { logoStrokes } from "@/lib/logo-strokes";
+
+type StrokeStyle = CSSProperties & {
+  "--i": number;
+};
+
+function strokeStyle(index: number): StrokeStyle {
+  const style: StrokeStyle = { "--i": index };
+  return style;
+}
 
 export function CompanyLogo() {
   return (
@@ -23,7 +33,7 @@ export function CompanyLogo() {
             strokeWidth="3.2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            style={{ "--i": index }}
+            style={strokeStyle(index)}
           />
         ))}
       </svg>
