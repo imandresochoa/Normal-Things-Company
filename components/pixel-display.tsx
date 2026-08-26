@@ -175,7 +175,7 @@ export function PixelDisplay() {
       ref={bandRef}
       className="led-band relative h-[220px] w-full overflow-hidden md:h-[280px]"
       role="img"
-      aria-label="Not yet."
+      aria-label={frame === "text" ? "Not yet." : "Pixel eyes"}
       data-frame={frame}
       style={bandStyle}
     >
