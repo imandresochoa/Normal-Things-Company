@@ -7,7 +7,9 @@
   --page-selection: #9db1fb;
   --font-letter: "Satoshi", sans-serif;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --underline-trace-ms: 700ms;
+  --led-morph-ms: 500ms;
 }
 
 @theme inline {
@@ -182,6 +184,42 @@ body {
   }
 }
 
+.led-band {
+  background-color: #111111;
+  background-image: radial-gradient(
+    circle closest-side,
+    #2a2a2a 62%,
+    transparent 64%
+  );
+  background-size: var(--led-pitch, 8px) var(--led-pitch, 8px);
+  background-position: var(--led-shift-x, 0px) var(--led-shift-y, 0px);
+}
+
+.led-cell {
+  position: absolute;
+  left: calc(
+    var(--led-shift-x) + var(--cx) * var(--led-pitch) + var(--led-pitch) * 0.19
+  );
+  top: calc(
+    var(--led-shift-y) + var(--cy) * var(--led-pitch) + var(--led-pitch) * 0.19
+  );
+  width: calc(var(--led-pitch) * 0.62);
+  height: calc(var(--led-pitch) * 0.62);
+  border-radius: 50%;
+  background-color: #2a2a2a;
+  pointer-events: none;
+  transition: background-color var(--led-morph-ms) var(--ease-in-out);
+  transition-delay: var(--led-delay, 0ms);
+}
+
+.led-band[data-frame="eyes"] .led-cell[data-eyes] {
+  background-color: #ffffff;
+}
+
+.led-band[data-frame="text"] .led-cell[data-text] {
+  background-color: #ffffff;
+}
+
 @keyframes logo-tremble {
   0%,
   100% {
@@ -248,5 +286,10 @@ body {
   .copy-toast-sparks[data-state="burst"] [data-spark] {
     animation: none;
     opacity: 0;
+  }
+
+  .led-cell {
+    transition: background-color 160ms ease;
+    transition-delay: 0ms;
   }
 }
