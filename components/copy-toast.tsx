@@ -86,7 +86,13 @@ function toastGap(): number {
     : TOAST_GAP;
 }
 
-function toastAnchor(selection: Selection): { left: number; top: number; place: ToastPlace } {
+function toastAnchor(
+  selection: Selection,
+): { left: number; top: number; place: ToastPlace } | null {
+  if (selection.rangeCount === 0) {
+    return null;
+  }
+
   const rect = selection.getRangeAt(0).getBoundingClientRect();
   const halfWidth = ESTIMATED_TOAST_WIDTH / 2;
   const minLeft = VIEWPORT_PAD + halfWidth;
@@ -111,6 +117,7 @@ export function CopyToast() {
   const viewRef = useRef<ToastView>(view);
   const lastCopiedText = useRef("");
   const lastCopiedAt = useRef(0);
+  const copyAttempt = useRef(0);
   const holdTimer = useRef<number | null>(null);
   const exitTimer = useRef<number | null>(null);
   const openFrame = useRef<number | null>(null);
@@ -232,15 +239,26 @@ export function CopyToast() {
       return;
     }
 
+    const anchor = toastAnchor(selection);
+    if (!anchor) {
+      return;
+    }
+
+    const attempt = ++copyAttempt.current;
+
     try {
       await navigator.clipboard.writeText(text);
     } catch {
       return;
     }
 
+    if (attempt !== copyAttempt.current) {
+      return;
+    }
+
     lastCopiedText.current = text;
     lastCopiedAt.current = now;
-    showToast(toastAnchor(selection));
+    showToast(anchor);
   }, [showToast]);
 
   useEffect(() => {
