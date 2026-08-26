@@ -92,12 +92,70 @@ body {
 
 .logo-sparks[data-state="burst"] [data-spark] {
   animation: logo-spark 240ms var(--ease-out) both;
-  animation-delay: calc(var(--i) * 35ms);
 }
 
 .logo-sparks[data-state="frenzy"] [data-spark] {
-  animation: logo-spark 180ms var(--ease-out) both;
-  animation-delay: calc(var(--i) * 20ms);
+  animation: logo-spark-frenzy 320ms var(--ease-out) infinite;
+  animation-delay: var(--spark-phase);
+}
+
+@keyframes logo-spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--spark-dx), var(--spark-dy));
+  }
+}
+
+.copy-toast-anchor {
+  transform: translate(-50%, var(--copy-toast-y));
+}
+
+.copy-toast {
+  opacity: 0;
+  transform: scale(0.95);
+  transform-origin: center;
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+
+.copy-toast[data-open] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.copy-toast-sparks [data-spark] {
+  opacity: 0;
+}
+
+.copy-toast-sparks[data-state="burst"] [data-spark] {
+  animation: logo-spark 240ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 35ms);
+}
+
+@keyframes logo-spark-frenzy {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--spark-dx), var(--spark-dy));
+  }
 }
 
 @keyframes logo-trace {
@@ -143,22 +201,6 @@ body {
   }
 }
 
-@keyframes logo-spark {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0);
-  }
-
-  35% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(var(--spark-dx), var(--spark-dy));
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .logo-mark[data-state="animate"] [data-logo-stroke] {
     animation: none;
@@ -191,6 +233,20 @@ body {
   }
 
   .logo-sparks:not([data-state="burst"]):not([data-state="frenzy"]) [data-spark] {
+    opacity: 0;
+  }
+
+  .copy-toast {
+    transform: none;
+    transition: opacity 160ms ease;
+  }
+
+  .copy-toast[data-open] {
+    transform: none;
+  }
+
+  .copy-toast-sparks[data-state="burst"] [data-spark] {
+    animation: none;
     opacity: 0;
   }
 }

@@ -1,6 +1,6 @@
 # Normal Things Company
 
-Public letter site for Normal Things Company. The layout matches the Figma desktop and mobile frames. The handwritten logo draws along its vector paths on load.
+Public letter site for Normal Things Company. The layout matches the Figma desktop and mobile frames. The handwritten logo draws along its vector paths on load. Selecting text copies it to the clipboard.
 
 ## Run locally
 
