@@ -1,11 +1,13 @@
 import type { LogoStroke } from "@/lib/logo-strokes";
 
-const ARE_DX = 18;
-const STILL_DX = 18;
-const ON_DX = 42;
-const IT_DX = 76;
+export const ROOTS_WORD_SPACE = 16;
 
-export const ROOTS_MARK_VIEWBOX = "0 0 368 56";
+const ARE_DX = 7.6;
+const STILL_DX = 7.2;
+const ON_DX = 18;
+const IT_DX = 24.1;
+
+export const ROOTS_MARK_VIEWBOX = "0 0 312 56";
 
 function shiftPathX(d: string, dx: number): string {
   if (dx === 0) {
