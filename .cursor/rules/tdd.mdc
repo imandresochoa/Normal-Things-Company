@@ -1,0 +1,50 @@
+---
+description: Use test-driven development with the test-writer, implementer, and verifier subagents.
+alwaysApply: true
+---
+
+# Test-driven development
+
+For new behavior that tests can prove (services, functions, APIs, parsers, validation, bug fixes), use TDD. Do not write feature code before tests. Tests are the spec. Commits are the lock.
+
+## When to skip
+
+Do not force TDD for UI polish, throwaway spikes, docs-only work, or work with no test harness. Say that you skipped TDD and why. If you later commit production files after a skip, put that reason in the **commit message**. Do not use a `SKIP_REASON` trailer.
+
+## Before Red
+
+If the change crosses more than one file, map the subsystem first (`how`). If it crosses a function or module boundary, sketch types and module shape first (`architect`). Then start Red.
+
+## Workflow
+
+The parent agent orchestrates. Subagents do not commit.
+
+1. **Write tests first** — Delegate to the `test-writer` subagent. Give expected inputs, outputs, errors, and a nearby test file to copy. Be explicit this is TDD. Tell it not to write implementation and not to mock missing feature code.
+2. **Confirm the tests fail** — The test-writer runs the focused tests. Confirm they fail for the correct reason. No feature code yet. If they pass, tighten the tests first.
+3. **Commit the tests** — Stop. Ask the user to review. If the user says yes, the parent commits **only those test files**. Do not start Green until `git status` shows they are committed. This lock means the agent must write real code. It cannot edit tests to pass them.
+4. **Write the code** — Delegate to the `implementer` subagent. Tell it which committed test file to satisfy, which production patterns to follow, and not to modify tests. If the implementer status is **Stuck** (3 failed focused-test runs), stop. Ask the user. Do not start the verifier.
+5. **Check** — If Green, delegate to the `verifier` subagent. If the change touches auth, payments, or secrets, then run `security-auditor` **after verifier and before** asking to commit production files. **Critical** findings block that commit. High and Medium do not.
+6. **Commit the code** — Stop after verifier (and security-auditor when required). Ask the user to review. If the user says yes, and security did not **Reject**, the parent commits **only the production files**. Do not rewrite tests in that commit. If TDD was skipped, include the skip reason in this commit message.
+
+If the change includes UI, after verifier (or when TDD was skipped for polish): web motion uses `animate`; Expo or React Native motion uses `animate-expo`. Then run `design-verifier`. Do not start that check during Red or Green of logic tests. Do not start it if implementer is Stuck.
+
+## Rules
+
+- After Red, stop. Do not call the implementer while the new tests are untracked or uncommitted.
+- The parent asks, then the parent commits. Never auto-commit. Subagents never commit.
+- During green, do not edit tests, snapshots, or fixtures to make them pass.
+- After each phase, run the focused tests and report the command plus pass/fail.
+- Do not treat verifier Approved as the last gate when the change touches auth, payments, or secrets.
+
+```text
+# Red
+TDD: write tests first for discountCode(). Follow src/__tests__/pricing.test.ts.
+Do not write the function.
+
+# Gate
+Commit the tests. Then write the code.
+
+# Green
+Make src/__tests__/discountCode.test.ts pass. Follow src/services/PricingService.ts.
+Do not modify the tests.
+```

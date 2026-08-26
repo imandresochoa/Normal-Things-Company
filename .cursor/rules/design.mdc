@@ -1,0 +1,34 @@
+---
+description: After UI exists, validate screens against Figma (if present) and the house craft bar.
+alwaysApply: true
+---
+
+# Design validation
+
+After UI exists, check it. Do not write UI in this check.
+
+Design is **validate-only on purpose**. There is no spec-commit gate. Figma (if present) or existing screens, components, and tokens plus the house craft bar already are the spec.
+
+## When to skip
+
+Skip for backend-only work, TDD logic with no UI, docs-only work, or throwaway spikes. Say that you skipped the design check and why.
+
+Do not start this check during TDD Red or Green of logic tests. Do not start it if the implementer is Stuck.
+
+## Workflow
+
+The parent agent orchestrates. Subagents do not commit.
+
+1. **UI exists** — A screen, component, layout, or motion change is in the tree (TDD was skipped for polish, or Green also changed UI).
+2. **Lock the source (read only)** — If a Figma URL or node is present, Figma is first. Load `figma-design-to-code` and call `get_design_context`. Do not override Figma with taste. If there is no Figma, use existing screens, components, and tokens in the project, plus the house craft bar (`ui-craft`, `review-animations` STANDARDS). If the UI is Expo or React Native, also load `animate-expo` for thread, gesture, and haptic rules. Load `emil-design-eng` only when the user names it. It is not a second bar.
+3. **Check** — Delegate to the `design-verifier` subagent. It does not change UI. It does not commit. It does not loop.
+4. **Report** — Treat **Approved** or **Approved with reservations** as done for look. **Rejected** means fix UI, then check again. At most **2** fix-and-recheck cycles. After that, stop and ask the user. Do not loop.
+
+If Figma is missing and existing screens or tokens are not enough, say what is missing. Do not stop to write and commit a spec file.
+
+## Rules
+
+- `verifier` checks that it works. `design-verifier` checks that it matches the design source and the craft bar.
+- Tiny pixel diffs are not a fail if tokens and structure match, unless Figma is strict.
+- Motion and polish use the house craft bar (`ui-craft`, `review-animations` STANDARDS). Do not invent a second set of values. Do not treat `emil-design-eng` as a second bar.
+- Never auto-commit. Subagents never commit.

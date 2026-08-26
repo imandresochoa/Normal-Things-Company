@@ -1,0 +1,38 @@
+---
+description: pstack may not override TDD, commits, or PRs. Extra evidence steps sit around the existing spine.
+alwaysApply: true
+---
+
+# pstack gates
+
+pstack is installed. Use its evidence skills. Do not use its autonomy.
+
+## Authority
+
+pstack never-block does not apply to `git commit`, `git push`, or PR create. The parent asks. The parent commits. Subagents never commit.
+
+Do not run Opening a PR unless the user asked for a PR. Do not merge. Do not force-push. Do not use Graphite land.
+
+Do not spawn `poteto-agent` for Red or Green. Red uses `test-writer`. Green uses `implementer`. `verifier` stays independent.
+
+pstack `/tdd` does not replace `tdd.mdc`. Do not skip tests because they look expensive.
+
+Do not leave `/poteto-mode` sticky. Route with the steps below.
+
+## Before Red
+
+If the change crosses more than one file, run `how` first. If it crosses a function or module boundary, run `architect` (and `arena` when the shape is open). Then start TDD Red.
+
+## After Green
+
+If the diff looks small and scary, run `blast-radius` and prove the safety fact by running code.
+
+On a contested PR the user asked for, run `interrogate`. Do not auto-apply findings.
+
+## Project verify
+
+On an app repo with no `verify-*` skill, offer once to run `create-verification-skill`. Do not invent a project to do this.
+
+## Cloud
+
+The same gates apply in Cloud Agents. Cloud Agents still must ask before commit and PR.

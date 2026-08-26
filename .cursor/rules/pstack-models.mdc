@@ -1,0 +1,27 @@
+---
+description: pstack per-role model choices (overrides skill defaults)
+alwaysApply: true
+---
+
+# pstack model configuration. One line per role. Delete a line to fall back to the skill default.
+# `inherit-parent` or `auto` as a value: the role runs on the parent chat model (omit Task `model`).
+# Only slugs confirmed available in this account are listed.
+
+feature, refactoring: cursor-grok-4.6-high
+bug-fix: gpt-5.2-codex-medium
+perf-issue: gpt-5.2-codex-medium
+hillclimb: gpt-5.2-codex-medium
+judgment and prose: claude-4.6-opus-high-thinking
+hardest tasks: claude-4.6-opus-high-thinking
+how explorer: cursor-grok-4.5-high-fast
+how explainer: claude-4.6-opus-high-thinking
+how critics: claude-4.6-opus-high-thinking, gpt-5.2-codex-medium, cursor-grok-4.6-high, cursor-grok-4.5-high-fast
+why investigators: cursor-grok-4.5-high-fast
+why synthesizer: claude-4.6-opus-high-thinking
+reflect tooling: gpt-5.2-codex-medium
+reflect judgment, divergent, synthesizer: claude-4.6-opus-high-thinking
+arena runners: claude-4.6-opus-high-thinking, gpt-5.2-codex-medium, cursor-grok-4.6-high, cursor-grok-4.5-high-fast
+arena cross-judge pool: claude-4.6-opus-high-thinking, gpt-5.2-codex-medium, cursor-grok-4.6-high, cursor-grok-4.5-high-fast
+swarm workers: cursor-grok-4.5-high-fast
+architect runners: claude-4.6-opus-high-thinking, gpt-5.2-codex-medium, cursor-grok-4.6-high, cursor-grok-4.5-high-fast
+interrogate reviewers: claude-4.6-opus-high-thinking, gpt-5.2-codex-medium, cursor-grok-4.6-high, cursor-grok-4.5-high-fast
