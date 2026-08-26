@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const title = "Normal Things Company";
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className="h-full">
       <body className="min-h-full bg-[#fbfbfb] text-black antialiased">
         {children}
+        <Analytics />
       </body>
     </html>
   );
