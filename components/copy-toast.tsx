@@ -7,24 +7,16 @@ import {
   useState,
   type CSSProperties,
 } from "react";
-import {
-  COPY_TOAST_SPARK_HEIGHT,
-  COPY_TOAST_SPARK_PAD,
-  COPY_TOAST_SPARK_WIDTH,
-  copyToastSparks,
-} from "@/lib/copy-toast-sparks";
 
 const HOLD_MS = 1200;
+const TOAST_FADE_MS = 200;
 const REDUCE_TOAST_MS = 160;
-const SPARK_DURATION_MS = 240;
-const SPARK_STAGGER_MS = 35;
-const SPARK_BURST_MS =
-  SPARK_DURATION_MS + (copyToastSparks.length - 1) * SPARK_STAGGER_MS;
 const COPY_DEBOUNCE_MS = 100;
 const VIEWPORT_PAD = 8;
 const TOAST_GAP = 8;
+const MOBILE_TOAST_GAP = 72;
 const ESTIMATED_TOAST_HEIGHT = 32;
-const ESTIMATED_TOAST_WIDTH = COPY_TOAST_SPARK_WIDTH;
+const ESTIMATED_TOAST_WIDTH = 145;
 const SELECTION_KEYS = new Set([
   "ArrowDown",
   "ArrowLeft",
@@ -46,26 +38,11 @@ type ToastView =
       top: number;
       place: ToastPlace;
       open: boolean;
-      burstId: number;
     };
 
 type AnchorStyle = CSSProperties & {
   "--copy-toast-y": string;
 };
-
-type SparkStyle = CSSProperties & {
-  "--i": number;
-  "--spark-dx": string;
-  "--spark-dy": string;
-};
-
-function sparkStyle(index: number, dx: number, dy: number): SparkStyle {
-  return {
-    "--i": index,
-    "--spark-dx": `${dx}px`,
-    "--spark-dy": `${dy}px`,
-  };
-}
 
 function selectionIsInEditable(selection: Selection): boolean {
   const node = selection.anchorNode;
@@ -103,6 +80,12 @@ function finishedSelectionText(): string | null {
   return text;
 }
 
+function toastGap(): number {
+  return window.matchMedia("(pointer: coarse)").matches
+    ? MOBILE_TOAST_GAP
+    : TOAST_GAP;
+}
+
 function toastAnchor(selection: Selection): { left: number; top: number; place: ToastPlace } {
   const rect = selection.getRangeAt(0).getBoundingClientRect();
   const halfWidth = ESTIMATED_TOAST_WIDTH / 2;
@@ -113,16 +96,16 @@ function toastAnchor(selection: Selection): { left: number; top: number; place: 
     Math.max(minLeft, maxLeft),
   );
 
-  const placeAbove = rect.top >= ESTIMATED_TOAST_HEIGHT + TOAST_GAP + VIEWPORT_PAD;
+  const gap = toastGap();
+  const placeAbove = rect.top >= ESTIMATED_TOAST_HEIGHT + gap + VIEWPORT_PAD;
   const place: ToastPlace = placeAbove ? "above" : "below";
-  const top = place === "above" ? rect.top - TOAST_GAP : rect.bottom + TOAST_GAP;
+  const top = place === "above" ? rect.top - gap : rect.bottom + gap;
 
   return { left, top, place };
 }
 
 export function CopyToast() {
   const [view, setView] = useState<ToastView>({ kind: "hidden" });
-  const [sparkState, setSparkState] = useState<"idle" | "burst">("idle");
   const [reduceMotion, setReduceMotion] = useState(false);
 
   const viewRef = useRef<ToastView>(view);
@@ -130,7 +113,6 @@ export function CopyToast() {
   const lastCopiedAt = useRef(0);
   const holdTimer = useRef<number | null>(null);
   const exitTimer = useRef<number | null>(null);
-  const burstTimer = useRef<number | null>(null);
   const openFrame = useRef<number | null>(null);
 
   useEffect(() => {
@@ -167,30 +149,14 @@ export function CopyToast() {
     return () => {
       clearTimer(holdTimer);
       clearTimer(exitTimer);
-      clearTimer(burstTimer);
       clearFrame();
     };
   }, []);
-
-  const triggerBurst = useCallback(
-    (nextBurstId: number) => {
-      setSparkState("burst");
-      clearTimer(burstTimer);
-      const holdMs = reduceMotion ? REDUCE_TOAST_MS : SPARK_BURST_MS;
-      burstTimer.current = window.setTimeout(() => {
-        setSparkState("idle");
-        burstTimer.current = null;
-      }, holdMs);
-      return nextBurstId;
-    },
-    [reduceMotion],
-  );
 
   const hideToast = useCallback(() => {
     clearTimer(holdTimer);
     clearTimer(exitTimer);
     setView({ kind: "hidden" });
-    setSparkState("idle");
   }, []);
 
   const scheduleExit = useCallback(() => {
@@ -201,15 +167,14 @@ export function CopyToast() {
         return;
       }
 
-      const burstId = triggerBurst(current.burstId + 1);
-      setView({ ...current, open: false, burstId });
+      setView({ ...current, open: false });
 
-      const exitMs = reduceMotion ? REDUCE_TOAST_MS : SPARK_BURST_MS;
+      const exitMs = reduceMotion ? REDUCE_TOAST_MS : TOAST_FADE_MS;
       exitTimer.current = window.setTimeout(() => {
         hideToast();
       }, exitMs);
     }, HOLD_MS);
-  }, [hideToast, reduceMotion, triggerBurst]);
+  }, [hideToast, reduceMotion]);
 
   const showToast = useCallback(
     (anchor: { left: number; top: number; place: ToastPlace }) => {
@@ -217,16 +182,12 @@ export function CopyToast() {
       clearFrame();
 
       const current = viewRef.current;
-      const burstId = triggerBurst(
-        current.kind === "visible" ? current.burstId + 1 : 1,
-      );
 
       if (current.kind === "visible" && current.open) {
         setView({
           kind: "visible",
           ...anchor,
           open: true,
-          burstId,
         });
         scheduleExit();
         return;
@@ -236,7 +197,6 @@ export function CopyToast() {
         kind: "visible",
         ...anchor,
         open: false,
-        burstId,
       });
 
       openFrame.current = window.requestAnimationFrame(() => {
@@ -250,7 +210,7 @@ export function CopyToast() {
 
       scheduleExit();
     },
-    [scheduleExit, triggerBurst],
+    [scheduleExit],
   );
 
   const tryCopy = useCallback(async () => {
@@ -317,9 +277,6 @@ export function CopyToast() {
     return null;
   }
 
-  const pad = COPY_TOAST_SPARK_PAD;
-  const sparkWidth = COPY_TOAST_SPARK_WIDTH + pad * 2;
-  const sparkHeight = COPY_TOAST_SPARK_HEIGHT + pad * 2;
   const anchorStyle: AnchorStyle = {
     left: view.left,
     top: view.top,
@@ -339,32 +296,6 @@ export function CopyToast() {
       >
         Copied to clipboard!
       </div>
-      <svg
-        key={view.burstId}
-        className="copy-toast-sparks pointer-events-none absolute inset-[-16px] size-[calc(100%+32px)] overflow-visible text-foreground"
-        viewBox={`${-pad} ${-pad} ${sparkWidth} ${sparkHeight}`}
-        fill="none"
-        xmlns="http://www.w3.org/1999/svg"
-        aria-hidden="true"
-        preserveAspectRatio="none"
-        overflow="visible"
-        data-state={sparkState}
-      >
-        {copyToastSparks.map((spark, index) => (
-          <line
-            key={spark.id}
-            x1={spark.x1}
-            y1={spark.y1}
-            x2={spark.x2}
-            y2={spark.y2}
-            data-spark=""
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            style={sparkStyle(index, spark.dx, spark.dy)}
-          />
-        ))}
-      </svg>
     </div>
   );
 }
