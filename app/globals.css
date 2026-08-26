@@ -28,6 +28,7 @@ body {
   stroke-dashoffset: 1;
   animation: logo-trace 2.4s var(--ease-out) both;
   animation-delay: calc(var(--i) * 90ms);
+  transition: stroke 160ms ease;
 }
 
 .underline-mark [data-underline-stroke] {
@@ -37,6 +38,53 @@ body {
 
 .underline-mark[data-state="animate"] [data-underline-stroke] {
   animation: underline-trace var(--underline-trace-ms) var(--ease-out) both;
+}
+
+.logo-press {
+  color: #f7452a;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), color 160ms ease;
+  transform-origin: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.logo-press[data-color="blue"] {
+  color: #2a56f7;
+}
+
+.logo-press[data-color="orange"] {
+  color: #f7452a;
+}
+
+.logo-press[data-pressed] {
+  animation: none;
+  transform: scale(0.94);
+  transition-duration: 100ms;
+}
+
+.logo-press[data-pop]:not([data-pressed]) {
+  animation: logo-pop 160ms var(--ease-out) both;
+}
+
+.logo-press[data-heat="tremble"]:not([data-pressed]):not([data-pop]),
+.logo-press[data-heat="hot"]:not([data-pressed]):not([data-pop]) {
+  animation: logo-tremble 120ms linear infinite;
+}
+
+.logo-press[data-heat="tremble"][data-pop]:not([data-pressed]),
+.logo-press[data-heat="hot"][data-pop]:not([data-pressed]) {
+  animation:
+    logo-pop 160ms var(--ease-out) both,
+    logo-tremble 120ms linear 160ms infinite;
+}
+
+.logo-sparks [data-spark] {
+  opacity: 0;
+}
+
+.logo-sparks[data-state="burst"] [data-spark] {
+  animation: logo-spark 240ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 35ms);
 }
 
 @keyframes logo-trace {
@@ -59,6 +107,55 @@ body {
   }
 }
 
+@keyframes logo-pop {
+  0% {
+    transform: scale(0.94);
+  }
+
+  55% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes logo-tremble {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate(1px, -1px) rotate(-0.6deg);
+  }
+
+  50% {
+    transform: translate(-1px, 1px) rotate(0.6deg);
+  }
+
+  75% {
+    transform: translate(1px, 1px) rotate(-0.4deg);
+  }
+}
+
+@keyframes logo-spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--spark-dx), var(--spark-dy));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .logo-mark[data-state="animate"] [data-logo-stroke] {
     animation: none;
@@ -68,5 +165,25 @@ body {
   .underline-mark [data-underline-stroke] {
     animation: none;
     stroke-dashoffset: 0;
+  }
+
+  .logo-press,
+  .logo-press[data-pressed],
+  .logo-press[data-pop],
+  .logo-press[data-heat="tremble"],
+  .logo-press[data-heat="hot"] {
+    animation: none;
+    transform: none;
+    transition: color 160ms ease;
+  }
+
+  .logo-sparks[data-state="burst"] [data-spark] {
+    animation: none;
+    opacity: 1;
+    transition: opacity 160ms ease;
+  }
+
+  .logo-sparks:not([data-state="burst"]) [data-spark] {
+    opacity: 0;
   }
 }
