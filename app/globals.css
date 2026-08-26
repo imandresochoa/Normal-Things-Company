@@ -1,10 +1,10 @@
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=gambetta@400,1&display=swap");
 @import "tailwindcss";
 
 :root {
   --page-bg: #fbfbfb;
   --page-text: #000000;
-  --font-letter: "Satoshi", sans-serif;
+  --font-letter: "Gambetta", serif;
 }
 
 @theme inline {
