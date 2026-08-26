@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PixelDisplay } from "@/components/pixel-display";
+import { RootsMark } from "@/components/roots-mark";
 import { SquiggleLink } from "@/components/squiggle-link";
 
 export const metadata: Metadata = {
@@ -16,8 +16,9 @@ export default function RootsPage() {
       <header className="px-4 py-10 md:px-8">
         <SquiggleLink href="/">Normal Things Company</SquiggleLink>
       </header>
-      <div className="min-h-16 flex-1" aria-hidden="true" />
-      <PixelDisplay />
+      <div className="flex flex-1 items-center justify-center px-4 pb-16">
+        <RootsMark />
+      </div>
     </main>
   );
 }
