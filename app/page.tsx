@@ -13,7 +13,7 @@ We are currently working to help you keep your plants alive. We like small start
 export default function Home() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-start gap-8 bg-[#fbfbfb] px-4 py-10 md:justify-center">
-      <p className="w-full max-w-[620px] break-words whitespace-pre-wrap text-[16px] leading-normal text-black">
+      <p className="w-full max-w-[620px] break-words whitespace-pre-wrap font-[family-name:var(--font-letter)] text-[16px] font-normal leading-normal text-black">
         {letter}
       </p>
       <CompanyLogo />

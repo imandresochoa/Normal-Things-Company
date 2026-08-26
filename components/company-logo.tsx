@@ -20,6 +20,10 @@ function pathTimings(): PathTiming[][] {
   );
 }
 
+function easeInOut(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
 const timings = pathTimings();
 
 export function CompanyLogo() {
@@ -35,38 +39,58 @@ export function CompanyLogo() {
     const strokes = [
       ...svg.querySelectorAll<SVGPathElement>("[data-logo-stroke]"),
     ];
+    const fills = [...svg.querySelectorAll<SVGPathElement>("[data-logo-fill]")];
+
+    const showStatic = () => {
+      fills.forEach((path) => path.removeAttribute("mask"));
+      svg.dataset.state = "static";
+    };
 
     if (reduce) {
-      strokes.forEach((path) => {
-        path.style.strokeDasharray = "none";
-        path.style.strokeDashoffset = "0";
-      });
-      svg.dataset.state = "static";
+      showStatic();
       return;
     }
 
     svg.dataset.state = "animate";
 
+    const flatTimings = timings.flat();
+    const lengths = strokes.map((path) => path.getTotalLength());
     strokes.forEach((path, index) => {
-      const length = path.getTotalLength();
-      const timing = timings.flat()[index];
-      path.style.strokeDasharray = `${length}`;
-      path.style.strokeDashoffset = `${length}`;
-      path.style.transition = "none";
-      path.getBoundingClientRect();
-      path.style.transition = `stroke-dashoffset ${timing.duration}s cubic-bezier(0.37, 0, 0.63, 1) ${timing.delay}s`;
-      path.style.strokeDashoffset = "0";
+      path.setAttribute("stroke-dasharray", `${lengths[index]}`);
+      path.setAttribute("stroke-dashoffset", `${lengths[index]}`);
     });
 
-    const last = timings.flat().reduce(
-      (max, timing) => Math.max(max, timing.delay + timing.duration),
-      0,
-    );
-    const timer = window.setTimeout(() => {
-      svg.dataset.state = "static";
-    }, (last + 0.15) * 1000);
+    const start = performance.now();
+    let frame = 0;
 
-    return () => window.clearTimeout(timer);
+    const tick = (now: number) => {
+      const elapsed = (now - start) / 1000;
+      let allDone = true;
+
+      strokes.forEach((path, index) => {
+        const timing = flatTimings[index];
+        const local = Math.min(
+          1,
+          Math.max(0, (elapsed - timing.delay) / timing.duration),
+        );
+        const offset = lengths[index] * (1 - easeInOut(local));
+        path.setAttribute("stroke-dashoffset", `${offset}`);
+        if (local < 1) {
+          allDone = false;
+        }
+      });
+
+      if (allDone) {
+        showStatic();
+        return;
+      }
+
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    frame = window.requestAnimationFrame(tick);
+
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   return (
@@ -113,6 +137,7 @@ export function CompanyLogo() {
             <path
               key={`${letter.id}-${pathIndex}`}
               d={d}
+              data-logo-fill=""
               fill="black"
               mask={`url(#logo-reveal-${letter.id}-${pathIndex})`}
             />
