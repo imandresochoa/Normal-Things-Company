@@ -5,6 +5,7 @@
   --page-bg: #fbfbfb;
   --page-text: #000000;
   --font-letter: "Gambetta", serif;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @theme inline {
@@ -21,12 +22,26 @@ body {
   font-size: 18px;
 }
 
-.logo-mark {
-  opacity: 1;
+.logo-mark[data-state="animate"] [data-logo-stroke] {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  animation: logo-trace 550ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 40ms);
+}
+
+@keyframes logo-trace {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .logo-mark {
-    opacity: 1;
+  .logo-mark[data-state="animate"] [data-logo-stroke] {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }
