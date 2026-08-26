@@ -93,6 +93,7 @@ body {
 
 .logo-sparks[data-state="burst"] [data-spark] {
   animation: logo-spark 240ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 35ms);
 }
 
 .logo-sparks[data-state="frenzy"] [data-spark] {
