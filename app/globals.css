@@ -6,6 +6,7 @@
   --page-text: #1a1a1a;
   --font-letter: "Gambetta", serif;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --underline-trace-ms: 700ms;
 }
 
 @theme inline {
@@ -29,7 +30,26 @@ body {
   animation-delay: calc(var(--i) * 90ms);
 }
 
+.underline-mark [data-underline-stroke] {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+}
+
+.underline-mark[data-state="animate"] [data-underline-stroke] {
+  animation: underline-trace var(--underline-trace-ms) var(--ease-out) both;
+}
+
 @keyframes logo-trace {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes underline-trace {
   from {
     stroke-dashoffset: 1;
   }
@@ -41,6 +61,11 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .logo-mark[data-state="animate"] [data-logo-stroke] {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .underline-mark [data-underline-stroke] {
     animation: none;
     stroke-dashoffset: 0;
   }

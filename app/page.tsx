@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { CompanyLogo } from "@/components/company-logo";
+import { SquiggleLink } from "@/components/squiggle-link";
 
 const letterClassName =
   "w-full max-w-[620px] break-words whitespace-pre-wrap font-[family-name:var(--font-letter)] text-[18px] font-normal leading-normal text-foreground";
@@ -17,12 +17,7 @@ Yet for the first time, humans will also be able to delegate thinking itself. Fa
 There is a bright future ahead, waiting to be built. Normal Things Company was born to take care of the software we use every day, with humility and a deep love for the craft.
 
 We are currently creating our `}
-        <Link
-          href="/roots"
-          className="text-[#2A56F7] underline underline-offset-2"
-        >
-          design foundations
-        </Link>
+        <SquiggleLink href="/roots">design foundations</SquiggleLink>
         {`. The pillars that will nurture our ecosystem.`}
       </p>
       <CompanyLogo />
