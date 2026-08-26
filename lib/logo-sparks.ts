@@ -11,7 +11,7 @@ export type LogoSpark = {
   phaseMs?: number;
 };
 
-/** Radial dashes for a single press burst — all fire together. */
+/** Radial dashes for a single press burst — staggered like copy-toast burst. */
 export const logoSparks: LogoSpark[] = [
   { id: "n", x1: 100, y1: 4, x2: 100, y2: -6, dx: 0, dy: -8 },
   { id: "nne", x1: 128, y1: 2, x2: 136, y2: -6, dx: 4, dy: -6 },

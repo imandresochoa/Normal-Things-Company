@@ -16,6 +16,9 @@ const HEAT_OVERHEAT = 6;
 /** Base overheat window plus one extra second of continuous sparks. */
 const OVERHEAT_FRENZY_MS = 1800;
 const SPARK_DURATION_MS = 240;
+const SPARK_STAGGER_MS = 50;
+const SPARK_BURST_MS =
+  SPARK_DURATION_MS + (logoSparks.length - 1) * SPARK_STAGGER_MS;
 
 type LogoColor = "orange" | "blue";
 type LogoPhase = "idle" | "overheating";
@@ -25,6 +28,7 @@ type StrokeStyle = CSSProperties & {
 };
 
 type SparkStyle = CSSProperties & {
+  "--i": number;
   "--spark-dx": string;
   "--spark-dy": string;
   "--spark-phase": string;
@@ -34,12 +38,16 @@ function strokeStyle(index: number): StrokeStyle {
   return { "--i": index };
 }
 
-function sparkStyle(spark: {
-  dx: number;
-  dy: number;
-  phaseMs?: number;
-}): SparkStyle {
+function sparkStyle(
+  index: number,
+  spark: {
+    dx: number;
+    dy: number;
+    phaseMs?: number;
+  },
+): SparkStyle {
   return {
+    "--i": index,
     "--spark-dx": `${spark.dx}px`,
     "--spark-dy": `${spark.dy}px`,
     "--spark-phase": `${spark.phaseMs ?? 0}ms`,
@@ -125,7 +133,7 @@ export function CompanyLogo() {
       }
       setSparkState("idle");
       burstTimer.current = null;
-    }, reduceMotion ? 160 : SPARK_DURATION_MS);
+    }, reduceMotion ? 160 : SPARK_BURST_MS);
   }, [reduceMotion]);
 
   const finishOverheat = useCallback(() => {
@@ -304,7 +312,7 @@ export function CompanyLogo() {
         overflow="visible"
         data-state={sparkState}
       >
-        {activeSparks.map((spark) => (
+        {activeSparks.map((spark, index) => (
           <line
             key={spark.id}
             x1={spark.x1}
@@ -315,7 +323,7 @@ export function CompanyLogo() {
             stroke="currentColor"
             strokeWidth="3.2"
             strokeLinecap="round"
-            style={sparkStyle(spark)}
+            style={sparkStyle(index, spark)}
           />
         ))}
       </svg>
