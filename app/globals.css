@@ -134,15 +134,6 @@ body {
   transform: scale(1);
 }
 
-.copy-toast-sparks [data-spark] {
-  opacity: 0;
-}
-
-.copy-toast-sparks[data-state="burst"] [data-spark] {
-  animation: logo-spark 240ms var(--ease-out) both;
-  animation-delay: calc(var(--i) * 35ms);
-}
-
 @keyframes logo-spark-frenzy {
   0% {
     opacity: 0;
@@ -244,10 +235,5 @@ body {
 
   .copy-toast[data-open] {
     transform: none;
-  }
-
-  .copy-toast-sparks[data-state="burst"] [data-spark] {
-    animation: none;
-    opacity: 0;
   }
 }
