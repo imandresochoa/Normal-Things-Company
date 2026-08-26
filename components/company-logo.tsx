@@ -16,7 +16,7 @@ const HEAT_OVERHEAT = 6;
 /** Base overheat window plus one extra second of continuous sparks. */
 const OVERHEAT_FRENZY_MS = 1800;
 const SPARK_DURATION_MS = 240;
-const SPARK_STAGGER_MS = 35;
+const SPARK_STAGGER_MS = 50;
 const SPARK_BURST_MS =
   SPARK_DURATION_MS + (logoSparks.length - 1) * SPARK_STAGGER_MS;
 
