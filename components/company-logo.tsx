@@ -29,7 +29,7 @@ export function CompanyLogo() {
             data-logo-stroke=""
             pathLength={1}
             fill="none"
-            stroke="#2A56F7"
+            stroke="#F7452A"
             strokeWidth="3.2"
             strokeLinecap="round"
             strokeLinejoin="round"

@@ -14,13 +14,11 @@ We were born in an era where execution is no longer a barrier. Anyone, anywhere,
 
 Yet for the first time, humans will also be able to delegate thinking itself. Fast production and the ability to outsource thought is a double-edged sword. On one hand, it empowers individuals and small teams to create and explore freely. On the other, it reveals how readily we hand over any work we can.
 
-There is a bright future ahead, waiting to be built. `}
-        <span className="text-[#F7452A]">Normal Things Company</span>
-        {` was born to take care of the software we use every day, with humility and a deep love for the craft.
+There is a bright future ahead, waiting to be built. Normal Things Company was born to take care of the software we use every day, with humility and a deep love for the craft.
 
 We are currently creating our `}
         <Link
-          href="/foundations"
+          href="/roots"
           className="text-[#2A56F7] underline underline-offset-2"
         >
           design foundations
