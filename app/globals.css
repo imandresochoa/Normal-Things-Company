@@ -1,0 +1,49 @@
+@import url("https://api.fontshare.com/v2/css?f[]=gambetta@400&display=swap");
+@import "tailwindcss";
+
+:root {
+  --page-bg: #fbfbfb;
+  --page-text: #000000;
+  --font-letter: "Gambetta", serif;
+}
+
+@theme inline {
+  --color-background: var(--page-bg);
+  --color-foreground: var(--page-text);
+  --font-sans: var(--font-letter);
+}
+
+html,
+body {
+  background: var(--page-bg);
+  color: var(--page-text);
+  font-family: var(--font-letter);
+}
+
+.logo-path-reveal {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.logo-is-ready .logo-path-reveal {
+  animation: logo-path-reveal var(--reveal-duration) cubic-bezier(0.37, 0, 0.63, 1)
+    var(--reveal-delay) forwards;
+}
+
+.logo-is-static .logo-path-reveal {
+  stroke-dashoffset: 0;
+  animation: none;
+}
+
+@keyframes logo-path-reveal {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-path-reveal {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
