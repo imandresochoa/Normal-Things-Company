@@ -12,15 +12,16 @@ import { logoSparks } from "@/lib/logo-sparks";
 import { logoStrokes } from "@/lib/logo-strokes";
 
 const HEAT_COOL_MS = 800;
-const HEAT_TREMBLE = 4;
-const HEAT_COLOR = 6;
+const HEAT_OVERHEAT = 6;
+const OVERHEAT_FRENZY_MS = 800;
+const OVERHEAT_FRENZY_INTERVAL_MS = 140;
 const SPARK_DURATION_MS = 240;
 const SPARK_STAGGER_MS = 35;
 const SPARK_BURST_MS =
   SPARK_DURATION_MS + (logoSparks.length - 1) * SPARK_STAGGER_MS;
 
 type LogoColor = "orange" | "blue";
-type HeatMode = "cool" | "tremble" | "hot";
+type LogoPhase = "idle" | "overheating";
 
 type StrokeStyle = CSSProperties & {
   "--i": number;
@@ -44,30 +45,36 @@ function sparkStyle(index: number, dx: number, dy: number): SparkStyle {
   };
 }
 
-function heatMode(heat: number): HeatMode {
-  if (heat >= HEAT_COLOR) {
-    return "hot";
-  }
-  if (heat >= HEAT_TREMBLE) {
-    return "tremble";
-  }
-  return "cool";
-}
-
 export function CompanyLogo() {
   const [pressed, setPressed] = useState(false);
   const [popping, setPopping] = useState(false);
-  const [heat, setHeat] = useState(0);
+  const [phase, setPhase] = useState<LogoPhase>("idle");
   const [color, setColor] = useState<LogoColor>("orange");
   const [burstId, setBurstId] = useState(0);
-  const [bursting, setBursting] = useState(false);
+  const [sparkState, setSparkState] = useState<"idle" | "burst" | "frenzy">(
+    "idle",
+  );
   const [reduceMotion, setReduceMotion] = useState(false);
+
+  const heatRef = useRef(0);
   const coolTimer = useRef<number | null>(null);
   const popTimer = useRef<number | null>(null);
   const burstTimer = useRef<number | null>(null);
+  const frenzyInterval = useRef<number | null>(null);
+  const overheatTimer = useRef<number | null>(null);
   const activePointer = useRef<number | null>(null);
   const isPressed = useRef(false);
   const suppressClick = useRef(false);
+  const phaseRef = useRef<LogoPhase>("idle");
+  const colorRef = useRef<LogoColor>("orange");
+
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
+
+  useEffect(() => {
+    colorRef.current = color;
+  }, [color]);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -81,67 +88,140 @@ export function CompanyLogo() {
     };
   }, []);
 
+  const clearTimer = (ref: { current: number | null }) => {
+    if (ref.current !== null) {
+      window.clearTimeout(ref.current);
+      ref.current = null;
+    }
+  };
+
+  const clearIntervalRef = (ref: { current: number | null }) => {
+    if (ref.current !== null) {
+      window.clearInterval(ref.current);
+      ref.current = null;
+    }
+  };
+
   useEffect(() => {
     return () => {
-      if (coolTimer.current !== null) {
-        window.clearTimeout(coolTimer.current);
-      }
-      if (popTimer.current !== null) {
-        window.clearTimeout(popTimer.current);
-      }
-      if (burstTimer.current !== null) {
-        window.clearTimeout(burstTimer.current);
-      }
+      clearTimer(coolTimer);
+      clearTimer(popTimer);
+      clearTimer(burstTimer);
+      clearTimer(overheatTimer);
+      clearIntervalRef(frenzyInterval);
     };
   }, []);
 
   const scheduleCool = useCallback(() => {
-    if (coolTimer.current !== null) {
-      window.clearTimeout(coolTimer.current);
-    }
+    clearTimer(coolTimer);
     coolTimer.current = window.setTimeout(() => {
-      setHeat(0);
-      setColor("orange");
+      if (phaseRef.current === "overheating") {
+        return;
+      }
+      heatRef.current = 0;
       coolTimer.current = null;
     }, HEAT_COOL_MS);
   }, []);
 
-  const triggerBurst = useCallback(() => {
-    setBurstId((id) => id + 1);
-    setBursting(true);
-    if (burstTimer.current !== null) {
-      window.clearTimeout(burstTimer.current);
+  const triggerBurst = useCallback(
+    (mode: "burst" | "frenzy" = "burst") => {
+      setBurstId((id) => id + 1);
+      setSparkState(mode);
+      clearTimer(burstTimer);
+      const holdMs =
+        mode === "frenzy"
+          ? OVERHEAT_FRENZY_INTERVAL_MS
+          : reduceMotion
+            ? 160
+            : SPARK_BURST_MS;
+      burstTimer.current = window.setTimeout(() => {
+        if (phaseRef.current === "overheating" && mode === "frenzy") {
+          return;
+        }
+        setSparkState("idle");
+        burstTimer.current = null;
+      }, holdMs);
+    },
+    [reduceMotion],
+  );
+
+  const finishOverheat = useCallback(() => {
+    clearIntervalRef(frenzyInterval);
+    clearTimer(overheatTimer);
+    clearTimer(burstTimer);
+    setColor(colorRef.current === "orange" ? "blue" : "orange");
+    heatRef.current = 0;
+    setSparkState("idle");
+    setPhase("idle");
+    phaseRef.current = "idle";
+  }, []);
+
+  const startOverheat = useCallback(() => {
+    clearTimer(coolTimer);
+    setPhase("overheating");
+    phaseRef.current = "overheating";
+    setPressed(false);
+    isPressed.current = false;
+
+    if (reduceMotion) {
+      triggerBurst("burst");
+      overheatTimer.current = window.setTimeout(() => {
+        finishOverheat();
+      }, 200);
+      return;
     }
-    burstTimer.current = window.setTimeout(() => {
-      setBursting(false);
-      burstTimer.current = null;
-    }, reduceMotion ? 160 : SPARK_BURST_MS);
-  }, [reduceMotion]);
+
+    triggerBurst("frenzy");
+    frenzyInterval.current = window.setInterval(() => {
+      triggerBurst("frenzy");
+    }, OVERHEAT_FRENZY_INTERVAL_MS);
+
+    overheatTimer.current = window.setTimeout(() => {
+      finishOverheat();
+    }, OVERHEAT_FRENZY_MS);
+  }, [finishOverheat, reduceMotion, triggerBurst]);
 
   const registerPress = useCallback(() => {
-    setHeat((prev) => {
-      const next = prev + 1;
-      if (next >= HEAT_COLOR) {
-        setColor((c) => (c === "orange" ? "blue" : "orange"));
+    if (phaseRef.current === "overheating") {
+      return;
+    }
+
+    const next = heatRef.current + 1;
+    heatRef.current = next;
+
+    if (next >= HEAT_OVERHEAT) {
+      triggerBurst("burst");
+      if (!reduceMotion) {
+        setPopping(true);
+        clearTimer(popTimer);
+        popTimer.current = window.setTimeout(() => {
+          setPopping(false);
+          popTimer.current = null;
+        }, 160);
       }
-      return next;
-    });
-    triggerBurst();
+      queueMicrotask(() => {
+        startOverheat();
+      });
+      return;
+    }
+
     scheduleCool();
+    triggerBurst("burst");
 
     if (!reduceMotion) {
       setPopping(true);
-      if (popTimer.current !== null) {
-        window.clearTimeout(popTimer.current);
-      }
+      clearTimer(popTimer);
       popTimer.current = window.setTimeout(() => {
         setPopping(false);
         popTimer.current = null;
       }, 160);
     }
-  }, [reduceMotion, scheduleCool, triggerBurst]);
+  }, [reduceMotion, scheduleCool, startOverheat, triggerBurst]);
 
   const onPointerDown = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (phaseRef.current === "overheating") {
+      return;
+    }
     if (event.button !== 0 && event.pointerType === "mouse") {
       return;
     }
@@ -164,6 +244,9 @@ export function CompanyLogo() {
     }
     isPressed.current = false;
     setPressed(false);
+    if (phaseRef.current === "overheating") {
+      return;
+    }
     suppressClick.current = true;
     registerPress();
   };
@@ -182,19 +265,24 @@ export function CompanyLogo() {
       suppressClick.current = false;
       return;
     }
+    if (phaseRef.current === "overheating") {
+      return;
+    }
     registerPress();
   };
 
-  const mode = heatMode(heat);
+  const locked = phase === "overheating";
 
   return (
     <button
       type="button"
       aria-label="Normal Things Company"
-      className="logo-press relative h-[94.596px] w-[200px] shrink-0 touch-manipulation overflow-visible border-0 bg-transparent p-0"
+      aria-disabled={locked}
+      disabled={locked}
+      className="logo-press relative h-[94.596px] w-[200px] shrink-0 touch-manipulation overflow-visible border-0 bg-transparent p-0 disabled:pointer-events-none"
       data-pressed={pressed ? "" : undefined}
       data-pop={popping ? "" : undefined}
-      data-heat={mode}
+      data-heat={phase === "overheating" ? "overheating" : "cool"}
       data-color={color}
       onPointerDown={onPointerDown}
       onPointerUp={endPress}
@@ -232,7 +320,7 @@ export function CompanyLogo() {
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
         overflow="visible"
-        data-state={bursting ? "burst" : "idle"}
+        data-state={sparkState}
       >
         {logoSparks.map((spark, index) => (
           <line

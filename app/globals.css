@@ -1,11 +1,11 @@
-@import url("https://api.fontshare.com/v2/css?f[]=gambetta@400,1&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap");
 @import "tailwindcss";
 
 :root {
   --page-bg: #f4f2ef;
   --page-text: #1a1a1a;
   --page-selection: #9db1fb;
-  --font-letter: "Gambetta", serif;
+  --font-letter: "Satoshi", sans-serif;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --underline-trace-ms: 700ms;
 }
@@ -40,16 +40,25 @@ body {
 .underline-mark [data-underline-stroke] {
   stroke-dasharray: 1 2;
   stroke-dashoffset: 1;
+  transition: stroke-dashoffset var(--underline-trace-ms) var(--ease-out);
 }
 
-.underline-mark[data-state="animate"] [data-underline-stroke] {
-  animation: underline-trace var(--underline-trace-ms) var(--ease-out) both;
+@media (hover: hover) and (pointer: fine) {
+  .squiggle-link:hover .underline-mark [data-underline-stroke] {
+    stroke-dashoffset: 0;
+  }
+}
+
+.squiggle-link:focus-visible .underline-mark [data-underline-stroke] {
+  stroke-dashoffset: 0;
 }
 
 .logo-press {
   color: #f7452a;
   cursor: pointer;
-  transition: transform 160ms var(--ease-out), color 160ms ease;
+  transition:
+    transform 160ms var(--ease-out),
+    color 160ms ease;
   transform-origin: center;
   -webkit-tap-highlight-color: transparent;
 }
@@ -68,20 +77,13 @@ body {
   transition-duration: 100ms;
 }
 
-.logo-press[data-pop]:not([data-pressed]) {
+.logo-press[data-pop]:not([data-pressed]):not([data-heat="overheating"]) {
   animation: logo-pop 160ms var(--ease-out) both;
 }
 
-.logo-press[data-heat="tremble"]:not([data-pressed]):not([data-pop]),
-.logo-press[data-heat="hot"]:not([data-pressed]):not([data-pop]) {
+.logo-press[data-heat="overheating"] {
+  cursor: default;
   animation: logo-tremble 120ms linear infinite;
-}
-
-.logo-press[data-heat="tremble"][data-pop]:not([data-pressed]),
-.logo-press[data-heat="hot"][data-pop]:not([data-pressed]) {
-  animation:
-    logo-pop 160ms var(--ease-out) both,
-    logo-tremble 120ms linear 160ms infinite;
 }
 
 .logo-sparks [data-spark] {
@@ -93,17 +95,12 @@ body {
   animation-delay: calc(var(--i) * 35ms);
 }
 
-@keyframes logo-trace {
-  from {
-    stroke-dashoffset: 1;
-  }
-
-  to {
-    stroke-dashoffset: 0;
-  }
+.logo-sparks[data-state="frenzy"] [data-spark] {
+  animation: logo-spark 180ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 20ms);
 }
 
-@keyframes underline-trace {
+@keyframes logo-trace {
   from {
     stroke-dashoffset: 1;
   }
@@ -169,27 +166,31 @@ body {
   }
 
   .underline-mark [data-underline-stroke] {
-    animation: none;
+    transition: none;
+  }
+
+  .squiggle-link:hover .underline-mark [data-underline-stroke],
+  .squiggle-link:focus-visible .underline-mark [data-underline-stroke] {
     stroke-dashoffset: 0;
   }
 
   .logo-press,
   .logo-press[data-pressed],
   .logo-press[data-pop],
-  .logo-press[data-heat="tremble"],
-  .logo-press[data-heat="hot"] {
+  .logo-press[data-heat="overheating"] {
     animation: none;
     transform: none;
     transition: color 160ms ease;
   }
 
-  .logo-sparks[data-state="burst"] [data-spark] {
+  .logo-sparks[data-state="burst"] [data-spark],
+  .logo-sparks[data-state="frenzy"] [data-spark] {
     animation: none;
     opacity: 1;
     transition: opacity 160ms ease;
   }
 
-  .logo-sparks:not([data-state="burst"]) [data-spark] {
+  .logo-sparks:not([data-state="burst"]):not([data-state="frenzy"]) [data-spark] {
     opacity: 0;
   }
 }
