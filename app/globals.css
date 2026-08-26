@@ -4,6 +4,7 @@
 :root {
   --page-bg: #f4f2ef;
   --page-text: #1a1a1a;
+  --page-selection: #9db1fb;
   --font-letter: "Gambetta", serif;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --underline-trace-ms: 700ms;
@@ -21,6 +22,11 @@ body {
   color: var(--page-text);
   font-family: var(--font-letter);
   font-size: 18px;
+}
+
+::selection {
+  background: var(--page-selection);
+  color: var(--page-text);
 }
 
 .logo-mark[data-state="animate"] [data-logo-stroke] {
