@@ -4,11 +4,11 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-const rootsStrokesPath = path.join(
+const pulseStrokesPath = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
   "lib",
-  "roots-strokes.ts",
+  "pulse-strokes.ts",
 );
 
 const WORD_GROUPS = {
@@ -99,41 +99,41 @@ function gapBetweenWords(strokes, previousWord, nextWord) {
   return next.minX - previous.maxX;
 }
 
-function parseRootsWordSpace(source) {
-  const match = source.match(/export const ROOTS_WORD_SPACE\s*=\s*(-?\d+(?:\.\d+)?)/);
-  assert.ok(match, "roots-strokes.ts must export ROOTS_WORD_SPACE");
+function parsePulseWordSpace(source) {
+  const match = source.match(/export const PULSE_WORD_SPACE\s*=\s*(-?\d+(?:\.\d+)?)/);
+  assert.ok(match, "pulse-strokes.ts must export PULSE_WORD_SPACE");
   return Number(match[1]);
 }
 
-test("roots-strokes exports ROOTS_WORD_SPACE = 16", () => {
-  const source = fs.readFileSync(rootsStrokesPath, "utf8");
-  const match = source.match(/export const ROOTS_WORD_SPACE\s*=\s*(-?\d+(?:\.\d+)?)/);
+test("pulse-strokes exports PULSE_WORD_SPACE = 16", () => {
+  const source = fs.readFileSync(pulseStrokesPath, "utf8");
+  const match = source.match(/export const PULSE_WORD_SPACE\s*=\s*(-?\d+(?:\.\d+)?)/);
 
-  assert.ok(match, "roots-strokes.ts must export ROOTS_WORD_SPACE");
+  assert.ok(match, "pulse-strokes.ts must export PULSE_WORD_SPACE");
   assert.equal(
     Number(match[1]),
     16,
-    "ROOTS_WORD_SPACE must be 16 viewBox units",
+    "PULSE_WORD_SPACE must be 16 viewBox units",
   );
 });
 
-test("adjacent Roots word gaps equal ROOTS_WORD_SPACE after stroke shifts", () => {
-  const source = fs.readFileSync(rootsStrokesPath, "utf8");
-  const rootsWordSpace = parseRootsWordSpace(source);
+test("adjacent Pulse word gaps equal PULSE_WORD_SPACE after stroke shifts", () => {
+  const source = fs.readFileSync(pulseStrokesPath, "utf8");
+  const pulseWordSpace = parsePulseWordSpace(source);
   const dxConstants = parseDxConstants(source);
   const strokes = parseStrokes(source, dxConstants);
 
   assert.equal(
     strokes.length,
     24,
-    "roots-strokes.ts must define 24 stroke paths for the mark",
+    "pulse-strokes.ts must define 24 stroke paths for the mark",
   );
 
   for (const [previousWord, nextWord] of WORD_PAIRS) {
     const gap = gapBetweenWords(strokes, previousWord, nextWord);
     assert.ok(
-      Math.abs(gap - rootsWordSpace) <= GAP_TOLERANCE,
-      `${previousWord}→${nextWord} gap must be ${rootsWordSpace} ± ${GAP_TOLERANCE} (got ${gap.toFixed(2)})`,
+      Math.abs(gap - pulseWordSpace) <= GAP_TOLERANCE,
+      `${previousWord}→${nextWord} gap must be ${pulseWordSpace} ± ${GAP_TOLERANCE} (got ${gap.toFixed(2)})`,
     );
   }
 });
