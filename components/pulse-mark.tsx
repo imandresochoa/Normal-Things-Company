@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { ROOTS_MARK_VIEWBOX, rootsStrokes } from "@/lib/roots-strokes";
+import { PULSE_MARK_VIEWBOX, pulseStrokes } from "@/lib/pulse-strokes";
 
 type StrokeStyle = CSSProperties & {
   "--i": number;
@@ -9,7 +9,7 @@ function strokeStyle(index: number): StrokeStyle {
   return { "--i": index };
 }
 
-export function RootsMark() {
+export function PulseMark() {
   return (
     <div
       className="relative h-[72px] w-[min(92vw,400px)] shrink-0 text-[#f7452a]"
@@ -18,13 +18,13 @@ export function RootsMark() {
     >
       <svg
         className="logo-mark pointer-events-none absolute inset-0 size-full overflow-visible"
-        viewBox={ROOTS_MARK_VIEWBOX}
+        viewBox={PULSE_MARK_VIEWBOX}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
         data-state="animate"
       >
-        {rootsStrokes.map((stroke, index) => (
+        {pulseStrokes.map((stroke, index) => (
           <path
             key={stroke.id}
             d={stroke.d}

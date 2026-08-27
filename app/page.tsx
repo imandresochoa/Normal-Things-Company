@@ -17,7 +17,7 @@ Yet for the first time, humans will also be able to delegate thinking itself. Fa
 There is a bright future ahead, waiting to be built. Normal Things Company was born to take care of the software we use every day, with humility and a deep love for the craft.
 
 We are currently creating our `}
-        <SquiggleLink href="/roots">design foundations</SquiggleLink>
+        <SquiggleLink href="/pulse">design foundations</SquiggleLink>
         {`. The pillars that will nurture our ecosystem.`}
       </p>
       <CompanyLogo />
