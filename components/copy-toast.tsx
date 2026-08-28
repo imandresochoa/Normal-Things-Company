@@ -289,7 +289,7 @@ export function CopyToast() {
       style={anchorStyle}
     >
       <div
-        className="copy-toast relative whitespace-nowrap rounded-[4px] bg-foreground px-2 py-1 font-[family-name:var(--font-letter)] text-[14px] leading-[1.4] text-background"
+        className="copy-toast relative whitespace-nowrap rounded-[4px] bg-foreground px-[8px] py-[4px] font-[family-name:var(--font-letter)] text-[14px] leading-[1.4] text-background"
         data-open={view.open ? "" : undefined}
         role="status"
         aria-live="polite"
