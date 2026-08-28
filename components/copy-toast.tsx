@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import {
   useCallback,
   useEffect,
@@ -11,6 +12,9 @@ import {
 const HOLD_MS = 1200;
 const TOAST_FADE_MS = 200;
 const REDUCE_TOAST_MS = 160;
+const EASE_OUT = [0.23, 1, 0.32, 1] as const;
+const CLOSED_SCALE = 0.97;
+const OPEN_SCALE = 1;
 const COPY_DEBOUNCE_MS = 100;
 const VIEWPORT_PAD = 8;
 const TOAST_GAP = 8;
@@ -106,30 +110,17 @@ function toastAnchor(selection: Selection): { left: number; top: number; place: 
 
 export function CopyToast() {
   const [view, setView] = useState<ToastView>({ kind: "hidden" });
-  const [reduceMotion, setReduceMotion] = useState(false);
+  const reduceMotion = useReducedMotion() === true;
 
   const viewRef = useRef<ToastView>(view);
   const lastCopiedText = useRef("");
   const lastCopiedAt = useRef(0);
   const holdTimer = useRef<number | null>(null);
   const exitTimer = useRef<number | null>(null);
-  const openFrame = useRef<number | null>(null);
 
   useEffect(() => {
     viewRef.current = view;
   }, [view]);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => {
-      setReduceMotion(media.matches);
-    };
-    sync();
-    media.addEventListener("change", sync);
-    return () => {
-      media.removeEventListener("change", sync);
-    };
-  }, []);
 
   const clearTimer = (ref: { current: number | null }) => {
     if (ref.current !== null) {
@@ -138,18 +129,10 @@ export function CopyToast() {
     }
   };
 
-  const clearFrame = () => {
-    if (openFrame.current !== null) {
-      window.cancelAnimationFrame(openFrame.current);
-      openFrame.current = null;
-    }
-  };
-
   useEffect(() => {
     return () => {
       clearTimer(holdTimer);
       clearTimer(exitTimer);
-      clearFrame();
     };
   }, []);
 
@@ -179,35 +162,12 @@ export function CopyToast() {
   const showToast = useCallback(
     (anchor: { left: number; top: number; place: ToastPlace }) => {
       clearTimer(exitTimer);
-      clearFrame();
-
-      const current = viewRef.current;
-
-      if (current.kind === "visible" && current.open) {
-        setView({
-          kind: "visible",
-          ...anchor,
-          open: true,
-        });
-        scheduleExit();
-        return;
-      }
 
       setView({
         kind: "visible",
         ...anchor,
-        open: false,
+        open: true,
       });
-
-      openFrame.current = window.requestAnimationFrame(() => {
-        openFrame.current = window.requestAnimationFrame(() => {
-          openFrame.current = null;
-          setView((next) =>
-            next.kind === "visible" ? { ...next, open: true } : next,
-          );
-        });
-      });
-
       scheduleExit();
     },
     [scheduleExit],
@@ -283,19 +243,37 @@ export function CopyToast() {
     "--copy-toast-y": view.place === "above" ? "-100%" : "0%",
   };
 
+  const closed = {
+    opacity: 0,
+    scale: reduceMotion ? OPEN_SCALE : CLOSED_SCALE,
+  };
+  const opened = {
+    opacity: 1,
+    scale: OPEN_SCALE,
+  };
+
   return (
     <div
       className="copy-toast-anchor pointer-events-none fixed z-50 select-none"
       style={anchorStyle}
     >
-      <div
+      <motion.div
         className="copy-toast relative whitespace-nowrap rounded-[4px] bg-foreground px-2 py-1 font-[family-name:var(--font-letter)] text-[14px] leading-[1.4] text-background"
+        initial={closed}
+        animate={view.open ? opened : closed}
+        transition={
+          reduceMotion
+            ? { duration: REDUCE_TOAST_MS / 1000, ease: EASE_OUT }
+            : view.open
+              ? { type: "spring", visualDuration: 0.5, bounce: 0.1 }
+              : { duration: TOAST_FADE_MS / 1000, ease: EASE_OUT }
+        }
         data-open={view.open ? "" : undefined}
         role="status"
         aria-live="polite"
       >
         Copied to clipboard!
-      </div>
+      </motion.div>
     </div>
   );
 }
