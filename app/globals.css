@@ -220,6 +220,6 @@ body {
   }
 
   .copy-toast {
-    transition: opacity 160ms ease;
+    transform: none;
   }
 }

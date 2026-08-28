@@ -10,11 +10,7 @@ import {
 } from "react";
 
 const HOLD_MS = 1200;
-const TOAST_FADE_MS = 200;
-const REDUCE_TOAST_MS = 160;
-const EASE_OUT = [0.23, 1, 0.32, 1] as const;
-const CLOSED_SCALE = 0.97;
-const OPEN_SCALE = 1;
+const TOAST_SPRING = { type: "spring", stiffness: 300, damping: 35 } as const;
 const COPY_DEBOUNCE_MS = 100;
 const VIEWPORT_PAD = 8;
 const TOAST_GAP = 8;
@@ -108,6 +104,17 @@ function toastAnchor(selection: Selection): { left: number; top: number; place: 
   return { left, top, place };
 }
 
+function closedFromPlace(place: ToastPlace) {
+  return {
+    opacity: 0,
+    scale: 0,
+    y: place === "above" ? 15 : -15,
+  };
+}
+
+const OPEN_POSE = { opacity: 1, scale: 1, x: 0, y: 0 };
+const HIDDEN_FLAT = { opacity: 0, scale: 1, x: 0, y: 0 };
+
 export function CopyToast() {
   const [view, setView] = useState<ToastView>({ kind: "hidden" });
   const reduceMotion = useReducedMotion() === true;
@@ -116,7 +123,6 @@ export function CopyToast() {
   const lastCopiedText = useRef("");
   const lastCopiedAt = useRef(0);
   const holdTimer = useRef<number | null>(null);
-  const exitTimer = useRef<number | null>(null);
 
   useEffect(() => {
     viewRef.current = view;
@@ -132,13 +138,11 @@ export function CopyToast() {
   useEffect(() => {
     return () => {
       clearTimer(holdTimer);
-      clearTimer(exitTimer);
     };
   }, []);
 
   const hideToast = useCallback(() => {
     clearTimer(holdTimer);
-    clearTimer(exitTimer);
     setView({ kind: "hidden" });
   }, []);
 
@@ -150,19 +154,17 @@ export function CopyToast() {
         return;
       }
 
-      setView({ ...current, open: false });
-
-      const exitMs = reduceMotion ? REDUCE_TOAST_MS : TOAST_FADE_MS;
-      exitTimer.current = window.setTimeout(() => {
+      if (reduceMotion) {
         hideToast();
-      }, exitMs);
+        return;
+      }
+
+      setView({ ...current, open: false });
     }, HOLD_MS);
   }, [hideToast, reduceMotion]);
 
   const showToast = useCallback(
     (anchor: { left: number; top: number; place: ToastPlace }) => {
-      clearTimer(exitTimer);
-
       setView({
         kind: "visible",
         ...anchor,
@@ -243,14 +245,8 @@ export function CopyToast() {
     "--copy-toast-y": view.place === "above" ? "-100%" : "0%",
   };
 
-  const closed = {
-    opacity: 0,
-    scale: reduceMotion ? OPEN_SCALE : CLOSED_SCALE,
-  };
-  const opened = {
-    opacity: 1,
-    scale: OPEN_SCALE,
-  };
+  const closed = reduceMotion ? HIDDEN_FLAT : closedFromPlace(view.place);
+  const rest = OPEN_POSE;
 
   return (
     <div
@@ -258,16 +254,16 @@ export function CopyToast() {
       style={anchorStyle}
     >
       <motion.div
-        className="copy-toast relative whitespace-nowrap rounded-[4px] bg-foreground px-2 py-1 font-[family-name:var(--font-letter)] text-[14px] leading-[1.4] text-background"
+        className="copy-toast relative whitespace-nowrap rounded-[8px] bg-foreground px-2 py-1 font-[family-name:var(--font-letter)] text-[14px] leading-[1.4] text-background"
         initial={closed}
-        animate={view.open ? opened : closed}
-        transition={
-          reduceMotion
-            ? { duration: REDUCE_TOAST_MS / 1000, ease: EASE_OUT }
-            : view.open
-              ? { type: "spring", visualDuration: 0.5, bounce: 0.1 }
-              : { duration: TOAST_FADE_MS / 1000, ease: EASE_OUT }
-        }
+        animate={view.open ? rest : closed}
+        transition={reduceMotion ? { duration: 0 } : TOAST_SPRING}
+        onAnimationComplete={() => {
+          const current = viewRef.current;
+          if (current.kind === "visible" && !current.open) {
+            hideToast();
+          }
+        }}
         data-open={view.open ? "" : undefined}
         role="status"
         aria-live="polite"
