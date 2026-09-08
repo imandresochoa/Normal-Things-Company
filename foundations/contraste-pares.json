@@ -1,0 +1,306 @@
+[
+  {
+    "id": "CLARO / text-primary sobre bg-canvas",
+    "fg": "#262524",
+    "bg": "#FBFAF9",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 400
+  },
+  {
+    "id": "CLARO / text-secondary sobre bg-canvas",
+    "fg": "#545250",
+    "bg": "#FBFAF9",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 400
+  },
+  {
+    "id": "CLARO / text-tertiary sobre bg-canvas",
+    "fg": "#63605D",
+    "bg": "#FBFAF9",
+    "tipo": "texto",
+    "size": 12,
+    "weight": 400
+  },
+  {
+    "id": "CLARO / text-secondary sobre bg-elevated",
+    "fg": "#545250",
+    "bg": "#F3F1F0",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 400
+  },
+  {
+    "id": "CLARO / border-hairline (decorativo)",
+    "fg": "#DAD7D4",
+    "bg": "#FBFAF9",
+    "tipo": "decorativo"
+  },
+  {
+    "id": "CLARO / border-control",
+    "fg": "#928E8B",
+    "bg": "#FBFAF9",
+    "tipo": "ui"
+  },
+  {
+    "id": "CLARO / border-control-hover",
+    "fg": "#817E7A",
+    "bg": "#FBFAF9",
+    "tipo": "ui"
+  },
+  {
+    "id": "CLARO / fill-neutral con texto papel",
+    "fg": "#FBFAF9",
+    "bg": "#63605D",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 600
+  },
+  {
+    "id": "CLARO / text-link (blue-900)",
+    "fg": "#1531C5",
+    "bg": "#FBFAF9",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 400
+  },
+  {
+    "id": "CLARO / fill-accent + texto (blue-700)",
+    "fg": "#FFFFFF",
+    "bg": "#2A56F7",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 600
+  },
+  {
+    "id": "CLARO / icon-accent (blue-700) sobre lienzo",
+    "fg": "#2A56F7",
+    "bg": "#FBFAF9",
+    "tipo": "ui"
+  },
+  {
+    "id": "CLARO / focus-ring (blue-700) sobre lienzo",
+    "fg": "#2A56F7",
+    "bg": "#FBFAF9",
+    "tipo": "ui"
+  },
+  {
+    "id": "CLARO / aviso: text-link sobre blue-200",
+    "fg": "#091C84",
+    "bg": "#E8F0FF",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 400
+  },
+  {
+    "id": "CLARO / aviso: borde blue-700 sobre blue-200",
+    "fg": "#2A56F7",
+    "bg": "#E8F0FF",
+    "tipo": "ui"
+  },
+  {
+    "id": "CLARO / text-expressive (orange-900)",
+    "fg": "#9F1600",
+    "bg": "#FBFAF9",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 400
+  },
+  {
+    "id": "CLARO / fill-expressive-700 + texto pequeno",
+    "fg": "#FFFFFF",
+    "bg": "#F7452A",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 600
+  },
+  {
+    "id": "CLARO / fill-expressive-700 + texto grande",
+    "fg": "#FFFFFF",
+    "bg": "#F7452A",
+    "tipo": "texto",
+    "size": 24,
+    "weight": 700
+  },
+  {
+    "id": "CLARO / fill-expressive-800 + texto pequeno",
+    "fg": "#FFFFFF",
+    "bg": "#C91E00",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 600
+  },
+  {
+    "id": "CLARO / icon-expressive (orange-700) sobre lienzo",
+    "fg": "#F7452A",
+    "bg": "#FBFAF9",
+    "tipo": "ui"
+  },
+  {
+    "id": "CLARO / aviso: borde orange-700 sobre orange-200",
+    "fg": "#F7452A",
+    "bg": "#FFECE8",
+    "tipo": "ui"
+  },
+  {
+    "id": "CLARO / aviso: texto orange-1000 sobre orange-200",
+    "fg": "#670A00",
+    "bg": "#FFECE8",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / text-primary sobre bg-canvas",
+    "fg": "#FBFAF9",
+    "bg": "#11100F",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / text-secondary sobre bg-canvas",
+    "fg": "#A9A7A5",
+    "bg": "#11100F",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / text-tertiary sobre bg-canvas",
+    "fg": "#94928F",
+    "bg": "#11100F",
+    "tipo": "texto",
+    "size": 12,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / text-secondary sobre bg-elevated",
+    "fg": "#A9A7A5",
+    "bg": "#1B1918",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / border-hairline (decorativo)",
+    "fg": "#32302E",
+    "bg": "#11100F",
+    "tipo": "decorativo"
+  },
+  {
+    "id": "OSCURO / border-control",
+    "fg": "#656360",
+    "bg": "#11100F",
+    "tipo": "ui"
+  },
+  {
+    "id": "OSCURO / border-control-hover",
+    "fg": "#75726F",
+    "bg": "#11100F",
+    "tipo": "ui"
+  },
+  {
+    "id": "OSCURO / fill-neutral con texto papel",
+    "fg": "#FBFAF9",
+    "bg": "#94928F",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 600
+  },
+  {
+    "id": "OSCURO / text-link (blue-900)",
+    "fg": "#80A6FF",
+    "bg": "#11100F",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / fill-accent + texto (blue-700)",
+    "fg": "#FFFFFF",
+    "bg": "#2A56F7",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 600
+  },
+  {
+    "id": "OSCURO / icon-accent (blue-700) sobre lienzo",
+    "fg": "#2A56F7",
+    "bg": "#11100F",
+    "tipo": "ui"
+  },
+  {
+    "id": "OSCURO / focus-ring (blue-700) sobre lienzo",
+    "fg": "#2A56F7",
+    "bg": "#11100F",
+    "tipo": "ui"
+  },
+  {
+    "id": "OSCURO / aviso: text-link sobre blue-200",
+    "fg": "#D1E0FF",
+    "bg": "#131E38",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / aviso: borde blue-700 sobre blue-200",
+    "fg": "#2A56F7",
+    "bg": "#131E38",
+    "tipo": "ui"
+  },
+  {
+    "id": "OSCURO / text-expressive (orange-900)",
+    "fg": "#FF9683",
+    "bg": "#11100F",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / fill-expressive-700 + texto pequeno",
+    "fg": "#11100F",
+    "bg": "#F7452A",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 600
+  },
+  {
+    "id": "OSCURO / fill-expressive-700 + texto grande",
+    "fg": "#11100F",
+    "bg": "#F7452A",
+    "tipo": "texto",
+    "size": 24,
+    "weight": 700
+  },
+  {
+    "id": "OSCURO / fill-expressive-800 + texto pequeno",
+    "fg": "#11100F",
+    "bg": "#FF6C54",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 600
+  },
+  {
+    "id": "OSCURO / icon-expressive (orange-700) sobre lienzo",
+    "fg": "#F7452A",
+    "bg": "#11100F",
+    "tipo": "ui"
+  },
+  {
+    "id": "OSCURO / aviso: borde orange-700 sobre orange-200",
+    "fg": "#F7452A",
+    "bg": "#341711",
+    "tipo": "ui"
+  },
+  {
+    "id": "OSCURO / aviso: texto orange-1000 sobre orange-200",
+    "fg": "#FFD9D1",
+    "bg": "#341711",
+    "tipo": "texto",
+    "size": 15,
+    "weight": 400
+  }
+]
