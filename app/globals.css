@@ -8,7 +8,14 @@
   --font-letter: "Satoshi", sans-serif;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --underline-trace-ms: 700ms;
+  --root-bg: #000000;
+  --root-text: #f4f2ef;
+  --root-muted: #737373;
+  --root-idle: #8a8a8a;
+  --root-line: #2a2a2a;
+  --root-accent: #f7452a;
 }
 
 @theme inline {
@@ -184,6 +191,214 @@ body {
   }
 }
 
+html.root-docs-active,
+html.root-docs-active body {
+  background: var(--root-bg);
+  color: var(--root-text);
+}
+
+.root-docs {
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background: var(--root-bg);
+  color: var(--root-text);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.root-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.root-mobile-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 16px;
+  background: var(--root-bg);
+  border-bottom: 1px solid var(--root-line);
+}
+
+.root-menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--root-text);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 100ms var(--ease-out);
+}
+
+.root-menu-button:active {
+  transform: scale(0.97);
+}
+
+.root-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgb(0 0 0 / 0.5);
+  border: 0;
+  cursor: pointer;
+}
+
+.root-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  display: flex;
+  width: min(280px, 86vw);
+  height: 100dvh;
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--root-bg);
+  padding: 28px 24px 40px;
+  pointer-events: none;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition:
+    transform 250ms var(--ease-drawer),
+    visibility 250ms var(--ease-drawer);
+}
+
+.root-sidebar[data-open="true"] {
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.root-main {
+  flex: 1;
+  min-width: 0;
+  padding: 28px 20px 64px;
+}
+
+.root-page-title {
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.root-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--root-text);
+  text-decoration: none;
+  outline-offset: 4px;
+}
+
+.root-mark:focus-visible {
+  outline: 2px solid var(--root-accent);
+}
+
+.root-mark-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--root-accent);
+}
+
+.root-mark-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid rgb(255 255 255 / 0.72);
+  border-radius: 999px;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+.root-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 36px;
+}
+
+.root-nav-title {
+  margin: 0 0 10px;
+  color: var(--root-muted);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.root-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.root-nav-link {
+  display: inline-flex;
+  width: fit-content;
+  color: var(--root-idle);
+  font-size: 14px;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  outline-offset: 3px;
+  transition: color 160ms ease;
+}
+
+.root-nav-link:hover {
+  color: var(--root-text);
+}
+
+.root-nav-link:focus-visible {
+  outline: 2px solid var(--root-accent);
+}
+
+.root-nav-link[data-active="true"] {
+  color: var(--root-text);
+  border-bottom-color: var(--root-accent);
+}
+
+@media (min-width: 768px) {
+  .root-shell {
+    flex-direction: row;
+  }
+
+  .root-mobile-header,
+  .root-overlay {
+    display: none;
+  }
+
+  .root-sidebar {
+    position: sticky;
+    z-index: 1;
+    width: 260px;
+    pointer-events: auto;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+
+  .root-main {
+    padding: 48px 64px 80px;
+  }
+
+  .root-page-title {
+    font-size: 32px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .logo-mark[data-state="animate"] [data-logo-stroke] {
     animation: none;
@@ -221,5 +436,11 @@ body {
 
   .copy-toast {
     transform: none;
+  }
+
+  .root-sidebar,
+  .root-menu-button,
+  .root-nav-link {
+    transition: none;
   }
 }
