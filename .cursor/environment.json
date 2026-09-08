@@ -1,0 +1,11 @@
+{
+  "name": "Normal Things Company",
+  "install": "npm ci",
+  "start": "npm run dev",
+  "ports": [
+    {
+      "name": "next-dev",
+      "port": 43123
+    }
+  ]
+}
