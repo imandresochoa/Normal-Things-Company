@@ -8,6 +8,7 @@ import {
   contrastRatio,
   contrastRequirement,
   familySteps,
+  primitiveStep,
   semanticResolved,
   type ColorMode,
   type PrimitiveFamily,
@@ -34,6 +35,32 @@ const FAMILY_COPY: Record<
     body: "The same Neutral ink with a transparent channel. Use it for hover, pressed, hairlines, and overlays that must work on any surface.",
   },
 };
+
+const SEED_SWATCHES: {
+  family: PrimitiveFamily;
+  step: "100" | "700";
+  label: string;
+  caption: string;
+}[] = [
+  {
+    family: "neutral",
+    step: "100",
+    label: "Neutral",
+    caption: "100 light / 1000 dark",
+  },
+  {
+    family: "blue-electric",
+    step: "700",
+    label: "Blue Electric",
+    caption: "700, both modes",
+  },
+  {
+    family: "orange-electric",
+    step: "700",
+    label: "Orange Electric",
+    caption: "700, both modes",
+  },
+];
 
 const SEMANTIC_COPY: Record<string, string> = {
   Backgrounds: "Paper, chrome, fills, and tinted surfaces. Dark mode inverts Neutral. Blue and Orange fills keep the 700 seed.",
@@ -122,21 +149,18 @@ export function ColorsPage() {
           in OKLCH. Do not pick a new hex for a product screen.
         </p>
         <div className="root-swatch-row">
-          <div className="root-swatch">
-            <Chip hex="#FBFAF9" />
-            <p className="root-swatch-label">Neutral</p>
-            <p className="root-swatch-caption">#FBFAF9 at 100 light / 1000 dark</p>
-          </div>
-          <div className="root-swatch">
-            <Chip hex="#2A56F7" />
-            <p className="root-swatch-label">Blue Electric</p>
-            <p className="root-swatch-caption">#2A56F7 at 700, both modes</p>
-          </div>
-          <div className="root-swatch">
-            <Chip hex="#F7452A" />
-            <p className="root-swatch-label">Orange Electric</p>
-            <p className="root-swatch-caption">#F7452A at 700, both modes</p>
-          </div>
+          {SEED_SWATCHES.map((seed) => {
+            const hex = primitiveStep(seed.family, seed.step).$value.light;
+            return (
+              <div key={seed.family} className="root-swatch">
+                <Chip hex={hex} />
+                <p className="root-swatch-label">{seed.label}</p>
+                <p className="root-swatch-caption">
+                  {hex} at {seed.caption}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </section>
 

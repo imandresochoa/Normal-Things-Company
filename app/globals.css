@@ -16,6 +16,7 @@
   --root-idle: #8a8a8a;
   --root-line: #2a2a2a;
   --root-accent: #f7452a;
+  --root-body: #c8c4c0;
 }
 
 @theme inline {
@@ -371,7 +372,7 @@ html.root-docs-active body {
 }
 
 .root-doc {
-  max-width: 45rem;
+  max-width: 720px;
 }
 
 .root-doc-header h1,
@@ -393,7 +394,7 @@ html.root-docs-active body {
 
 .root-doc-lede {
   margin: 16px 0 0;
-  color: #c8c4c0;
+  color: var(--root-body);
   font-size: 16px;
   line-height: 1.5;
 }
@@ -417,7 +418,7 @@ html.root-docs-active body {
 
 .root-doc p {
   margin: 0 0 12px;
-  color: #c8c4c0;
+  color: var(--root-body);
   line-height: 1.55;
 }
 
@@ -430,7 +431,7 @@ html.root-docs-active body {
 .root-doc-list {
   margin: 0 0 16px;
   padding-left: 1.2em;
-  color: #c8c4c0;
+  color: var(--root-body);
   line-height: 1.55;
 }
 
@@ -616,7 +617,7 @@ html.root-docs-active body {
 }
 
 .root-table td {
-  color: #c8c4c0;
+  color: var(--root-body);
 }
 
 .root-table tr:last-child td {
