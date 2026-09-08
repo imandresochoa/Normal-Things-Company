@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import { ColorsPage } from "@/components/root/colors-page";
+import { TypographyPage } from "@/components/root/typography-page";
 import { getRootNavItem, ROOT_NAV_ITEMS } from "@/lib/root-nav";
 
 type RootSlugPageProps = {
@@ -29,6 +31,14 @@ export default async function RootSlugPage({ params }: RootSlugPageProps) {
 
   if (!item) {
     notFound();
+  }
+
+  if (slug === "colors") {
+    return <ColorsPage />;
+  }
+
+  if (slug === "typography") {
+    return <TypographyPage />;
   }
 
   return (
