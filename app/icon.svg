@@ -1,6 +1,13 @@
 <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="80" height="160" fill="#F4F2EF"/>
-  <rect x="80" width="26.6667" height="160" fill="#2A56F7"/>
-  <rect x="106.667" width="26.6667" height="160" fill="#F7452A"/>
-  <rect x="133.333" width="26.6667" height="160" fill="#1A1A1A"/>
+  <g clip-path="url(#seed-mark-clip)">
+    <rect width="80" height="160" fill="#FBFAF9"/>
+    <rect x="80" width="26.6667" height="160" fill="#2A56F7"/>
+    <rect x="106.667" width="26.6667" height="160" fill="#F7452A"/>
+    <rect x="133.333" width="26.6667" height="160" fill="#0D0D0D"/>
+  </g>
+  <defs>
+    <clipPath id="seed-mark-clip">
+      <rect width="160" height="160" rx="40" fill="white"/>
+    </clipPath>
+  </defs>
 </svg>

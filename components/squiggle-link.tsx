@@ -1,8 +1,6 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-
-const UNDERLINE_PATH =
-  "M0.5 0.5C31.4949 2.7718 178.5 10.4995 178.5 12.4995C178.5 13.9995 34.3121 6.49995 5.5 6.50001";
+import { UNDERLINE_PATH } from "@/lib/underline-path";
 
 type SquiggleLinkProps = {
   href: ComponentProps<typeof Link>["href"];
