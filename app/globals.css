@@ -6,6 +6,7 @@
   --text-primary: #262524;
   --text-secondary: #545250;
   --text-tertiary: #63605d;
+  --text-disabled: #736f6c;
   --border-hairline: #dad7d4;
   --bg-accent: #2a56f7;
   --bg-expressive: #f7452a;
@@ -24,6 +25,7 @@
   --root-line: var(--border-hairline);
   --root-accent: var(--bg-expressive);
   --root-body: var(--text-secondary);
+  --root-disabled: var(--text-disabled);
 }
 
 @theme inline {
@@ -368,6 +370,20 @@ body {
 .root-nav-link[data-active="true"] {
   color: var(--root-text);
   border-bottom-color: var(--root-accent);
+}
+
+.root-nav-disabled {
+  color: var(--root-disabled);
+  position: relative;
+  display: inline-flex;
+  cursor: default;
+  pointer-events: none;
+}
+
+.root-nav-disabled [data-underline-stroke] {
+  stroke: var(--root-disabled);
+  stroke-dashoffset: 0;
+  transition: none;
 }
 
 .root-doc {
