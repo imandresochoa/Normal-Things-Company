@@ -32,7 +32,7 @@
   --root-line: var(--border-hairline);
   --root-accent: var(--bg-expressive);
   --root-body: var(--text-secondary);
-  --root-title: var(--text-primary);
+  --root-title: #928e8b;
   --root-disabled: #dad7d4;
 }
 

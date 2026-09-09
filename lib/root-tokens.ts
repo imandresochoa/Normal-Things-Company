@@ -450,7 +450,7 @@ export const WEB_TYPE_STYLES = [
     lineHeight: 22,
     weight: 450,
     color: "Neutral 1000",
-    use: "Page titles, section titles, and sidebar group titles.",
+    use: "Page titles and section titles.",
   },
   {
     token: "ui",
