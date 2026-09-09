@@ -38,20 +38,31 @@ function parseRootNavLabels(source) {
   return labels;
 }
 
-function parseIntroductionSlugs(source) {
-  const introMatch = source.match(
-    /title:\s*"Introduction"[\s\S]*?items:\s*\[([\s\S]*?)\],\s*\n\s*\}/,
+function parseSectionSlugs(source, sectionTitle) {
+  const escaped = sectionTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const sectionMatch = source.match(
+    new RegExp(
+      `title:\\s*"${escaped}"[\\s\\S]*?items:\\s*\\[([\\s\\S]*?)\\],\\s*\\n\\s*\\}`,
+    ),
   );
 
-  if (!introMatch) {
+  if (!sectionMatch) {
     return [];
   }
 
   const slugs = [];
-  for (const match of introMatch[1].matchAll(/slug:\s*"([^"]+)"/g)) {
+  for (const match of sectionMatch[1].matchAll(/slug:\s*"([^"]+)"/g)) {
     slugs.push(match[1]);
   }
   return slugs;
+}
+
+function parseIntroductionSlugs(source) {
+  return parseSectionSlugs(source, "Introduction");
+}
+
+function parseFoundationsSlugs(source) {
+  return parseSectionSlugs(source, "Foundations");
 }
 
 function callIsRootNavItemReady(slug) {
@@ -94,14 +105,25 @@ test("ROOT_NAV must not include Styling label", () => {
   );
 });
 
-test("Introduction section keeps purpose, principles, and pulse", () => {
+test("Introduction section keeps only purpose and principles", () => {
   const source = readSource(rootNavPath);
   const introSlugs = parseIntroductionSlugs(source);
 
   assert.deepEqual(
     introSlugs,
-    ["purpose", "principles", "pulse"],
-    'Introduction section must include Purpose, Principles, and Pulse in that order (slugs "purpose", "principles", "pulse")',
+    ["purpose", "principles"],
+    'Introduction section must include only Purpose and Principles in that order (slugs "purpose", "principles")',
+  );
+});
+
+test("Foundations section orders colors, pulse, typography, and iconography", () => {
+  const source = readSource(rootNavPath);
+  const foundationsSlugs = parseFoundationsSlugs(source);
+
+  assert.deepEqual(
+    foundationsSlugs,
+    ["colors", "pulse", "typography", "iconography"],
+    'Foundations section must include Colors, Pulse, Typography, and Iconography in that order (slugs "colors", "pulse", "typography", "iconography")',
   );
 });
 

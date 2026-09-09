@@ -1047,7 +1047,8 @@ body {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .root-pulse .root-swatch-row:not(.root-pulse-diverging) {
+  .root-pulse .root-swatch-row:not(.root-pulse-diverging),
+  .root-swatch-row-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
