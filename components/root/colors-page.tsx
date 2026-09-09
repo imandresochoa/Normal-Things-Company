@@ -132,7 +132,6 @@ export function ColorsPage() {
   return (
     <article className="root-doc">
       <header className="root-doc-header">
-        <p className="root-doc-kicker">Foundations</p>
         <h1>Colors</h1>
         <p className="root-doc-lede">
           Color in Root is a small, locked set. Three seeds define the

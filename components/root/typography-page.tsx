@@ -24,7 +24,6 @@ export function TypographyPage() {
   return (
     <article className="root-doc">
       <header className="root-doc-header">
-        <p className="root-doc-kicker">Foundations</p>
         <h1>Typography</h1>
         <p className="root-doc-lede">
           Root does not invent one scale for every platform. iOS aliases
@@ -301,10 +300,10 @@ export function TypographyPage() {
       <section className="root-doc-section">
         <h2>Web weight band</h2>
         <p>
-          Inter uses 400 for body, UI, and captions. Headings use 450.
-          That is fifty points above body. Do not use 500 or 700 on the
+          Inter uses 400 for body, UI, and captions. Headings use 500.
+          That is one hundred points above body. Do not use 700 on the
           web. Rank comes from Neutral 1000 against Neutral 900, then
-          this small weight step. Size is not how rank is made.
+          this weight step. Size is not how rank is made.
         </p>
         <div className="root-table-wrap">
           <table className="root-table">
@@ -342,7 +341,7 @@ export function TypographyPage() {
         <h2>Web composite styles</h2>
         <p>
           Three sizes. Body and heading share 17/22. Heading is Neutral
-          1000 at weight 450. Body, UI, and caption are Neutral 900 at
+          1000 at weight 500. Body, UI, and caption are Neutral 900 at
           weight 400. The home letter uses <code>body</code> (
           <code>.ntc-web-body</code>).
         </p>
