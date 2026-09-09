@@ -47,7 +47,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-canvas: #11100f;
+    --bg-canvas: #090807;
     --text-primary: #fbfaf9;
     --text-secondary: #a9a7a5;
     --text-tertiary: #94928f;
@@ -57,7 +57,7 @@
     --root-title: #656360;
     --root-disabled: #32302e;
     --chip-checker-a: #242221;
-    --chip-checker-b: #11100f;
+    --chip-checker-b: #090807;
   }
 }
 
