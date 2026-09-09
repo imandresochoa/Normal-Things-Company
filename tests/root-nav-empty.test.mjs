@@ -17,26 +17,6 @@ const rootMarkPath = path.join(root, "components", "root", "root-mark.tsx");
 
 const READY_SLUGS = ["colors", "typography"];
 
-const EMPTY_SLUGS = [
-  "purpose",
-  "principles",
-  "styling",
-  "iconography",
-  "button",
-  "input",
-  "select",
-  "textarea",
-  "checkbox",
-  "radio",
-  "switch",
-  "slider",
-  "command-menu",
-  "dialog",
-  "combobox",
-  "tooltip",
-  "sidebar",
-];
-
 function readSource(filePath) {
   return fs.readFileSync(filePath, "utf8");
 }
