@@ -16,7 +16,7 @@
   --type-body-size: 17px;
   --type-body-leading: 22px;
   --type-body-weight: 400;
-  --type-heading-weight: 450;
+  --type-heading-weight: 500;
   --type-ui-size: 15px;
   --type-ui-leading: 20px;
   --type-caption-size: 12px;
@@ -32,7 +32,7 @@
   --root-line: var(--border-hairline);
   --root-accent: var(--bg-expressive);
   --root-body: var(--text-secondary);
-  --root-title: var(--text-primary);
+  --root-title: #928e8b;
   --root-disabled: #dad7d4;
 }
 

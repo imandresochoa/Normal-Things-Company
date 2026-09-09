@@ -64,7 +64,7 @@ const SEED_SWATCHES: {
 
 const SEMANTIC_COPY: Record<string, string> = {
   Backgrounds: "Paper, chrome, fills, and tinted surfaces. Dark mode inverts Neutral. Blue and Orange fills keep the 700 seed.",
-  "Text and icons": "Primary, secondary, and tertiary ink. Group titles use Neutral 1000. Disabled controls use Neutral 400. Inverse ink on filled controls, and the two chromatic marks.",
+  "Text and icons": "Primary, secondary, and tertiary ink. Group titles use Neutral 500. Disabled controls use Neutral 400. Inverse ink on filled controls, and the two chromatic marks.",
   Borders: "Hairlines, control borders, and focus rings.",
 };
 
@@ -132,7 +132,6 @@ export function ColorsPage() {
   return (
     <article className="root-doc">
       <header className="root-doc-header">
-        <p className="root-doc-kicker">Foundations</p>
         <h1>Colors</h1>
         <p className="root-doc-lede">
           Color in Root is a small, locked set. Three seeds define the
@@ -292,14 +291,14 @@ export function ColorsPage() {
         <h2>Text rank</h2>
         <p>
           Ink rank is primary, then secondary, then tertiary, then Neutral
-          400. Group titles use Neutral 1000. Body uses Neutral 900.
-          Disabled controls use Neutral 400. Active ink stays{" "}
+          500, then Neutral 400. Group titles use Neutral 500. Body uses
+          Neutral 900. Disabled controls use Neutral 400. Active ink stays{" "}
           <code>text-primary</code> or <code>text-secondary</code>.
         </p>
         <ul className="root-doc-list">
           <li>
-            Titles use Neutral 1000. They stay above body and disabled
-            rows.
+            Group titles recede with Neutral 500. They stay above
+            disabled rows.
           </li>
           <li>
             Disabled controls are inactive UI. Neutral 400 is quieter

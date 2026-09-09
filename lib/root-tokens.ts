@@ -428,8 +428,8 @@ export const WEB_TYPE_WEIGHTS = [
   },
   {
     token: "weight-heading",
-    value: 450,
-    use: "Titles and headings only. Fifty points above body.",
+    value: 500,
+    use: "Titles and headings only. One hundred points above body.",
   },
 ] as const;
 
@@ -448,9 +448,9 @@ export const WEB_TYPE_STYLES = [
     family: "sans" as const,
     size: 17,
     lineHeight: 22,
-    weight: 450,
+    weight: 500,
     color: "Neutral 1000",
-    use: "Page titles, section titles, and sidebar group titles.",
+    use: "Page titles and section titles.",
   },
   {
     token: "ui",
