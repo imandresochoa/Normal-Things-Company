@@ -264,6 +264,7 @@ body {
   height: 100dvh;
   flex-direction: column;
   overflow-y: auto;
+  scrollbar-width: none;
   background: var(--root-bg);
   padding: 40px;
   pointer-events: none;
@@ -272,6 +273,10 @@ body {
   transition:
     transform 250ms var(--ease-drawer),
     visibility 250ms var(--ease-drawer);
+}
+
+.root-sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .root-sidebar[data-open="true"] {
