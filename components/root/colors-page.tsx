@@ -398,8 +398,8 @@ export function ColorsPage() {
             first steps that would need it.
           </li>
           <li>
-            Three families are not a chart palette. Wait for the first data
-            app before you add more hues.
+            The Chart family lives on Pulse. Those inks are for plots and
+            illustrations. They are not for layout.
           </li>
         </ul>
         <p className="root-doc-note">
