@@ -2,7 +2,7 @@ import { CompanyLogo } from "@/components/company-logo";
 import { SquiggleLink } from "@/components/squiggle-link";
 
 const letterClassName =
-  "ntc-web-body w-full max-w-[620px] break-words whitespace-pre-wrap text-foreground";
+  "ntc-web-body w-full max-w-[620px] break-words whitespace-pre-wrap";
 
 export default function Home() {
   return (

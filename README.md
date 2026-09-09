@@ -15,8 +15,8 @@ Open [http://127.0.0.1:43123](http://127.0.0.1:43123).
 
 - Next.js and TypeScript
 - Tailwind CSS
-- Satoshi from [Fontshare](https://www.fontshare.com/fonts/satoshi)
+- Inter from [Google Fonts](https://fonts.google.com/specimen/Inter) via `next/font`
 - Logo vectors exported from Figma
 
-Desktop: centered letter, 620px text column, 18px type.  
+Desktop: centered letter, 620px text column, 17px type.  
 Mobile: same type and logo, content starts from the top with 16px side padding.
