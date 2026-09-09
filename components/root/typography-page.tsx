@@ -27,10 +27,10 @@ export function TypographyPage() {
         <p className="root-doc-kicker">Foundations</p>
         <h1>Typography</h1>
         <p className="root-doc-lede">
-          Root does not invent a type scale. It aliases one hierarchy onto
-          two platforms. iOS uses the system text styles. Web uses the same
-          names on Satoshi. Personality comes from family, a narrow weight
-          band, tracking, and color.
+          Root does not invent one scale for every platform. iOS aliases
+          the system text styles so Dynamic Type still works. Web uses
+          three Inter sizes. Personality comes from family, a narrow
+          weight band, and color.
         </p>
       </header>
 
@@ -49,8 +49,9 @@ export function TypographyPage() {
           the four decisions below carry the character.
         </p>
         <p>
-          Web has no Dynamic Type contract. It still aliases the same names
-          and rank onto Satoshi. Do not invent a second ladder of sizes.
+          Web has no Dynamic Type contract. It does not copy the iOS
+          ladder. Web uses three sizes. Rank on the web comes from color,
+          then weight.
         </p>
       </section>
 
@@ -217,8 +218,9 @@ export function TypographyPage() {
             <code>body</code>. Use <code>text-primary</code> against{" "}
             <code>text-secondary</code>, then weight, before you pick a
             new size. Three styles is the ceiling, counting the title. A
-            page may have a heading. This site uses <code>title-2</code>{" "}
-            for the page title.
+            page may have a heading. On iOS that heading can be{" "}
+            <code>title-2</code>. On the web the heading uses the same
+            17px size as body.
           </li>
           <li>
             Quiet chrome uses Neutral 600. Disabled controls use Neutral
@@ -270,12 +272,12 @@ export function TypographyPage() {
 
       <section className="root-doc-section">
         <p className="root-doc-kicker">Web</p>
-        <h2>Satoshi</h2>
+        <h2>Inter</h2>
         <p>
-          Web is a variant of the same hierarchy. Satoshi is the only sans
-          family. There is no New York on the web. <code>display</code> and{" "}
-          <code>title-1-serif</code> use Satoshi at 700. Mono uses the
-          system <code>ui-monospace</code> stack as a stand-in.
+          Web is not a copy of the iOS ladder. Inter is the only sans
+          family. There is no New York on the web. Three sizes cover
+          reading, compact chrome, and captions. Mono uses the system{" "}
+          <code>ui-monospace</code> stack as a stand-in.
         </p>
         <div className="root-type-families">
           {WEB_TYPE_FAMILIES.map((family) => (
@@ -299,10 +301,10 @@ export function TypographyPage() {
       <section className="root-doc-section">
         <h2>Web weight band</h2>
         <p>
-          Satoshi ships 400, 500, and 700. The iOS 510 and 590 steps both
-          map to 500. Bold (700) is only for <code>display</code> and{" "}
-          <code>title-1-serif</code>. Rank comes from contrast, then
-          space. Size is for a heading, not for every rank.
+          Inter uses 400 for body, UI, and captions. Headings use 450.
+          That is fifty points above body. Do not use 500 or 700 on the
+          web. Rank comes from Neutral 1000 against Neutral 900, then
+          this small weight step. Size is not how rank is made.
         </p>
         <div className="root-table-wrap">
           <table className="root-table">
@@ -310,7 +312,6 @@ export function TypographyPage() {
               <tr>
                 <th>Token</th>
                 <th>wght</th>
-                <th>Maps from iOS</th>
                 <th>Use</th>
               </tr>
             </thead>
@@ -321,7 +322,6 @@ export function TypographyPage() {
                     <code>{row.token}</code>
                   </td>
                   <td>{row.value}</td>
-                  <td>{row.maps}</td>
                   <td>{row.use}</td>
                 </tr>
               ))}
@@ -333,7 +333,7 @@ export function TypographyPage() {
       <section className="root-doc-section">
         <h2>Web tracking</h2>
         <p>
-          Do not override tracking on Satoshi. Leave the default. Do not
+          Do not override tracking on Inter. Leave the default. Do not
           add tracking tokens to the semantic layer.
         </p>
       </section>
@@ -341,9 +341,10 @@ export function TypographyPage() {
       <section className="root-doc-section">
         <h2>Web composite styles</h2>
         <p>
-          Same names as iOS. Same sizes in pixels as the Large point
-          values. The home letter uses <code>body</code> (
-          <code>.ntc-web-body</code>): 17/22 at weight 400.
+          Three sizes. Body and heading share 17/22. Heading is Neutral
+          1000 at weight 450. Body, UI, and caption are Neutral 900 at
+          weight 400. The home letter uses <code>body</code> (
+          <code>.ntc-web-body</code>).
         </p>
         <div className="root-type-specimens">
           {WEB_TYPE_STYLES.map((style) => (
@@ -356,6 +357,10 @@ export function TypographyPage() {
                   fontSize: `${style.size}px`,
                   lineHeight: `${style.lineHeight}px`,
                   fontWeight: style.weight,
+                  color:
+                    style.token === "heading"
+                      ? "var(--text-primary)"
+                      : "var(--text-secondary)",
                 }}
               >
                 {style.family === "mono" ? MONO_SAMPLE : SAMPLE}
@@ -363,7 +368,8 @@ export function TypographyPage() {
               <p className="root-type-meta">
                 <code>{style.token}</code>
                 <span>
-                  Web · {style.size}/{style.lineHeight} · {style.weight}
+                  Web · {style.size}/{style.lineHeight} · {style.weight} ·{" "}
+                  {style.color}
                 </span>
               </p>
               <p className="root-swatch-caption">{style.use}</p>
@@ -376,27 +382,25 @@ export function TypographyPage() {
         <h2>Open questions</h2>
         <ul className="root-doc-list">
           <li>
-            The more type styles a screen uses, the less clear the rank.
-            Prefer contrast over size when you can. A heading is allowed.
-            This site uses <code>title-2</code> for the page title and{" "}
-            <code>body</code> for the rest. Is two styles enough for the
-            default kit? Should <code>callout</code>,{" "}
-            <code>subheadline</code>, and the caption pair stay as aliases
-            only, not as default ranks?
+            Web is locked to three sizes. Do not add a fourth size to
+            solve rank. If a screen is unclear, change color or space
+            first.
           </li>
           <li>
-            New York on every screen title is a strong bet. Prototype the
-            first two apps with serif and with sans before you lock it.
+            New York on every iOS screen title is a strong bet. Prototype
+            the first two apps with serif and with sans before you lock
+            it.
           </li>
           <li>
-            There is no brand display face. System fonts have a ceiling:
-            two house apps will look related, and they will also look like
-            any careful iOS app. If differentiation matters more than cost,
-            spend it on a display face for titles only. Keep SF Pro for UI.
+            There is no brand display face on iOS. System fonts have a
+            ceiling: two house apps will look related, and they will also
+            look like any careful iOS app. If differentiation matters
+            more than cost, spend it on a display face for titles only.
+            Keep SF Pro for UI.
           </li>
           <li>
-            Wide windows are not in this scale. When they arrive, decide a
-            maximum column width. Do not add new sizes.
+            Wide windows are not a reason for new sizes. When they
+            arrive, decide a maximum column width.
           </li>
         </ul>
         <p className="root-doc-note">
