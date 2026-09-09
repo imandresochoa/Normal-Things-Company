@@ -292,7 +292,7 @@ export function ColorsPage() {
         <p>
           Ink rank is primary, then secondary, then tertiary, then Neutral
           500, then Neutral 400. Group titles use Neutral 500. Body uses
-          Neutral 900. Disabled controls use Neutral 400. Active ink stays{" "}
+          Neutral 700. Disabled controls use Neutral 400. Active ink stays{" "}
           <code>text-primary</code> or <code>text-secondary</code>.
         </p>
         <ul className="root-doc-list">

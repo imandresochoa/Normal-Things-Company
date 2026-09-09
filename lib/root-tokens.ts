@@ -440,7 +440,7 @@ export const WEB_TYPE_STYLES = [
     size: 17,
     lineHeight: 22,
     weight: 400,
-    color: "Neutral 900",
+    color: "Neutral 700",
     use: "Default reading text. The style used most often.",
   },
   {
