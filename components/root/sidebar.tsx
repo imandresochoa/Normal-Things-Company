@@ -52,7 +52,7 @@ export function RootSidebar({ currentSlug, open, id }: RootSidebarProps) {
                               data-underline-stroke=""
                               pathLength={1}
                               fill="none"
-                              stroke="#2A56F7"
+                              stroke="var(--bg-accent)"
                               strokeLinecap="round"
                               strokeLinejoin="bevel"
                             />

@@ -373,7 +373,7 @@ body {
 }
 
 .root-nav-link:focus-visible {
-  outline: 2px solid var(--root-accent);
+  outline: 2px solid var(--bg-accent);
 }
 
 .root-nav-link[data-active="true"],
