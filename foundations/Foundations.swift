@@ -16,11 +16,11 @@ public extension Color {
 
     // MARK: Backgrounds
 
-    /// `neutral-100` light · `neutral-100` dark — #FBFAF9 / #11100F
+    /// `neutral-100` light · `neutral-100` dark — #FBFAF9 / #090807
     static let bgCanvas = Color("bg-canvas", bundle: .main)
     /// `neutral-200` light · `neutral-200` dark — #F3F1F0 / #1B1918
     static let bgElevated = Color("bg-elevated", bundle: .main)
-    /// `neutral-300` light · `neutral-100` dark — #EAE7E5 / #11100F
+    /// `neutral-300` light · `neutral-100` dark — #EAE7E5 / #090807
     static let bgSunken = Color("bg-sunken", bundle: .main)
     /// `neutral-300` light · `neutral-300` dark — #EAE7E5 / #242221
     static let bgDisabled = Color("bg-disabled", bundle: .main)
@@ -55,11 +55,11 @@ public extension Color {
     static let textLink = Color("text-link", bundle: .main)
     /// `orange-electric-900` light · `orange-electric-900` dark — #9F1600 / #FF9683
     static let textExpressive = Color("text-expressive", bundle: .main)
-    /// `neutral-100` light · `neutral-100` dark — #FBFAF9 / #11100F
+    /// `neutral-100` light · `neutral-100` dark — #FBFAF9 / #090807
     static let textOnFill = Color("text-on-fill", bundle: .main)
     /// `neutral-100` light · `neutral-1000` dark — #FBFAF9 / #FBFAF9
     static let textOnAccent = Color("text-on-accent", bundle: .main)
-    /// `neutral-100` light · `neutral-100` dark — #FBFAF9 / #11100F
+    /// `neutral-100` light · `neutral-100` dark — #FBFAF9 / #090807
     static let textOnExpressive = Color("text-on-expressive", bundle: .main)
     /// `blue-electric-700` light · `blue-electric-700` dark — #2A56F7 / #2A56F7
     static let iconAccent = Color("icon-accent", bundle: .main)
@@ -99,9 +99,9 @@ extension UIColor {
 }
 
 public enum NTCColor {
-    public static let bgCanvas = Color.ntc(light: 0xFBFAF9, dark: 0x11100F)
+    public static let bgCanvas = Color.ntc(light: 0xFBFAF9, dark: 0x090807)
     public static let bgElevated = Color.ntc(light: 0xF3F1F0, dark: 0x1B1918)
-    public static let bgSunken = Color.ntc(light: 0xEAE7E5, dark: 0x11100F)
+    public static let bgSunken = Color.ntc(light: 0xEAE7E5, dark: 0x090807)
     public static let bgDisabled = Color.ntc(light: 0xEAE7E5, dark: 0x242221)
     public static let bgFill = Color.ntc(light: 0x262524, dark: 0xFBFAF9)
     public static let bgFillHover = Color.ntc(light: 0x545250, dark: 0xA9A7A5)
@@ -117,9 +117,9 @@ public enum NTCColor {
     public static let textDisabled = Color.ntc(light: 0x736F6C, dark: 0x858380)
     public static let textLink = Color.ntc(light: 0x1531C5, dark: 0x80A6FF)
     public static let textExpressive = Color.ntc(light: 0x9F1600, dark: 0xFF9683)
-    public static let textOnFill = Color.ntc(light: 0xFBFAF9, dark: 0x11100F)
+    public static let textOnFill = Color.ntc(light: 0xFBFAF9, dark: 0x090807)
     public static let textOnAccent = Color.ntc(light: 0xFBFAF9, dark: 0xFBFAF9)
-    public static let textOnExpressive = Color.ntc(light: 0xFBFAF9, dark: 0x11100F)
+    public static let textOnExpressive = Color.ntc(light: 0xFBFAF9, dark: 0x090807)
     public static let iconAccent = Color.ntc(light: 0x2A56F7, dark: 0x2A56F7)
     public static let iconExpressive = Color.ntc(light: 0xF7452A, dark: 0xF7452A)
     public static let borderHairline = Color.ntc(light: 0xDAD7D4, dark: 0x32302E)
