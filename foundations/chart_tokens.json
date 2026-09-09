@@ -1,0 +1,785 @@
+{
+  "$description": "Root Pulse. Chart primitives and plot/illustration aliases. Not for UI chrome.",
+  "color": {
+    "primitive": {
+      "indigo": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "light": "#F5F8FE",
+            "dark": "#F5F8FE"
+          },
+          "$description": "Lightest chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9780 0.0091 265.61)",
+              "dark": "oklch(0.9780 0.0091 265.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "200": {
+          "$type": "color",
+          "$value": {
+            "light": "#EAF0FC",
+            "dark": "#EAF0FC"
+          },
+          "$description": "Light chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9529 0.0181 265.61)",
+              "dark": "oklch(0.9529 0.0181 265.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "300": {
+          "$type": "color",
+          "$value": {
+            "light": "#DBE5F9",
+            "dark": "#DBE5F9"
+          },
+          "$description": "Soft chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9197 0.0298 265.61)",
+              "dark": "oklch(0.9197 0.0298 265.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "400": {
+          "$type": "color",
+          "$value": {
+            "light": "#C6D4F3",
+            "dark": "#C6D4F3"
+          },
+          "$description": "Illustration wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.8694 0.0454 265.61)",
+              "dark": "oklch(0.8694 0.0454 265.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "light": "#7895D5",
+            "dark": "#7895D5"
+          },
+          "$description": "Muted chart fill",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.6734 0.1011 265.61)",
+              "dark": "oklch(0.6734 0.1011 265.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "600": {
+          "$type": "color",
+          "$value": {
+            "light": "#6180C9",
+            "dark": "#6180C9"
+          },
+          "$description": "Chart fill hover",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.6080 0.1166 265.61)",
+              "dark": "oklch(0.6080 0.1166 265.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "700": {
+          "$type": "color",
+          "$value": {
+            "light": "#4868B7",
+            "dark": "#4868B7"
+          },
+          "$description": "Series and illustration ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.5322 0.1296 265.61)",
+              "dark": "oklch(0.5322 0.1296 265.61)"
+            },
+            "ntc.seed": true
+          }
+        },
+        "800": {
+          "$type": "color",
+          "$value": {
+            "light": "#3655A4",
+            "dark": "#3655A4"
+          },
+          "$description": "Deeper chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.4683 0.1322 265.61)",
+              "dark": "oklch(0.4683 0.1322 265.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "light": "#2D488E",
+            "dark": "#2D488E"
+          },
+          "$description": "Dark chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.4188 0.1205 265.61)",
+              "dark": "oklch(0.4188 0.1205 265.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "1000": {
+          "$type": "color",
+          "$value": {
+            "light": "#1A2D5E",
+            "dark": "#1A2D5E"
+          },
+          "$description": "Darkest chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.3100 0.0907 265.61)",
+              "dark": "oklch(0.3100 0.0907 265.61)"
+            },
+            "ntc.seed": false
+          }
+        }
+      },
+      "ember": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "light": "#FEF6F4",
+            "dark": "#FEF6F4"
+          },
+          "$description": "Lightest chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9780 0.0091 31.23)",
+              "dark": "oklch(0.9780 0.0091 31.23)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "200": {
+          "$type": "color",
+          "$value": {
+            "light": "#FDEDE9",
+            "dark": "#FDEDE9"
+          },
+          "$description": "Light chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9571 0.0182 31.23)",
+              "dark": "oklch(0.9571 0.0182 31.23)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "300": {
+          "$type": "color",
+          "$value": {
+            "light": "#FBE1DC",
+            "dark": "#FBE1DC"
+          },
+          "$description": "Soft chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9295 0.0300 31.23)",
+              "dark": "oklch(0.9295 0.0300 31.23)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "400": {
+          "$type": "color",
+          "$value": {
+            "light": "#F7D0C8",
+            "dark": "#F7D0C8"
+          },
+          "$description": "Illustration wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.8878 0.0456 31.23)",
+              "dark": "oklch(0.8878 0.0456 31.23)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "light": "#DE8E7F",
+            "dark": "#DE8E7F"
+          },
+          "$description": "Muted chart fill",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.7249 0.1016 31.23)",
+              "dark": "oklch(0.7249 0.1016 31.23)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "600": {
+          "$type": "color",
+          "$value": {
+            "light": "#D47868",
+            "dark": "#D47868"
+          },
+          "$description": "Chart fill hover",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.6706 0.1172 31.23)",
+              "dark": "oklch(0.6706 0.1172 31.23)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "700": {
+          "$type": "color",
+          "$value": {
+            "light": "#C46150",
+            "dark": "#C46150"
+          },
+          "$description": "Series and illustration ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.6076 0.1302 31.23)",
+              "dark": "oklch(0.6076 0.1302 31.23)"
+            },
+            "ntc.seed": true
+          }
+        },
+        "800": {
+          "$type": "color",
+          "$value": {
+            "light": "#A84636",
+            "dark": "#A84636"
+          },
+          "$description": "Deeper chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.5220 0.1328 31.23)",
+              "dark": "oklch(0.5220 0.1328 31.23)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "light": "#8E3729",
+            "dark": "#8E3729"
+          },
+          "$description": "Dark chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.4557 0.1211 31.23)",
+              "dark": "oklch(0.4557 0.1211 31.23)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "1000": {
+          "$type": "color",
+          "$value": {
+            "light": "#551910",
+            "dark": "#551910"
+          },
+          "$description": "Darkest chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.3100 0.0912 31.23)",
+              "dark": "oklch(0.3100 0.0912 31.23)"
+            },
+            "ntc.seed": false
+          }
+        }
+      },
+      "teal": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "light": "#F2F9FA",
+            "dark": "#F2F9FA"
+          },
+          "$description": "Lightest chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9780 0.0073 207.41)",
+              "dark": "oklch(0.9780 0.0073 207.41)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "200": {
+          "$type": "color",
+          "$value": {
+            "light": "#E7F4F6",
+            "dark": "#E7F4F6"
+          },
+          "$description": "Light chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9587 0.0146 207.41)",
+              "dark": "oklch(0.9587 0.0146 207.41)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "300": {
+          "$type": "color",
+          "$value": {
+            "light": "#D8EEF1",
+            "dark": "#D8EEF1"
+          },
+          "$description": "Soft chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9332 0.0239 207.41)",
+              "dark": "oklch(0.9332 0.0239 207.41)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "400": {
+          "$type": "color",
+          "$value": {
+            "light": "#C1E4E9",
+            "dark": "#C1E4E9"
+          },
+          "$description": "Illustration wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.8946 0.0364 207.41)",
+              "dark": "oklch(0.8946 0.0364 207.41)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "light": "#6ABBC6",
+            "dark": "#6ABBC6"
+          },
+          "$description": "Muted chart fill",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.7439 0.0811 207.41)",
+              "dark": "oklch(0.7439 0.0811 207.41)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "600": {
+          "$type": "color",
+          "$value": {
+            "light": "#49ADBA",
+            "dark": "#49ADBA"
+          },
+          "$description": "Chart fill hover",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.6937 0.0936 207.41)",
+              "dark": "oklch(0.6937 0.0936 207.41)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "700": {
+          "$type": "color",
+          "$value": {
+            "light": "#1B9CAB",
+            "dark": "#1B9CAB"
+          },
+          "$description": "Series and illustration ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.6354 0.1040 207.41)",
+              "dark": "oklch(0.6354 0.1040 207.41)"
+            },
+            "ntc.seed": true
+          }
+        },
+        "800": {
+          "$type": "color",
+          "$value": {
+            "light": "#007E8B",
+            "dark": "#007E8B"
+          },
+          "$description": "Deeper chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.5418 0.0931 207.41)",
+              "dark": "oklch(0.5418 0.0931 207.41)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "light": "#006772",
+            "dark": "#006772"
+          },
+          "$description": "Dark chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.4694 0.0806 207.41)",
+              "dark": "oklch(0.4694 0.0806 207.41)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "1000": {
+          "$type": "color",
+          "$value": {
+            "light": "#00383E",
+            "dark": "#00383E"
+          },
+          "$description": "Darkest chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.3100 0.0534 207.41)",
+              "dark": "oklch(0.3100 0.0534 207.41)"
+            },
+            "ntc.seed": false
+          }
+        }
+      },
+      "moss": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "light": "#F4F9F5",
+            "dark": "#F4F9F5"
+          },
+          "$description": "Lightest chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9780 0.0080 148.61)",
+              "dark": "oklch(0.9780 0.0080 148.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "200": {
+          "$type": "color",
+          "$value": {
+            "light": "#E6F1E8",
+            "dark": "#E6F1E8"
+          },
+          "$description": "Light chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9467 0.0160 148.61)",
+              "dark": "oklch(0.9467 0.0160 148.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "300": {
+          "$type": "color",
+          "$value": {
+            "light": "#D5E5D6",
+            "dark": "#D5E5D6"
+          },
+          "$description": "Soft chart wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.9054 0.0263 148.61)",
+              "dark": "oklch(0.9054 0.0263 148.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "400": {
+          "$type": "color",
+          "$value": {
+            "light": "#BAD3BD",
+            "dark": "#BAD3BD"
+          },
+          "$description": "Illustration wash",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.8428 0.0400 148.61)",
+              "dark": "oklch(0.8428 0.0400 148.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "light": "#598F62",
+            "dark": "#598F62"
+          },
+          "$description": "Muted chart fill",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.5986 0.0891 148.61)",
+              "dark": "oklch(0.5986 0.0891 148.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "600": {
+          "$type": "color",
+          "$value": {
+            "light": "#387846",
+            "dark": "#387846"
+          },
+          "$description": "Chart fill hover",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.5173 0.1028 148.61)",
+              "dark": "oklch(0.5173 0.1028 148.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "700": {
+          "$type": "color",
+          "$value": {
+            "light": "#0C5E27",
+            "dark": "#0C5E27"
+          },
+          "$description": "Series and illustration ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.4229 0.1143 148.61)",
+              "dark": "oklch(0.4229 0.1143 148.61)"
+            },
+            "ntc.seed": true
+          }
+        },
+        "800": {
+          "$type": "color",
+          "$value": {
+            "light": "#00541F",
+            "dark": "#00541F"
+          },
+          "$description": "Deeper chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.3904 0.1115 148.61)",
+              "dark": "oklch(0.3904 0.1115 148.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "light": "#004D1C",
+            "dark": "#004D1C"
+          },
+          "$description": "Dark chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.3653 0.1043 148.61)",
+              "dark": "oklch(0.3653 0.1043 148.61)"
+            },
+            "ntc.seed": false
+          }
+        },
+        "1000": {
+          "$type": "color",
+          "$value": {
+            "light": "#093B17",
+            "dark": "#093B17"
+          },
+          "$description": "Darkest chart ink",
+          "$extensions": {
+            "ntc.oklch": {
+              "light": "oklch(0.3100 0.0800 148.61)",
+              "dark": "oklch(0.3100 0.0800 148.61)"
+            },
+            "ntc.seed": false
+          }
+        }
+      }
+    },
+    "semantic": {
+      "series-1": {
+        "$type": "color",
+        "$value": "{color.primitive.indigo.700}",
+        "$description": "Series 1 — Series and illustration ink",
+        "$extensions": {
+          "ntc.resolved": "#4868B7"
+        }
+      },
+      "illust-indigo": {
+        "$type": "color",
+        "$value": "{color.primitive.indigo.700}",
+        "$description": "Illustration ink — indigo 700",
+        "$extensions": {
+          "ntc.resolved": "#4868B7"
+        }
+      },
+      "illust-indigo-wash": {
+        "$type": "color",
+        "$value": "{color.primitive.indigo.400}",
+        "$description": "Illustration wash — indigo 400",
+        "$extensions": {
+          "ntc.resolved": "#C6D4F3"
+        }
+      },
+      "series-2": {
+        "$type": "color",
+        "$value": "{color.primitive.ember.700}",
+        "$description": "Series 2 — Series and illustration ink",
+        "$extensions": {
+          "ntc.resolved": "#C46150"
+        }
+      },
+      "illust-ember": {
+        "$type": "color",
+        "$value": "{color.primitive.ember.700}",
+        "$description": "Illustration ink — ember 700",
+        "$extensions": {
+          "ntc.resolved": "#C46150"
+        }
+      },
+      "illust-ember-wash": {
+        "$type": "color",
+        "$value": "{color.primitive.ember.400}",
+        "$description": "Illustration wash — ember 400",
+        "$extensions": {
+          "ntc.resolved": "#F7D0C8"
+        }
+      },
+      "series-3": {
+        "$type": "color",
+        "$value": "{color.primitive.teal.700}",
+        "$description": "Series 3 — Series and illustration ink",
+        "$extensions": {
+          "ntc.resolved": "#1B9CAB"
+        }
+      },
+      "illust-teal": {
+        "$type": "color",
+        "$value": "{color.primitive.teal.700}",
+        "$description": "Illustration ink — teal 700",
+        "$extensions": {
+          "ntc.resolved": "#1B9CAB"
+        }
+      },
+      "illust-teal-wash": {
+        "$type": "color",
+        "$value": "{color.primitive.teal.400}",
+        "$description": "Illustration wash — teal 400",
+        "$extensions": {
+          "ntc.resolved": "#C1E4E9"
+        }
+      },
+      "series-4": {
+        "$type": "color",
+        "$value": "{color.primitive.moss.700}",
+        "$description": "Series 4 — Series and illustration ink",
+        "$extensions": {
+          "ntc.resolved": "#0C5E27"
+        }
+      },
+      "illust-moss": {
+        "$type": "color",
+        "$value": "{color.primitive.moss.700}",
+        "$description": "Illustration ink — moss 700",
+        "$extensions": {
+          "ntc.resolved": "#0C5E27"
+        }
+      },
+      "illust-moss-wash": {
+        "$type": "color",
+        "$value": "{color.primitive.moss.400}",
+        "$description": "Illustration wash — moss 400",
+        "$extensions": {
+          "ntc.resolved": "#BAD3BD"
+        }
+      },
+      "plot-paper": {
+        "$type": "color",
+        "$value": "{color.primitive.neutral.100}",
+        "$description": "Plot paper",
+        "$extensions": {
+          "ntc.resolved": "#FBFAF9"
+        }
+      },
+      "plot-grid-minor": {
+        "$type": "color",
+        "$value": "{color.primitive.neutral.300}",
+        "$description": "Plot minor grid",
+        "$extensions": {
+          "ntc.resolved": "#EAE7E5"
+        }
+      },
+      "plot-grid-major": {
+        "$type": "color",
+        "$value": "{color.primitive.neutral.400}",
+        "$description": "Plot major grid",
+        "$extensions": {
+          "ntc.resolved": "#DAD7D4"
+        }
+      },
+      "plot-axis": {
+        "$type": "color",
+        "$value": "{color.primitive.neutral.500}",
+        "$description": "Plot axis",
+        "$extensions": {
+          "ntc.resolved": "#928E8B"
+        }
+      },
+      "plot-context": {
+        "$type": "color",
+        "$value": "{color.primitive.neutral.400}",
+        "$description": "Plot context",
+        "$extensions": {
+          "ntc.resolved": "#DAD7D4"
+        }
+      },
+      "plot-label": {
+        "$type": "color",
+        "$value": "{color.primitive.neutral.1000}",
+        "$description": "Plot label",
+        "$extensions": {
+          "ntc.resolved": "#262524"
+        }
+      },
+      "plot-label-quiet": {
+        "$type": "color",
+        "$value": "{color.primitive.neutral.900}",
+        "$description": "Plot quiet label",
+        "$extensions": {
+          "ntc.resolved": "#545250"
+        }
+      },
+      "plot-subject": {
+        "$type": "color",
+        "$value": "{color.primitive.blue-electric.700}",
+        "$description": "Plot subject",
+        "$extensions": {
+          "ntc.resolved": "#2A56F7"
+        }
+      },
+      "plot-moment": {
+        "$type": "color",
+        "$value": "{color.primitive.orange-electric.700}",
+        "$description": "Plot moment",
+        "$extensions": {
+          "ntc.resolved": "#F7452A"
+        }
+      }
+    }
+  }
+}

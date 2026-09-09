@@ -16,7 +16,7 @@ const rootIndexPath = path.join(root, "app", "root", "page.tsx");
 const pulsePagePath = path.join(root, "app", "pulse", "page.tsx");
 const rootMarkPath = path.join(root, "components", "root", "root-mark.tsx");
 
-const READY_SLUGS = ["colors", "typography"];
+const READY_SLUGS = ["colors", "typography", "pulse"];
 
 function readSource(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -94,14 +94,14 @@ test("ROOT_NAV must not include Styling label", () => {
   );
 });
 
-test("Introduction section keeps purpose and principles", () => {
+test("Introduction section keeps purpose, principles, and pulse", () => {
   const source = readSource(rootNavPath);
   const introSlugs = parseIntroductionSlugs(source);
 
   assert.deepEqual(
     introSlugs,
-    ["purpose", "principles"],
-    'Introduction section must include only Purpose and Principles (slugs "purpose" and "principles")',
+    ["purpose", "principles", "pulse"],
+    'Introduction section must include Purpose, Principles, and Pulse in that order (slugs "purpose", "principles", "pulse")',
   );
 });
 
@@ -115,7 +115,7 @@ test("root-nav exports isRootNavItemReady", () => {
   );
 });
 
-test("isRootNavItemReady returns true for colors and typography", () => {
+test("isRootNavItemReady returns true for colors, typography, and pulse", () => {
   for (const slug of READY_SLUGS) {
     const result = callIsRootNavItemReady(slug);
 
@@ -138,7 +138,7 @@ test("isRootNavItemReady returns false for every other ROOT_NAV slug", () => {
 
   assert.ok(
     notReadySlugs.length > 0,
-    "ROOT_NAV must include slugs other than colors and typography",
+    "ROOT_NAV must include slugs other than colors, typography, and pulse",
   );
 
   for (const slug of notReadySlugs) {
