@@ -221,10 +221,9 @@ export function TypographyPage() {
             for the page title.
           </li>
           <li>
-            Quiet chrome and disabled controls use{" "}
-            <code>text-disabled</code>. That is the 4.5:1 floor. Do not
-            pick a new size to make them recede. Active text stays
-            stronger.
+            Quiet chrome uses Neutral 600. Disabled controls use Neutral
+            500. Do not pick a new size to make them recede. Active text
+            stays stronger.
           </li>
           <li>
             Do not mix families on the same line. Serif and sans can share

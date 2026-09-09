@@ -25,7 +25,8 @@
   --root-line: var(--border-hairline);
   --root-accent: var(--bg-expressive);
   --root-body: var(--text-secondary);
-  --root-disabled: var(--text-disabled);
+  --root-title: #817e7a;
+  --root-disabled: #928e8b;
 }
 
 @theme inline {
@@ -338,7 +339,7 @@ body {
 
 .root-nav-title {
   margin: 0 0 16px;
-  color: var(--root-disabled);
+  color: var(--root-title);
   font-size: 17px;
   font-weight: 400;
   line-height: 22px;
