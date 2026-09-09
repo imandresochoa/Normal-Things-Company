@@ -62,6 +62,13 @@ export function SpacingPage() {
         <h3>Bar specimen</h3>
         <div className="root-table-wrap">
           <table className="root-table">
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>px</th>
+                <th>Bar</th>
+              </tr>
+            </thead>
             <tbody>
               {SPACE_ROLES.map((role) => (
                 <tr key={role.token}>
