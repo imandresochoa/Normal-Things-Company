@@ -47,9 +47,9 @@ export function RootSidebar({ currentSlug, open, id }: RootSidebarProps) {
                       className="root-nav-link root-nav-disabled"
                       aria-disabled="true"
                     >
-                      <span className="relative z-10">{item.label}</span>
+                      <span>{item.label}</span>
                       <svg
-                        className="root-nav-strike pointer-events-none absolute inset-x-0 top-1/2 h-[0.45em] w-full -translate-y-1/2 overflow-visible"
+                        className="root-nav-strike pointer-events-none absolute inset-x-0 top-1/2 z-[1] h-[0.45em] w-full -translate-y-1/2 overflow-visible"
                         viewBox="0 0 179 14"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -61,6 +61,7 @@ export function RootSidebar({ currentSlug, open, id }: RootSidebarProps) {
                           data-underline-stroke=""
                           pathLength={1}
                           fill="none"
+                          stroke="currentColor"
                           strokeLinecap="round"
                           strokeLinejoin="bevel"
                         />

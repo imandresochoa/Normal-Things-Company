@@ -376,8 +376,13 @@ body {
   color: var(--root-disabled);
   position: relative;
   display: inline-flex;
+  overflow: visible;
   cursor: default;
   pointer-events: none;
+}
+
+.root-nav-link.root-nav-disabled:hover {
+  color: var(--root-disabled);
 }
 
 .root-nav-disabled [data-underline-stroke] {
