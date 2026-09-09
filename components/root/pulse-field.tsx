@@ -50,8 +50,8 @@ function paintScene(
 ) {
   const { width, height } = ctx.canvas;
   const wet = mode === "wet";
-  const scale = wet ? 1.08 : 1;
-  const opacityMul = wet ? 0.72 : 1;
+  const scale = wet ? 1.16 : 1;
+  const opacityMul = wet ? 0.58 : 1;
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.globalCompositeOperation = "source-over";
@@ -61,12 +61,15 @@ function paintScene(
   ctx.fillRect(0, 0, width, height);
 
   if (wet) {
-    ctx.filter = `blur(${Math.max(4, width / 180)}px)`;
+    ctx.filter = `blur(${Math.max(8, width / 110)}px)`;
   }
 
   ctx.globalCompositeOperation = "multiply";
 
   for (const mark of scene.layers) {
+    if (mark.y < scene.air) {
+      continue;
+    }
     const cx = mark.x * width;
     const cy = mark.y * height;
     const size = markSize(mark, width, height);
@@ -95,10 +98,13 @@ function paintScene(
       ctx.beginPath();
       ctx.ellipse(0, 0, size.rx, size.ry, 0, 0, Math.PI * 2);
       ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(size.rx * 0.12, size.ry * 0.08, size.rx * 0.82, size.ry * 0.88, 0.12, 0, Math.PI * 2);
+      ctx.fill();
       if (!wet) {
-        ctx.globalAlpha = mark.opacity * 0.45;
+        ctx.globalAlpha = mark.opacity * 0.4;
         ctx.beginPath();
-        ctx.ellipse(1.5, 1, size.rx * 0.92, size.ry * 0.92, 0, 0, Math.PI * 2);
+        ctx.ellipse(2, 1.2, size.rx * 0.9, size.ry * 0.9, 0, 0, Math.PI * 2);
         ctx.fill();
       }
     }
@@ -115,7 +121,8 @@ function writeWetnessMask(ctx: CanvasRenderingContext2D, map: WetnessMap) {
   const image = ctx.createImageData(map.width, map.height);
   const data = image.data;
   for (let i = 0; i < map.cells.length; i += 1) {
-    const alpha = Math.round(map.cells[i] * 255);
+    const wetness = map.cells[i];
+    const alpha = Math.round(Math.pow(wetness, 0.62) * 255);
     const offset = i * 4;
     data[offset] = 255;
     data[offset + 1] = 255;

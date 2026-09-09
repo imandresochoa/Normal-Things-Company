@@ -20,184 +20,166 @@ function snap(value: number) {
 }
 
 function nx(px: number) {
-  return snap(px) / WIDTH;
+  return Math.min(1, Math.max(0, snap(px) / WIDTH));
 }
 
 function ny(px: number) {
-  return snap(px) / HEIGHT;
+  return Math.min(1, Math.max(0, snap(px) / HEIGHT));
 }
 
 function buildColorsMeadow(): PulseFieldScene {
-  const rand = mulberry32(0xc01d);
+  const rand = mulberry32(0xa11e);
   const layers: FieldMark[] = [];
 
   function between(min: number, max: number) {
     return min + rand() * (max - min);
   }
 
+  const hillInks = [
+    "illust-moss-wash",
+    "illust-teal-wash",
+    "illust-ember-wash",
+    "illust-moss-wash",
+    "illust-indigo-wash",
+  ] as const;
+
+  for (let i = 0; i < 14; i += 1) {
+    layers.push({
+      kind: "wash",
+      ink: hillInks[i % hillInks.length],
+      x: nx(40 + i * 52 + between(-12, 12)),
+      y: ny(128 + Math.sin(i * 0.7) * 18 + (i % 3) * 8),
+      opacity: between(0.38, 0.62),
+      rx: between(0.14, 0.24),
+      ry: between(0.06, 0.11),
+    });
+  }
+
   layers.push(
     {
       kind: "wash",
-      ink: "illust-moss-wash",
-      x: nx(360),
-      y: ny(128),
-      opacity: 0.42,
-      rx: 0.52,
-      ry: 0.16,
-    },
-    {
-      kind: "wash",
-      ink: "illust-teal-wash",
-      x: nx(176),
-      y: ny(144),
-      opacity: 0.38,
-      rx: 0.34,
-      ry: 0.12,
-    },
-    {
-      kind: "wash",
-      ink: "illust-ember-wash",
-      x: nx(528),
-      y: ny(160),
-      opacity: 0.32,
-      rx: 0.36,
-      ry: 0.11,
-    },
-    {
-      kind: "wash",
-      ink: "illust-moss-wash",
-      x: nx(400),
-      y: ny(176),
-      opacity: 0.5,
-      rx: 0.48,
-      ry: 0.14,
-    },
-    {
-      kind: "wash",
-      ink: "illust-teal-wash",
-      x: nx(96),
-      y: ny(192),
-      opacity: 0.34,
-      rx: 0.28,
-      ry: 0.13,
-    },
-    {
-      kind: "wash",
-      ink: "illust-indigo-wash",
-      x: nx(360),
-      y: ny(208),
-      opacity: 0.46,
-      rx: 0.58,
-      ry: 0.1,
-    },
-    {
-      kind: "wash",
       ink: "illust-moss",
-      x: nx(280),
-      y: ny(240),
-      opacity: 0.16,
-      rx: 0.42,
+      x: nx(360),
+      y: ny(224),
+      opacity: 0.18,
+      rx: 0.55,
       ry: 0.16,
     },
     {
       kind: "wash",
       ink: "illust-teal",
-      x: nx(520),
-      y: ny(224),
-      opacity: 0.12,
-      rx: 0.3,
+      x: nx(140),
+      y: ny(208),
+      opacity: 0.14,
+      rx: 0.28,
       ry: 0.12,
     },
     {
       kind: "wash",
       ink: "illust-indigo-wash",
+      x: nx(360),
+      y: ny(192),
+      opacity: 0.5,
+      rx: 0.48,
+      ry: 0.08,
+    },
+    {
+      kind: "wash",
+      ink: "illust-indigo-wash",
       x: nx(200),
-      y: ny(224),
-      opacity: 0.4,
-      rx: 0.26,
-      ry: 0.09,
+      y: ny(208),
+      opacity: 0.42,
+      rx: 0.22,
+      ry: 0.07,
     },
     {
       kind: "wash",
       ink: "illust-ember-wash",
-      x: nx(120),
-      y: ny(256),
-      opacity: 0.22,
-      rx: 0.2,
-      ry: 0.1,
+      x: nx(560),
+      y: ny(176),
+      opacity: 0.36,
+      rx: 0.22,
+      ry: 0.09,
     },
   );
 
-  for (let i = 0; i < 160; i += 1) {
-    const x = between(0.02, 0.98);
-    const y = between(0.58, 0.98);
+  for (let i = 0; i < 220; i += 1) {
     layers.push({
       kind: "stem",
-      ink: rand() > 0.72 ? "illust-teal" : "illust-moss",
-      x,
-      y,
-      opacity: between(0.18, 0.42),
-      h: between(0.08, 0.22),
-      rotate: between(-7, 7),
+      ink: rand() > 0.65 ? "illust-teal" : "illust-moss",
+      x: between(0.01, 0.99),
+      y: between(0.62, 0.99),
+      opacity: between(0.22, 0.55),
+      h: between(0.1, 0.28),
+      rotate: between(-8, 8),
     });
   }
 
-  for (let i = 0; i < 70; i += 1) {
+  for (let i = 0; i < 55; i += 1) {
     const x = between(0.04, 0.96);
-    const y = between(0.5, 0.78);
-    const count = 3 + Math.floor(rand() * 4);
-    for (let j = 0; j < count; j += 1) {
+    const y = between(0.52, 0.78);
+    const spikes = 4 + Math.floor(rand() * 5);
+    layers.push({
+      kind: "wash",
+      ink: "illust-indigo",
+      x,
+      y: y - 0.03,
+      opacity: between(0.22, 0.4),
+      rx: between(0.01, 0.018),
+      ry: between(0.05, 0.09),
+    });
+    for (let j = 0; j < spikes; j += 1) {
       layers.push({
         kind: "dab",
-        ink: j === 0 ? "illust-indigo" : "illust-indigo-wash",
-        x: x + between(-0.012, 0.012),
-        y: y - j * between(0.012, 0.02),
-        opacity: j === 0 ? between(0.28, 0.48) : between(0.22, 0.4),
-        r: between(0.008, 0.016),
+        ink: j % 2 === 0 ? "illust-indigo" : "illust-indigo-wash",
+        x: x + between(-0.01, 0.01),
+        y: y - j * between(0.01, 0.018),
+        opacity: between(0.35, 0.7),
+        r: between(0.006, 0.014),
       });
     }
   }
 
-  for (let i = 0; i < 90; i += 1) {
-    const x = between(0.03, 0.97);
-    const y = between(0.62, 0.96);
+  for (let i = 0; i < 120; i += 1) {
+    const x = between(0.02, 0.98);
+    const y = between(0.64, 0.97);
     layers.push({
       kind: "dab",
       ink: "illust-ember-wash",
-      x: x + between(-0.006, 0.006),
+      x: x + between(-0.008, 0.008),
       y: y + between(-0.006, 0.006),
-      opacity: between(0.28, 0.5),
-      r: between(0.012, 0.022),
+      opacity: between(0.4, 0.7),
+      r: between(0.012, 0.024),
     });
     layers.push({
       kind: "dab",
       ink: "illust-ember",
       x,
       y,
-      opacity: between(0.22, 0.4),
-      r: between(0.007, 0.014),
+      opacity: between(0.35, 0.65),
+      r: between(0.007, 0.015),
     });
   }
 
-  for (let i = 0; i < 18; i += 1) {
+  for (let i = 0; i < 28; i += 1) {
     layers.push({
       kind: "dab",
       ink: "plot-moment",
-      x: between(0.08, 0.92),
-      y: between(0.68, 0.94),
-      opacity: between(0.42, 0.7),
-      r: between(0.01, 0.018),
+      x: between(0.06, 0.94),
+      y: between(0.7, 0.96),
+      opacity: between(0.55, 0.85),
+      r: between(0.01, 0.02),
     });
   }
 
-  for (let i = 0; i < 40; i += 1) {
+  for (let i = 0; i < 50; i += 1) {
     layers.push({
       kind: "dab",
       ink: "illust-moss",
       x: between(0.02, 0.98),
-      y: between(0.7, 0.98),
-      opacity: between(0.08, 0.18),
-      r: between(0.01, 0.03),
+      y: between(0.74, 0.99),
+      opacity: between(0.12, 0.28),
+      r: between(0.012, 0.032),
     });
   }
 
