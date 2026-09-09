@@ -43,34 +43,31 @@ export function DocsShell({ children }: DocsShellProps) {
   }, [open]);
 
   return (
-    <>
-      <div className="root-top-fade" aria-hidden="true" />
-      <div className="root-shell">
-        <header className="root-mobile-header md:hidden">
-          <RootMark />
-          <button
-            type="button"
-            className="root-menu-button"
-            aria-expanded={open}
-            aria-controls={sidebarId}
-            onClick={() => setOpen((value) => !value)}
-          >
-            <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
-            <MenuIcon open={open} />
-          </button>
-        </header>
-        {open ? (
-          <button
-            type="button"
-            className="root-overlay md:hidden"
-            aria-label="Close menu"
-            onClick={() => setOpen(false)}
-          />
-        ) : null}
-        <RootSidebar currentSlug={currentSlug} open={open} id={sidebarId} />
-        <main className="root-main">{children}</main>
-      </div>
-    </>
+    <div className="root-shell">
+      <header className="root-mobile-header md:hidden">
+        <RootMark />
+        <button
+          type="button"
+          className="root-menu-button"
+          aria-expanded={open}
+          aria-controls={sidebarId}
+          onClick={() => setOpen((value) => !value)}
+        >
+          <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
+          <MenuIcon open={open} />
+        </button>
+      </header>
+      {open ? (
+        <button
+          type="button"
+          className="root-overlay md:hidden"
+          aria-label="Close menu"
+          onClick={() => setOpen(false)}
+        />
+      ) : null}
+      <RootSidebar currentSlug={currentSlug} open={open} id={sidebarId} />
+      <main className="root-main">{children}</main>
+    </div>
   );
 }
 

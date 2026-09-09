@@ -224,7 +224,7 @@ export function TypographyPage() {
           </li>
           <li>
             Quiet chrome uses Neutral 600. Disabled controls use Neutral
-            500. Do not pick a new size to make them recede. Active text
+            400. Do not pick a new size to make them recede. Active text
             stays stronger.
           </li>
           <li>
