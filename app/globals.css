@@ -290,44 +290,52 @@ body {
   line-height: 1.15;
 }
 
-.root-mark {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--root-text);
+.root-sidebar-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.root-wordmark {
+  display: block;
+  width: 100%;
+  color: var(--root-accent);
   text-decoration: none;
   outline-offset: 4px;
+}
+
+.root-wordmark:focus-visible {
+  outline: 2px solid var(--root-accent);
+}
+
+.root-wordmark-mark {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 200 / 95;
+  overflow: visible;
+}
+
+.root-mark {
+  display: inline-flex;
+  width: fit-content;
+  color: var(--root-text);
+  font-size: 14px;
+  line-height: 1.45;
+  text-decoration: none;
+  outline-offset: 3px;
 }
 
 .root-mark:focus-visible {
   outline: 2px solid var(--root-accent);
 }
 
-.root-mark-seed {
-  display: flex;
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  overflow: hidden;
-  border: 1px solid var(--root-line);
-  border-radius: 6px;
-}
-
-.root-mark-pill {
-  display: inline-flex;
-  align-items: center;
-  height: 26px;
-  padding: 0 10px;
-  border: 1px solid var(--root-line);
-  border-radius: 999px;
-  font-size: 13px;
-}
-
 .root-nav {
   display: flex;
   flex-direction: column;
   gap: 28px;
-  margin-top: 36px;
+  margin-top: 20px;
 }
 
 .root-nav-title {
