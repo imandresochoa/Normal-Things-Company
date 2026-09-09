@@ -16,7 +16,7 @@ const rootIndexPath = path.join(root, "app", "root", "page.tsx");
 const pulsePagePath = path.join(root, "app", "pulse", "page.tsx");
 const rootMarkPath = path.join(root, "components", "root", "root-mark.tsx");
 
-const READY_SLUGS = ["colors", "typography", "pulse"];
+const READY_SLUGS = ["colors", "typography", "pulse", "spacing"];
 
 function readSource(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -116,14 +116,14 @@ test("Introduction section keeps only purpose and principles", () => {
   );
 });
 
-test("Foundations section orders colors, pulse, typography, and iconography", () => {
+test("Foundations section orders colors, pulse, typography, spacing, and iconography", () => {
   const source = readSource(rootNavPath);
   const foundationsSlugs = parseFoundationsSlugs(source);
 
   assert.deepEqual(
     foundationsSlugs,
-    ["colors", "pulse", "typography", "iconography"],
-    'Foundations section must include Colors, Pulse, Typography, and Iconography in that order (slugs "colors", "pulse", "typography", "iconography")',
+    ["colors", "pulse", "typography", "spacing", "iconography"],
+    'Foundations section must include Colors, Pulse, Typography, Spacing, and Iconography in that order (slugs "colors", "pulse", "typography", "spacing", "iconography")',
   );
 });
 
@@ -137,7 +137,7 @@ test("root-nav exports isRootNavItemReady", () => {
   );
 });
 
-test("isRootNavItemReady returns true for colors, typography, and pulse", () => {
+test("isRootNavItemReady returns true for colors, typography, pulse, and spacing", () => {
   for (const slug of READY_SLUGS) {
     const result = callIsRootNavItemReady(slug);
 
@@ -160,7 +160,7 @@ test("isRootNavItemReady returns false for every other ROOT_NAV slug", () => {
 
   assert.ok(
     notReadySlugs.length > 0,
-    "ROOT_NAV must include slugs other than colors, typography, and pulse",
+    "ROOT_NAV must include slugs other than colors, typography, pulse, and spacing",
   );
 
   for (const slug of notReadySlugs) {
