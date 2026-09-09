@@ -26,7 +26,7 @@
   --root-accent: var(--bg-expressive);
   --root-body: var(--text-secondary);
   --root-title: #817e7a;
-  --root-disabled: #928e8b;
+  --root-disabled: #dad7d4;
 }
 
 @theme inline {
@@ -208,7 +208,7 @@ body {
   --root-top: 120px;
   --root-bottom: 120px;
   --root-gutter: 80px;
-  --root-fade-height: 120px;
+  --root-fade-height: 70px;
   --root-fade-blur: 4px;
   --root-fade-stop: 50%;
   min-height: 100dvh;
@@ -223,31 +223,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-}
-
-.root-top-fade {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 55;
-  width: 100%;
-  height: var(--root-fade-height);
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  background: linear-gradient(to top, transparent, var(--root-bg));
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    var(--root-bg) var(--root-fade-stop),
-    transparent
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    var(--root-bg) var(--root-fade-stop),
-    transparent
-  );
-  -webkit-backdrop-filter: blur(var(--root-fade-blur));
-  backdrop-filter: blur(var(--root-fade-blur));
 }
 
 .root-mobile-header {
@@ -315,6 +290,51 @@ body {
   pointer-events: auto;
   visibility: visible;
   transform: translateX(0);
+}
+
+.root-sidebar::before,
+.root-sidebar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: var(--root-fade-height);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-backdrop-filter: blur(var(--root-fade-blur));
+  backdrop-filter: blur(var(--root-fade-blur));
+}
+
+.root-sidebar::before {
+  top: 0;
+  background: linear-gradient(to top, transparent, var(--root-bg));
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    var(--root-bg) var(--root-fade-stop),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    var(--root-bg) var(--root-fade-stop),
+    transparent
+  );
+}
+
+.root-sidebar::after {
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, var(--root-bg));
+  -webkit-mask-image: linear-gradient(
+    to top,
+    var(--root-bg) var(--root-fade-stop),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to top,
+    var(--root-bg) var(--root-fade-stop),
+    transparent
+  );
 }
 
 .root-main {
@@ -966,7 +986,8 @@ body {
     transform: none;
   }
 
-  .root-top-fade {
+  .root-sidebar::before,
+  .root-sidebar::after {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
