@@ -405,19 +405,11 @@ export const TYPE_STYLES = [
   },
 ] as const;
 
-export function webWeight(weight: number) {
-  if (weight === 510 || weight === 590) {
-    return 500;
-  }
-
-  return weight;
-}
-
 export const WEB_TYPE_FAMILIES = [
   {
     id: "sans",
     token: "family-sans-web",
-    name: "Satoshi",
+    name: "Inter",
     role: "All web UI: the letter, docs, titles, and controls. Web only.",
   },
   {
@@ -432,28 +424,53 @@ export const WEB_TYPE_WEIGHTS = [
   {
     token: "weight-regular",
     value: 400,
-    maps: "400",
-    use: "Body, labels, and the default.",
+    use: "Body, UI, captions, and the default.",
   },
   {
-    token: "weight-medium",
-    value: 500,
-    maps: "510 and 590",
-    use: "Emphasis, headlines, buttons, and section headers.",
-  },
-  {
-    token: "weight-bold",
-    value: 700,
-    maps: "700",
-    use: "Only display and title-1.",
+    token: "weight-heading",
+    value: 450,
+    use: "Titles and headings only. Fifty points above body.",
   },
 ] as const;
 
-export const WEB_TYPE_STYLES = TYPE_STYLES.map((style) => ({
-  ...style,
-  family: style.family === "mono" ? ("mono" as const) : ("sans" as const),
-  weight: webWeight(style.weight),
-}));
+export const WEB_TYPE_STYLES = [
+  {
+    token: "body",
+    family: "sans" as const,
+    size: 17,
+    lineHeight: 22,
+    weight: 400,
+    color: "Neutral 900",
+    use: "Default reading text. The style used most often.",
+  },
+  {
+    token: "heading",
+    family: "sans" as const,
+    size: 17,
+    lineHeight: 22,
+    weight: 450,
+    color: "Neutral 1000",
+    use: "Page titles, section titles, and sidebar group titles.",
+  },
+  {
+    token: "ui",
+    family: "sans" as const,
+    size: 15,
+    lineHeight: 20,
+    weight: 400,
+    color: "Neutral 900",
+    use: "Tables, toast, contrast chips, and compact chrome.",
+  },
+  {
+    token: "caption",
+    family: "sans" as const,
+    size: 12,
+    lineHeight: 16,
+    weight: 400,
+    color: "Neutral 900",
+    use: "Kickers, swatch captions, ramp hex, and type meta.",
+  },
+] as const;
 
 export type ContrastPair = {
   id: string;

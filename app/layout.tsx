@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { CopyToast } from "@/components/copy-toast";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 const title = "Normal Things Company";
 const description =
@@ -21,8 +28,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full">
-      <body className="min-h-full bg-background text-foreground antialiased">
+    <html lang="en" className={`${inter.variable} h-full`}>
+      <body className={`${inter.className} min-h-full bg-background antialiased`}>
         {children}
         <CopyToast />
       </body>
