@@ -361,7 +361,7 @@ body {
 .root-page-title {
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -406,7 +406,7 @@ body {
   margin: 0 0 16px;
   color: var(--root-title);
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -449,7 +449,6 @@ body {
 .root-nav-link[data-active="true"],
 .root-nav-link[data-active="true"]:visited {
   color: var(--root-text);
-  font-weight: var(--type-heading-weight);
 }
 
 .root-nav-link[data-active="true"] .underline-mark [data-underline-stroke] {
@@ -484,7 +483,7 @@ body {
   margin: 0;
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -510,7 +509,7 @@ body {
   margin: 0 0 12px;
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -518,7 +517,7 @@ body {
   margin: 28px 0 10px;
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -549,7 +548,7 @@ body {
 
 .root-doc-list strong {
   color: var(--root-text);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
 }
 
 .root-doc-note {
@@ -597,7 +596,7 @@ body {
   margin: 8px 0 0;
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -722,7 +721,7 @@ body {
 
 .root-table th {
   color: var(--root-text);
-  font-weight: var(--type-heading-weight);
+  font-weight: var(--type-body-weight);
   font-size: var(--type-ui-size);
   line-height: var(--type-ui-leading);
 }
