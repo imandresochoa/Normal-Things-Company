@@ -31,7 +31,7 @@
   --root-idle: var(--text-secondary);
   --root-line: var(--border-hairline);
   --root-accent: var(--bg-expressive);
-  --root-body: var(--text-secondary);
+  --root-body: #736f6c;
   --root-title: #928e8b;
   --root-disabled: #dad7d4;
 }
@@ -45,7 +45,7 @@
 html,
 body {
   background: var(--page-bg);
-  color: var(--text-secondary);
+  color: var(--root-body);
   font-family: var(--font-letter);
   font-size: var(--type-body-size);
   font-weight: var(--type-body-weight);
@@ -818,7 +818,7 @@ body {
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   font-weight: var(--type-body-weight);
-  color: var(--text-secondary);
+  color: var(--root-body);
 }
 
 .ntc-web-heading {
@@ -834,7 +834,7 @@ body {
   font-size: var(--type-ui-size);
   line-height: var(--type-ui-leading);
   font-weight: var(--type-body-weight);
-  color: var(--text-secondary);
+  color: var(--root-body);
 }
 
 .copy-toast.ntc-web-ui {
@@ -846,7 +846,7 @@ body {
   font-size: var(--type-caption-size);
   line-height: var(--type-caption-leading);
   font-weight: var(--type-body-weight);
-  color: var(--text-secondary);
+  color: var(--root-body);
 }
 
 .ntc-web-mono-body {
