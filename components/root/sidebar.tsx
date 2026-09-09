@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { isRootNavItemReady, ROOT_NAV, rootPath } from "@/lib/root-nav";
 import { UNDERLINE_PATH } from "@/lib/underline-path";
+import { CompanyWordmark } from "./company-wordmark";
 import { RootMark } from "./root-mark";
 
 type RootSidebarProps = {
@@ -17,7 +18,10 @@ export function RootSidebar({ currentSlug, open, id }: RootSidebarProps) {
       data-open={open ? "true" : "false"}
       aria-label="Root"
     >
-      <RootMark />
+      <div className="root-sidebar-head">
+        <CompanyWordmark />
+        <RootMark />
+      </div>
       <nav className="root-nav" aria-label="Root">
         {ROOT_NAV.map((section) => (
           <div key={section.title}>
