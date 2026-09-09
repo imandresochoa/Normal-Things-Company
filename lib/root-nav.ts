@@ -22,6 +22,7 @@ export const ROOT_NAV: RootNavSection[] = [
       { label: "Colors", slug: "colors" },
       { label: "Pulse", slug: "pulse" },
       { label: "Typography", slug: "typography" },
+      { label: "Spacing", slug: "spacing" },
       { label: "Iconography", slug: "iconography" },
     ],
   },
@@ -62,7 +63,7 @@ export function rootPath(slug: string): string {
   return `/root/${slug}`;
 }
 
-const READY_SLUGS = new Set(["colors", "typography", "pulse"]);
+const READY_SLUGS = new Set(["colors", "typography", "pulse", "spacing"]);
 
 export function isRootNavItemReady(slug: string): boolean {
   return READY_SLUGS.has(slug);

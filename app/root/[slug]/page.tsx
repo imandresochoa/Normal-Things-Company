@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ColorsPage } from "@/components/root/colors-page";
 import { PulsePage } from "@/components/root/pulse-page";
+import { SpacingPage } from "@/components/root/spacing-page";
 import { TypographyPage } from "@/components/root/typography-page";
 import { getRootNavItem, ROOT_NAV_ITEMS } from "@/lib/root-nav";
 
@@ -44,6 +45,10 @@ export default async function RootSlugPage({ params }: RootSlugPageProps) {
 
   if (slug === "pulse") {
     return <PulsePage />;
+  }
+
+  if (slug === "spacing") {
+    return <SpacingPage />;
   }
 
   return (
