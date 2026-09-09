@@ -265,7 +265,7 @@ body {
   flex-direction: column;
   overflow-y: auto;
   background: var(--root-bg);
-  padding: 72px 24px 40px;
+  padding: 40px;
   pointer-events: none;
   visibility: hidden;
   transform: translateX(-100%);
@@ -853,7 +853,7 @@ body {
     height: 100dvh;
     min-height: 0;
     overflow-y: auto;
-    padding: 28px 24px 40px;
+    padding: 40px;
     pointer-events: auto;
     visibility: visible;
     transform: none;
