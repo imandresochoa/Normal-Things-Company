@@ -11,6 +11,7 @@ const sidebarPath = path.join(root, "components", "root", "sidebar.tsx");
 const underlinePathPath = path.join(root, "lib", "underline-path.ts");
 const squiggleLinkPath = path.join(root, "components", "squiggle-link.tsx");
 const globalsCssPath = path.join(root, "app", "globals.css");
+const colorsPagePath = path.join(root, "components", "root", "colors-page.tsx");
 const rootIndexPath = path.join(root, "app", "root", "page.tsx");
 const pulsePagePath = path.join(root, "app", "pulse", "page.tsx");
 const rootMarkPath = path.join(root, "components", "root", "root-mark.tsx");
@@ -317,6 +318,59 @@ function findDisabledNavStrikeRule(css) {
   return null;
 }
 
+function findRootBlock(css) {
+  const match = css.match(/:root\s*\{([^}]+)\}/);
+  return match ? match[1] : null;
+}
+
+function findDarkModeBlock(css) {
+  const start = css.search(
+    /@media\s*\(\s*prefers-color-scheme:\s*dark\s*\)\s*\{/,
+  );
+  if (start === -1) {
+    return null;
+  }
+
+  const openBrace = css.indexOf("{", start);
+  let depth = 0;
+
+  for (let i = openBrace; i < css.length; i += 1) {
+    if (css[i] === "{") {
+      depth += 1;
+    } else if (css[i] === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return css.slice(openBrace + 1, i);
+      }
+    }
+  }
+
+  return null;
+}
+
+function findRootChipAlphaRule(css) {
+  const match = css.match(/\.root-chip-alpha\s*\{([^}]+)\}/);
+  return match ? match[1] : null;
+}
+
+const DARK_ROOT_TOKENS = [
+  { name: "--bg-canvas", hex: "#11100f" },
+  { name: "--text-primary", hex: "#fbfaf9" },
+  { name: "--text-secondary", hex: "#a9a7a5" },
+  { name: "--text-tertiary", hex: "#94928f" },
+  { name: "--text-disabled", hex: "#858380" },
+  { name: "--border-hairline", hex: "#32302e" },
+  { name: "--page-selection", hex: "#18264c" },
+  { name: "--root-title", hex: "#656360" },
+  { name: "--root-disabled", hex: "#32302e" },
+];
+
+const LIGHT_ROOT_TOKENS = [
+  { name: "--bg-canvas", hex: "#fbfaf9" },
+  { name: "--text-primary", hex: "#262524" },
+  { name: "--page-selection", hex: "#d8e5ff" },
+];
+
 test("disabled nav strike is fully drawn and not animated", () => {
   const css = readSource(globalsCssPath);
   const disabledStrikeRule = findDisabledNavStrikeRule(css);
@@ -379,5 +433,108 @@ test("root mark links to root or colors, not purpose", () => {
   assert.ok(
     /href=["']\/root["']/.test(source) || /href=["']\/root\/colors["']/.test(source),
     "root-mark href must be /root or /root/colors",
+  );
+});
+
+test("globals.css defines dark mode tokens inside prefers-color-scheme media query", () => {
+  const css = readSource(globalsCssPath);
+  const darkBlock = findDarkModeBlock(css);
+
+  assert.ok(
+    darkBlock,
+    "globals.css must include @media (prefers-color-scheme: dark)",
+  );
+
+  for (const token of DARK_ROOT_TOKENS) {
+    const pattern = new RegExp(`${token.name}:\\s*${token.hex}\\b`, "i");
+    assert.match(
+      darkBlock,
+      pattern,
+      `dark mode block must remap ${token.name} to ${token.hex}`,
+    );
+  }
+});
+
+test("globals.css keeps light :root tokens outside dark media query", () => {
+  const css = readSource(globalsCssPath);
+  const rootBlock = findRootBlock(css);
+  const darkBlock = findDarkModeBlock(css);
+
+  assert.ok(rootBlock, "globals.css must define a :root token block");
+
+  for (const token of LIGHT_ROOT_TOKENS) {
+    const pattern = new RegExp(`${token.name}:\\s*${token.hex}\\b`, "i");
+    assert.match(
+      rootBlock,
+      pattern,
+      `:root must keep light value for ${token.name} (${token.hex})`,
+    );
+  }
+
+  assert.ok(
+    darkBlock,
+    "globals.css must include @media (prefers-color-scheme: dark) for dark remaps",
+  );
+
+  for (const token of DARK_ROOT_TOKENS) {
+    const pattern = new RegExp(`${token.name}:\\s*${token.hex}\\b`, "i");
+    assert.doesNotMatch(
+      rootBlock,
+      pattern,
+      `:root must not use dark value ${token.hex} for ${token.name}; remap it in the dark media query`,
+    );
+  }
+});
+
+test("globals.css sets color-scheme light dark on html", () => {
+  const css = readSource(globalsCssPath);
+
+  assert.match(
+    css,
+    /(?:html|html,\s*body)\s*\{[\s\S]*?color-scheme:\s*light\s+dark\b/,
+    "globals.css must set color-scheme: light dark on html (or html, body)",
+  );
+});
+
+test("root-chip-alpha checkerboard uses token vars, not hardcoded light hex", () => {
+  const css = readSource(globalsCssPath);
+  const rule = findRootChipAlphaRule(css);
+
+  assert.ok(rule, "globals.css must define .root-chip-alpha");
+
+  assert.doesNotMatch(
+    rule,
+    /#eae7e5\b/i,
+    ".root-chip-alpha must not hardcode light checkerboard hex #eae7e5",
+  );
+  assert.doesNotMatch(
+    rule,
+    /#fbfaf9\b/i,
+    ".root-chip-alpha must not hardcode light checkerboard hex #fbfaf9",
+  );
+  assert.match(
+    rule,
+    /var\(--[\w-]+\)/,
+    ".root-chip-alpha checkerboard must use CSS variables so it follows the mode",
+  );
+});
+
+test("colors page says the site follows system mode, not light-only chrome", () => {
+  const source = readSource(colorsPagePath);
+
+  assert.doesNotMatch(
+    source,
+    /Dark is for native apps/i,
+    "colors-page must not say dark is only for native apps",
+  );
+  assert.doesNotMatch(
+    source,
+    /not for this chrome/i,
+    "colors-page must not say this chrome is light-only",
+  );
+  assert.match(
+    source,
+    /follows the system|system (?:color )?mode|prefers-color-scheme|matching aliases for the current system mode/i,
+    "colors-page must explain that the site follows the system (or uses matching aliases for the current system mode)",
   );
 });

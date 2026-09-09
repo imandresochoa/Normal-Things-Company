@@ -140,9 +140,9 @@ export function ColorsPage() {
           directly.
         </p>
         <p className="root-doc-lede">
-          This site uses the light aliases: paper canvas and primary ink.
-          The ramps below still show both modes. Dark is for native apps,
-          not for this chrome.
+          This site follows the system. It uses the matching aliases for the
+          current system mode: paper canvas and primary ink in light, inverted
+          paper and ink in dark. The ramps below still show both modes.
         </p>
       </header>
 
