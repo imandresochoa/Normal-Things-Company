@@ -301,13 +301,13 @@ body {
 .root-mark {
   display: block;
   width: fit-content;
-  color: var(--bg-accent);
+  color: var(--bg-expressive);
   text-decoration: none;
   outline-offset: 4px;
 }
 
 .root-mark:focus-visible {
-  outline: 2px solid var(--bg-accent);
+  outline: 2px solid var(--bg-expressive);
 }
 
 .root-mark-svg {
