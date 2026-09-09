@@ -14,7 +14,6 @@ export const ROOT_NAV: RootNavSection[] = [
     items: [
       { label: "Purpose", slug: "purpose" },
       { label: "Principles", slug: "principles" },
-      { label: "Styling", slug: "styling" },
     ],
   },
   {
