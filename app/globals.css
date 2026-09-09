@@ -268,10 +268,8 @@ body {
   width: min(280px, 86vw);
   height: 100dvh;
   flex-direction: column;
-  overflow-y: auto;
-  scrollbar-width: none;
+  overflow: hidden;
   background: var(--root-bg);
-  padding: var(--root-top) 40px 40px;
   pointer-events: none;
   visibility: hidden;
   transform: translateX(-100%);
@@ -280,7 +278,15 @@ body {
     visibility 250ms var(--ease-drawer);
 }
 
-.root-sidebar::-webkit-scrollbar {
+.root-sidebar-scroll {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: var(--root-top) 40px 40px;
+}
+
+.root-sidebar-scroll::-webkit-scrollbar {
   display: none;
 }
 
@@ -906,8 +912,7 @@ body {
     width: 260px;
     height: 100dvh;
     min-height: 0;
-    overflow-y: auto;
-    padding: var(--root-top) 40px 40px;
+    overflow: hidden;
     pointer-events: auto;
     visibility: visible;
     transform: none;
