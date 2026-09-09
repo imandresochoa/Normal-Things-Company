@@ -221,6 +221,12 @@ export function TypographyPage() {
             for the page title.
           </li>
           <li>
+            Quiet chrome and disabled controls use{" "}
+            <code>text-disabled</code>. That is the 4.5:1 floor. Do not
+            pick a new size to make them recede. Active text stays
+            stronger.
+          </li>
+          <li>
             Do not mix families on the same line. Serif and sans can share
             a screen. They must not share a line. The only exception is
             mono figures inside a paragraph, and only when the figures are

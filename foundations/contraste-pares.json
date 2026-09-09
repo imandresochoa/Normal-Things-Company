@@ -24,6 +24,14 @@
     "weight": 400
   },
   {
+    "id": "CLARO / text-disabled sobre bg-canvas",
+    "fg": "#736F6C",
+    "bg": "#FBFAF9",
+    "tipo": "texto",
+    "size": 17,
+    "weight": 400
+  },
+  {
     "id": "CLARO / text-secondary sobre bg-elevated",
     "fg": "#545250",
     "bg": "#F3F1F0",
@@ -173,6 +181,14 @@
     "bg": "#11100F",
     "tipo": "texto",
     "size": 12,
+    "weight": 400
+  },
+  {
+    "id": "OSCURO / text-disabled sobre bg-canvas",
+    "fg": "#858380",
+    "bg": "#11100F",
+    "tipo": "texto",
+    "size": 17,
     "weight": 400
   },
   {

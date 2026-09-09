@@ -38,26 +38,24 @@ export function RootSidebar({ currentSlug, open, id }: RootSidebarProps) {
                         aria-current={active ? "page" : undefined}
                       >
                         <span>{item.label}</span>
-                        {active ? (
-                          <svg
-                            className="underline-mark pointer-events-none absolute inset-x-0 bottom-[-0.15em] h-[0.45em] w-full overflow-visible"
-                            viewBox="0 0 179 14"
+                        <svg
+                          className="underline-mark pointer-events-none absolute inset-x-0 bottom-[-0.15em] h-[0.45em] w-full overflow-visible"
+                          viewBox="0 0 179 14"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          preserveAspectRatio="none"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d={UNDERLINE_PATH}
+                            data-underline-stroke=""
+                            pathLength={1}
                             fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            preserveAspectRatio="none"
-                            aria-hidden="true"
-                          >
-                            <path
-                              d={UNDERLINE_PATH}
-                              data-underline-stroke=""
-                              pathLength={1}
-                              fill="none"
-                              stroke="var(--bg-accent)"
-                              strokeLinecap="round"
-                              strokeLinejoin="bevel"
-                            />
-                          </svg>
-                        ) : null}
+                            stroke="var(--bg-accent)"
+                            strokeLinecap="round"
+                            strokeLinejoin="bevel"
+                          />
+                        </svg>
                       </Link>
                     </li>
                   );
