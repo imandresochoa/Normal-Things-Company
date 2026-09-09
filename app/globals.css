@@ -34,6 +34,24 @@
   --root-body: var(--text-secondary);
   --root-title: #928e8b;
   --root-disabled: #dad7d4;
+  --chip-checker-a: #eae7e5;
+  --chip-checker-b: #fbfaf9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-canvas: #11100f;
+    --text-primary: #fbfaf9;
+    --text-secondary: #a9a7a5;
+    --text-tertiary: #94928f;
+    --text-disabled: #858380;
+    --border-hairline: #32302e;
+    --page-selection: #18264c;
+    --root-title: #656360;
+    --root-disabled: #32302e;
+    --chip-checker-a: #242221;
+    --chip-checker-b: #11100f;
+  }
 }
 
 @theme inline {
@@ -44,6 +62,7 @@
 
 html,
 body {
+  color-scheme: light dark;
   background: var(--page-bg);
   color: var(--text-secondary);
   font-family: var(--font-letter);
@@ -581,7 +600,10 @@ body {
 }
 
 .root-chip-alpha {
-  background: repeating-conic-gradient(#eae7e5 0% 25%, #fbfaf9 0% 50%)
+  background: repeating-conic-gradient(
+      var(--chip-checker-a) 0% 25%,
+      var(--chip-checker-b) 0% 50%
+    )
     50% / 10px 10px;
   padding: 0;
   overflow: hidden;
