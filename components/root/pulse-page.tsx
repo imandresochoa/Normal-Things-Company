@@ -87,9 +87,9 @@ const FILTER_ROWS = [
 const MOTION_ROWS = [
   {
     moment: "Paint in",
-    duration: "520ms",
-    easing: "cubic-bezier(.22,.61,.36,1)",
-    notes: "Opacity 0 to 1, scale 0.94 to 1. Nothing travels.",
+    duration: "220ms",
+    easing: "var(--ease-out)",
+    notes: "Opacity 0 to 1, scale 0.97 to 1. Nothing travels.",
   },
   {
     moment: "Stagger",
