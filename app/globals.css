@@ -270,6 +270,7 @@ body {
   justify-content: space-between;
   height: 52px;
   padding: 0 var(--space-grouped);
+  background: var(--root-bg);
 }
 
 .root-menu-button {
