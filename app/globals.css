@@ -834,7 +834,7 @@ body {
   font-size: var(--type-ui-size);
   line-height: var(--type-ui-leading);
   font-weight: var(--type-body-weight);
-  color: var(--text-secondary);
+  color: var(--root-body);
 }
 
 .copy-toast.ntc-web-ui {
@@ -846,7 +846,7 @@ body {
   font-size: var(--type-caption-size);
   line-height: var(--type-caption-leading);
   font-weight: var(--type-body-weight);
-  color: var(--text-secondary);
+  color: var(--root-body);
 }
 
 .ntc-web-mono-body {

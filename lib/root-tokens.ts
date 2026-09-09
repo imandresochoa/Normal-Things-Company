@@ -458,7 +458,7 @@ export const WEB_TYPE_STYLES = [
     size: 15,
     lineHeight: 20,
     weight: 400,
-    color: "Neutral 900",
+    color: "Neutral 700",
     use: "Tables, toast, contrast chips, and compact chrome.",
   },
   {
@@ -467,7 +467,7 @@ export const WEB_TYPE_STYLES = [
     size: 12,
     lineHeight: 16,
     weight: 400,
-    color: "Neutral 900",
+    color: "Neutral 700",
     use: "Kickers, swatch captions, ramp hex, and type meta.",
   },
 ] as const;

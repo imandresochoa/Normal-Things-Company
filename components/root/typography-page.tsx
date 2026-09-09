@@ -341,8 +341,8 @@ export function TypographyPage() {
         <h2>Web composite styles</h2>
         <p>
           Three sizes. Body and heading share 17/22. Heading is Neutral
-          1000 at weight 500. Body is Neutral 700. UI and caption are
-          Neutral 900 at weight 400. The home letter uses <code>body</code> (
+          1000 at weight 500. Body, UI, and caption are Neutral 700 at
+          weight 400. The home letter uses <code>body</code> (
           <code>.ntc-web-body</code>).
         </p>
         <div className="root-type-specimens">
@@ -357,9 +357,7 @@ export function TypographyPage() {
                   color:
                     style.token === "heading"
                       ? "var(--text-primary)"
-                      : style.token === "body"
-                        ? "var(--root-body)"
-                        : "var(--text-secondary)",
+                      : "var(--root-body)",
                 }}
               >
                 {SAMPLE}
