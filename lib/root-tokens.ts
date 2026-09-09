@@ -433,6 +433,46 @@ export const WEB_TYPE_WEIGHTS = [
   },
 ] as const;
 
+export const SPACE_PRIMITIVES = [4, 8, 16, 24, 48, 80, 120] as const;
+
+export const SPACE_ROLES = [
+  {
+    token: "tight",
+    px: 4,
+    use: "Caption under a chip, kicker under a title, tight pairs.",
+  },
+  {
+    token: "related",
+    px: 8,
+    use: "Heading to lede, list items, labels after chips, table cells.",
+  },
+  {
+    token: "grouped",
+    px: 16,
+    use: "Paragraphs in a section, swatch rows, pulse plates.",
+  },
+  {
+    token: "inset",
+    px: 24,
+    use: "Subsection heading top, specimen stack, logo to nav.",
+  },
+  {
+    token: "section",
+    px: 48,
+    use: "Between doc sections, nav groups, mobile sidebar padding.",
+  },
+  {
+    token: "gutter",
+    px: 80,
+    use: "Page gutter between sidebar and main.",
+  },
+  {
+    token: "canvas",
+    px: 120,
+    use: "Top and bottom canvas padding on docs pages.",
+  },
+] as const;
+
 export const WEB_TYPE_STYLES = [
   {
     token: "body",

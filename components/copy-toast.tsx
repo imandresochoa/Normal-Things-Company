@@ -254,7 +254,7 @@ export function CopyToast() {
       style={anchorStyle}
     >
       <motion.div
-        className="copy-toast ntc-web-ui relative whitespace-nowrap rounded-[8px] bg-foreground px-2 py-1 font-[family-name:var(--font-letter)] text-background"
+        className="copy-toast ntc-web-ui relative whitespace-nowrap rounded-[8px] bg-foreground font-[family-name:var(--font-letter)] text-background"
         initial={closed}
         animate={view.open ? rest : closed}
         transition={reduceMotion ? { duration: 0 } : TOAST_SPRING}

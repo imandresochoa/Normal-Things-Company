@@ -158,3 +158,13 @@ public extension Font {
     static let monoBody = Font.system(.body, design: .monospaced, weight: .regular)
     static let monoFootnote = Font.system(.footnote, design: .monospaced, weight: .regular)
 }
+
+public enum NTCSpace {
+    public static let tight: CGFloat = 4
+    public static let related: CGFloat = 8
+    public static let grouped: CGFloat = 16
+    public static let inset: CGFloat = 24
+    public static let section: CGFloat = 48
+    public static let gutter: CGFloat = 80
+    public static let canvas: CGFloat = 120
+}

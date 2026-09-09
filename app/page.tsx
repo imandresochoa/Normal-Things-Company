@@ -6,7 +6,16 @@ const letterClassName =
 
 export default function Home() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-start gap-8 bg-background px-4 py-10 md:justify-center">
+    <main
+      className="flex min-h-dvh flex-col items-center justify-start bg-background md:justify-center"
+      style={{
+        gap: "var(--space-inset)",
+        paddingLeft: "var(--space-grouped)",
+        paddingRight: "var(--space-grouped)",
+        paddingTop: "var(--space-grouped)",
+        paddingBottom: "var(--space-grouped)",
+      }}
+    >
       <p className={letterClassName}>
         {`Dear visitor,
 
