@@ -279,10 +279,8 @@ body {
   width: min(280px, 86vw);
   height: 100dvh;
   flex-direction: column;
-  overflow-y: auto;
-  scrollbar-width: none;
+  overflow: hidden;
   background: var(--root-bg);
-  padding: var(--root-top) 40px var(--root-bottom);
   pointer-events: none;
   visibility: hidden;
   transform: translateX(-100%);
@@ -291,7 +289,15 @@ body {
     visibility 250ms var(--ease-drawer);
 }
 
-.root-sidebar::-webkit-scrollbar {
+.root-sidebar-scroll {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: var(--root-top) 40px var(--root-bottom);
+}
+
+.root-sidebar-scroll::-webkit-scrollbar {
   display: none;
 }
 
@@ -877,12 +883,15 @@ body {
     width: 260px;
     height: 100dvh;
     min-height: 0;
-    overflow-y: auto;
-    padding: var(--root-top) 0 var(--root-bottom) var(--root-gutter);
+    overflow: hidden;
     pointer-events: auto;
     visibility: visible;
     transform: none;
     transition: none;
+  }
+
+  .root-sidebar-scroll {
+    padding: var(--root-top) 0 var(--root-bottom) var(--root-gutter);
   }
 
   .root-sidebar-head {
