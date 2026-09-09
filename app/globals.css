@@ -201,7 +201,7 @@ body {
 
 .root-docs {
   min-height: 100dvh;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--root-bg);
   color: var(--root-text);
   font-size: 14px;
@@ -796,7 +796,9 @@ body {
 
 @media (min-width: 768px) {
   .root-shell {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    align-items: start;
   }
 
   .root-mobile-header,
@@ -806,8 +808,12 @@ body {
 
   .root-sidebar {
     position: sticky;
+    top: 0;
     z-index: 1;
     width: 260px;
+    height: 100dvh;
+    min-height: 0;
+    overflow-y: auto;
     pointer-events: auto;
     visibility: visible;
     transform: none;
@@ -816,6 +822,7 @@ body {
   }
 
   .root-main {
+    min-width: 0;
     padding: 48px 64px 80px;
   }
 
