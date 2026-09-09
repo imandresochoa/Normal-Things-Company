@@ -221,8 +221,8 @@ test("globals.css defines text-disabled and root-disabled tokens", () => {
   );
   assert.match(
     css,
-    /--root-title:\s*var\(--text-primary\)/,
-    "globals.css must define --root-title as Neutral 1000 via --text-primary",
+    /--root-title:\s*#928[eE]8[bB]\b/,
+    "globals.css must define --root-title as Neutral 500 (#928e8b)",
   );
   assert.match(
     css,
