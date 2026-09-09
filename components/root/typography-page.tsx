@@ -120,8 +120,9 @@ export function TypographyPage() {
         <h2>Weight band</h2>
         <p>
           The system uses three weights: 400, 510, and 590. Bold (700) is
-          only for serif display and title-1. Hierarchy comes from size,
-          color, and space. Weight is the last tool.
+          only for serif display and title-1. Rank comes from contrast,
+          then space. Size is for a heading, not for every rank. Weight
+          is the last tool.
         </p>
         <div className="root-table-wrap">
           <table className="root-table">
@@ -212,9 +213,12 @@ export function TypographyPage() {
             need smaller type, the problem is density, not type.
           </li>
           <li>
-            Do not use more than three styles on one screen, counting the
-            title. A good list is often <code>headline</code> +{" "}
-            <code>subheadline</code> + <code>caption-1</code>.
+            Prefer two styles on one screen: one heading +{" "}
+            <code>body</code>. Use <code>text-primary</code> against{" "}
+            <code>text-secondary</code>, then weight, before you pick a
+            new size. Three styles is the ceiling, counting the title. A
+            page may have a heading. This site uses <code>title-2</code>{" "}
+            for the page title.
           </li>
           <li>
             Do not mix families on the same line. Serif and sans can share
@@ -292,8 +296,8 @@ export function TypographyPage() {
         <p>
           Satoshi ships 400, 500, and 700. The iOS 510 and 590 steps both
           map to 500. Bold (700) is only for <code>display</code> and{" "}
-          <code>title-1-serif</code>. Hierarchy still comes from size,
-          color, and space.
+          <code>title-1-serif</code>. Rank comes from contrast, then
+          space. Size is for a heading, not for every rank.
         </p>
         <div className="root-table-wrap">
           <table className="root-table">
@@ -366,6 +370,15 @@ export function TypographyPage() {
       <section className="root-doc-section">
         <h2>Open questions</h2>
         <ul className="root-doc-list">
+          <li>
+            The more type styles a screen uses, the less clear the rank.
+            Prefer contrast over size when you can. A heading is allowed.
+            This site uses <code>title-2</code> for the page title and{" "}
+            <code>body</code> for the rest. Is two styles enough for the
+            default kit? Should <code>callout</code>,{" "}
+            <code>subheadline</code>, and the caption pair stay as aliases
+            only, not as default ranks?
+          </li>
           <li>
             New York on every screen title is a strong bet. Prototype the
             first two apps with serif and with sans before you lock it.

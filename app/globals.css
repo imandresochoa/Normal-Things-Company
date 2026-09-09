@@ -206,8 +206,8 @@ body {
   overflow-x: clip;
   background: var(--root-bg);
   color: var(--root-text);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-shell {
@@ -287,9 +287,9 @@ body {
 }
 
 .root-page-title {
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 1.15;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 28px;
 }
 
 .root-sidebar-head {
@@ -332,9 +332,9 @@ body {
 .root-nav-title {
   margin: 0 0 8px;
   color: var(--root-muted);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 22px;
 }
 
 .root-nav-list {
@@ -352,8 +352,8 @@ body {
   width: fit-content;
   overflow: visible;
   color: var(--root-idle);
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: 17px;
+  line-height: 22px;
   text-decoration: none;
   outline-offset: 3px;
   transition: color 160ms ease;
@@ -408,24 +408,23 @@ body {
 .root-doc-header h1,
 .root-doc h1 {
   margin: 0;
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 1.15;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 28px;
 }
 
 .root-doc-kicker {
   margin: 0 0 10px;
   color: var(--root-muted);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-doc-lede {
   margin: 16px 0 0;
   color: var(--root-body);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-doc-section {
@@ -434,20 +433,25 @@ body {
 
 .root-doc h2 {
   margin: 0 0 12px;
-  font-size: 18px;
-  font-weight: 400;
+  color: var(--root-text);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 22px;
 }
 
 .root-doc h3 {
   margin: 28px 0 10px;
-  font-size: 15px;
-  font-weight: 400;
+  color: var(--root-text);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 22px;
 }
 
 .root-doc p {
   margin: 0 0 12px;
   color: var(--root-body);
-  line-height: 1.55;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-doc code {
@@ -460,7 +464,8 @@ body {
   margin: 0 0 16px;
   padding-left: 1.2em;
   color: var(--root-body);
-  line-height: 1.55;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-doc-list li + li {
@@ -475,7 +480,8 @@ body {
 .root-doc-note {
   margin-top: 20px;
   color: var(--root-muted);
-  font-size: 13px;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-swatch-row,
@@ -515,14 +521,15 @@ body {
 .root-swatch-label {
   margin: 8px 0 0;
   color: var(--root-text);
-  font-size: 13px;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-swatch-caption {
   margin: 2px 0 0;
   color: var(--root-muted);
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-family {
@@ -538,9 +545,8 @@ body {
   justify-content: space-between;
   margin-bottom: 8px;
   color: var(--root-muted);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-ramp-steps {
@@ -562,8 +568,8 @@ body {
 .root-ramp-hex {
   display: block;
   margin-top: 4px;
-  font-size: 10px;
-  line-height: 1.3;
+  font-size: 13px;
+  line-height: 18px;
   color: var(--root-muted);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -612,7 +618,8 @@ body {
 
 .root-alias-meta span {
   color: var(--root-muted);
-  font-size: 12px;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-table-wrap {
@@ -625,7 +632,8 @@ body {
 .root-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-table th,
@@ -639,9 +647,8 @@ body {
 .root-table th {
   color: var(--root-muted);
   font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-table td {
@@ -712,7 +719,8 @@ body {
   gap: 8px 14px;
   margin: 10px 0 0;
   color: var(--root-muted);
-  font-size: 12px;
+  font-size: 17px;
+  line-height: 22px;
 }
 
 .root-type-web {
@@ -864,15 +872,6 @@ body {
   .root-main {
     min-width: 0;
     padding: 48px 64px 80px;
-  }
-
-  .root-page-title {
-    font-size: 32px;
-  }
-
-  .root-doc-header h1,
-  .root-doc h1 {
-    font-size: 32px;
   }
 
   .root-swatch-row,
