@@ -64,7 +64,7 @@ const SEED_SWATCHES: {
 
 const SEMANTIC_COPY: Record<string, string> = {
   Backgrounds: "Paper, chrome, fills, and tinted surfaces. Dark mode inverts Neutral. Blue and Orange fills keep the 700 seed.",
-  "Text and icons": "Primary ink, secondary ink, inverse ink on filled controls, and the two chromatic marks.",
+  "Text and icons": "Primary, secondary, and tertiary ink, then text-disabled as the quiet floor. Inverse ink on filled controls, and the two chromatic marks.",
   Borders: "Hairlines, control borders, and focus rings.",
 };
 
@@ -286,6 +286,29 @@ export function ColorsPage() {
           keeps the same Blue 700 in both modes, so the text on it stays
           paper hex <code>#FBFAF9</code>.
         </p>
+      </section>
+
+      <section className="root-doc-section">
+        <h2>Text rank</h2>
+        <p>
+          Ink rank is primary, then secondary, then tertiary, then
+          disabled. <code>text-disabled</code> is the quietest legal ink.
+          On canvas at 17 / 400 it meets the small-text floor of 4.5:1.
+          Do not go lighter.
+        </p>
+        <ul className="root-doc-list">
+          <li>
+            Use <code>text-disabled</code> for quiet chrome (group titles)
+            and for disabled controls. Active ink stays{" "}
+            <code>text-primary</code> or <code>text-secondary</code>.
+            Disabled is always lower.
+          </li>
+          <li>
+            Do not invent a second quiet token. The strike or the disabled
+            state is what marks a control as dead when it shares this ink
+            with a title.
+          </li>
+        </ul>
       </section>
 
       <section className="root-doc-section">
