@@ -528,6 +528,14 @@ body {
   line-height: var(--type-body-leading);
 }
 
+.root-doc-plate {
+  margin-top: var(--space-related);
+}
+
+.root-doc-plate .root-pulse-field {
+  margin-top: 0;
+}
+
 .root-doc-section {
   margin-top: var(--space-section);
 }

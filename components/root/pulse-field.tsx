@@ -141,6 +141,7 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     if (!canvas) {
       return;
     }
+    const surface: HTMLCanvasElement = canvas;
 
     const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     let reduced = reducedQuery.matches;
@@ -155,25 +156,21 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     let map: WetnessMap | null = null;
     let hasWetness = false;
 
-    const view = canvas.getContext("2d", { alpha: false });
+    const view = surface.getContext("2d", { alpha: false });
     if (!view) {
       return;
     }
 
     function sizeCanvases() {
-      if (!canvas) {
-        return;
-      }
-
-      const rect = canvas.getBoundingClientRect();
+      const rect = surface.getBoundingClientRect();
       const cssW = Math.max(1, rect.width);
       const cssH = Math.max(1, rect.height);
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       const width = Math.max(1, Math.round(cssW * dpr));
       const height = Math.max(1, Math.round(cssH * dpr));
 
-      canvas.width = width;
-      canvas.height = height;
+      surface.width = width;
+      surface.height = height;
 
       dry = makeCanvas(width, height);
       wet = makeCanvas(width, height);
@@ -197,12 +194,12 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     }
 
     function composite() {
-      if (!canvas || !dry || !view) {
+      if (!dry || !view) {
         return;
       }
 
-      const width = canvas.width;
-      const height = canvas.height;
+      const width = surface.width;
+      const height = surface.height;
       view.setTransform(1, 0, 0, 1, 0, 0);
       view.globalCompositeOperation = "source-over";
       view.drawImage(dry, 0, 0, width, height);
@@ -266,11 +263,7 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     }
 
     function pointFromEvent(event: PointerEvent) {
-      if (!canvas) {
-        return;
-      }
-
-      const rect = canvas.getBoundingClientRect();
+      const rect = surface.getBoundingClientRect();
       pointerX = (event.clientX - rect.left) / rect.width;
       pointerY = (event.clientY - rect.top) / rect.height;
     }

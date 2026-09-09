@@ -6,6 +6,7 @@ import {
   WEB_TYPE_STYLES,
   WEB_TYPE_WEIGHTS,
 } from "@/lib/root-tokens";
+import { RootDocHeader } from "./root-doc-header";
 
 const SAMPLE = "The kettle is already warm.";
 const MONO_SAMPLE = "07:42  18°";
@@ -23,15 +24,14 @@ function iosCssWeight(weight: number) {
 export function TypographyPage() {
   return (
     <article className="root-doc">
-      <header className="root-doc-header">
-        <h1>Typography</h1>
+      <RootDocHeader title="Typography">
         <p className="root-doc-lede">
           Root does not invent one scale for every platform. iOS aliases
           the system text styles so Dynamic Type still works. Web uses
           three Inter sizes. Personality comes from family, a narrow
           weight band, and color.
         </p>
-      </header>
+      </RootDocHeader>
 
       <section className="root-doc-section">
         <h2>Why alias, not invent</h2>
