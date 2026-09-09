@@ -29,6 +29,30 @@ function parseRootNavSlugs(source) {
   return slugs;
 }
 
+function parseRootNavLabels(source) {
+  const labels = [];
+  for (const match of source.matchAll(/label:\s*"([^"]+)"/g)) {
+    labels.push(match[1]);
+  }
+  return labels;
+}
+
+function parseIntroductionSlugs(source) {
+  const introMatch = source.match(
+    /title:\s*"Introduction"[\s\S]*?items:\s*\[([\s\S]*?)\],\s*\n\s*\}/,
+  );
+
+  if (!introMatch) {
+    return [];
+  }
+
+  const slugs = [];
+  for (const match of introMatch[1].matchAll(/slug:\s*"([^"]+)"/g)) {
+    slugs.push(match[1]);
+  }
+  return slugs;
+}
+
 function callIsRootNavItemReady(slug) {
   const moduleUrl = pathToFileURL(rootNavPath).href;
   const script = `
@@ -48,6 +72,37 @@ function callIsRootNavItemReady(slug) {
 
   return { ok: true, value: JSON.parse(result.stdout.trim()) };
 }
+
+test("ROOT_NAV must not include styling slug", () => {
+  const source = readSource(rootNavPath);
+  const navSlugs = parseRootNavSlugs(source);
+
+  assert.ok(
+    !navSlugs.includes("styling"),
+    'lib/root-nav.ts must not include a nav item with slug "styling"',
+  );
+});
+
+test("ROOT_NAV must not include Styling label", () => {
+  const source = readSource(rootNavPath);
+  const navLabels = parseRootNavLabels(source);
+
+  assert.ok(
+    !navLabels.includes("Styling"),
+    'lib/root-nav.ts must not include a nav item with label "Styling"',
+  );
+});
+
+test("Introduction section keeps purpose and principles", () => {
+  const source = readSource(rootNavPath);
+  const introSlugs = parseIntroductionSlugs(source);
+
+  assert.deepEqual(
+    introSlugs,
+    ["purpose", "principles"],
+    'Introduction section must include only Purpose and Principles (slugs "purpose" and "principles")',
+  );
+});
 
 test("root-nav exports isRootNavItemReady", () => {
   const source = readSource(rootNavPath);
