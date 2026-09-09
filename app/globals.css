@@ -312,7 +312,7 @@ body {
 
 .root-mark-svg {
   display: block;
-  width: 128px;
+  width: 64px;
   height: auto;
   overflow: visible;
 }
@@ -320,10 +320,6 @@ body {
 .root-mobile-header .root-mark {
   display: flex;
   align-items: center;
-}
-
-.root-mobile-header .root-mark-svg {
-  width: 76px;
 }
 
 .root-nav {
