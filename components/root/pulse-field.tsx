@@ -161,6 +161,10 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     }
 
     function sizeCanvases() {
+      if (!canvas) {
+        return;
+      }
+
       const rect = canvas.getBoundingClientRect();
       const cssW = Math.max(1, rect.width);
       const cssH = Math.max(1, rect.height);
@@ -193,7 +197,7 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     }
 
     function composite() {
-      if (!dry || !view) {
+      if (!canvas || !dry || !view) {
         return;
       }
 
@@ -262,6 +266,10 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     }
 
     function pointFromEvent(event: PointerEvent) {
+      if (!canvas) {
+        return;
+      }
+
       const rect = canvas.getBoundingClientRect();
       pointerX = (event.clientX - rect.left) / rect.width;
       pointerY = (event.clientY - rect.top) / rect.height;
