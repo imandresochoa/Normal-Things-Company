@@ -61,3 +61,9 @@ export function getRootNavItem(slug: string): RootNavItem | undefined {
 export function rootPath(slug: string): string {
   return `/root/${slug}`;
 }
+
+const READY_SLUGS = new Set(["colors", "typography"]);
+
+export function isRootNavItemReady(slug: string): boolean {
+  return READY_SLUGS.has(slug);
+}
