@@ -1,51 +1,10 @@
 import {
-  CHART_FAMILIES,
   ILLUST_TOKEN_NAMES,
-  PULSE_SEMANTIC_GROUPS,
   SERIES_TOKEN_NAMES,
-  chartFamily700,
-  chartFamilySteps,
   chartSemantic,
   pulseCssVars,
-  type ChartFamily,
 } from "@/lib/pulse-tokens";
 import { PulsePlates } from "./pulse-plates";
-
-const FAMILY_COPY: Record<ChartFamily, { title: string; body: string }> = {
-  indigo: {
-    title: "Indigo",
-    body: "Series 1. Paper labels sit on the fill. Contrast on paper is 5.11:1. Luminance is 0.147.",
-  },
-  ember: {
-    title: "Ember",
-    body: "Series 2. No small text on Ember 700. If a label must sit on the fill, set it at 20px or larger, or move it outside. Contrast on paper is 3.89:1. Luminance is 0.209.",
-  },
-  teal: {
-    title: "Teal",
-    body: "Series 3. Labels on the fill use ink, not paper. Contrast on paper is 3.15:1. Luminance is 0.270.",
-  },
-  moss: {
-    title: "Moss",
-    body: "Series 4. Paper labels. Contrast on paper is 7.61:1. Luminance is 0.082.",
-  },
-};
-
-const SERIES_ROWS: {
-  family: ChartFamily;
-  onPaper: string;
-  label: string;
-  luminance: string;
-}[] = [
-  { family: "indigo", onPaper: "5.11:1", label: "Paper", luminance: "0.147" },
-  {
-    family: "ember",
-    onPaper: "3.89:1",
-    label: "Large text only",
-    luminance: "0.209",
-  },
-  { family: "teal", onPaper: "3.15:1", label: "Ink", luminance: "0.270" },
-  { family: "moss", onPaper: "7.61:1", label: "Paper", luminance: "0.082" },
-];
 
 const PLOT_SUBSTRATE = [
   { name: "plot-paper", role: "Every plate" },
@@ -121,33 +80,6 @@ function Chip({ hex, title }: { hex: string; title?: string }) {
   );
 }
 
-function ChartRamp({ family }: { family: ChartFamily }) {
-  const steps = chartFamilySteps(family);
-
-  return (
-    <div className="root-ramp">
-      <div className="root-ramp-head">
-        <span>Paper plate</span>
-      </div>
-      <div className="root-ramp-steps">
-        {steps.map((step) => {
-          const hex = step.value.light;
-          return (
-            <div key={`${family}-${step.step}`} className="root-ramp-step">
-              <Chip hex={hex} title={hex} />
-              <span className="root-ramp-step-num">
-                {step.step}
-                {step.seed ? " · seed" : ""}
-              </span>
-              <span className="root-ramp-hex">{hex}</span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 export function PulsePage() {
   const cssVars = pulseCssVars();
 
@@ -162,7 +94,8 @@ export function PulsePage() {
         </p>
         <p className="root-doc-lede">
           Pulse inks are not UI color. Do not put them on a button, an
-          input, or the nav. Colors stays the chrome. Pulse stays the plate.
+          input, or the nav. Chart inks live on Colors. Pulse stays the
+          plate: printing, ink, motion, and illustration.
         </p>
       </header>
 
@@ -214,111 +147,9 @@ export function PulsePage() {
         <p>
           There is no third layer. A plot asks for <code>plot-subject</code>.
           A picture asks for <code>illust-moss</code>. A control still asks
-          for <code>bg-accent</code>.
+          for <code>bg-accent</code>. Chart family ramps and Pulse semantic
+          aliases live on Colors.
         </p>
-      </section>
-
-      <section className="root-doc-section">
-        <h2>Pulse palettes</h2>
-        <p>
-          Four hues, because four is what the paper pays for. Every fill has
-          to clear 3:1 against Neutral 100. That caps relative luminance at
-          0.286. Split it four ways and neighbouring series sit 0.061 apart,
-          which survives greyscale. Split it six ways and they do not. Four
-          is arithmetic, not taste.
-        </p>
-        <p>
-          Chroma is about half the electric seeds. A data series must never
-          be mistaken for a control. Ochre is out: below L 0.66 a yellow on
-          warm paper is muddy.
-        </p>
-        <div className="root-swatch-row">
-          {CHART_FAMILIES.map((family) => {
-            const hex = chartFamily700(family.id);
-            return (
-              <div key={family.id} className="root-swatch">
-                <Chip hex={hex} />
-                <p className="root-swatch-label">{FAMILY_COPY[family.id].title}</p>
-                <p className="root-swatch-caption">
-                  {hex} at 700
-                </p>
-              </div>
-            );
-          })}
-        </div>
-        <div className="root-table-wrap">
-          <table className="root-table">
-            <thead>
-              <tr>
-                <th>Series</th>
-                <th>Step 700</th>
-                <th>On paper</th>
-                <th>Label on the fill</th>
-                <th>Luminance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SERIES_ROWS.map((row) => (
-                <tr key={row.family}>
-                  <td>{FAMILY_COPY[row.family].title}</td>
-                  <td>
-                    <code>{chartFamily700(row.family)}</code>
-                  </td>
-                  <td>{row.onPaper}</td>
-                  <td>{row.label}</td>
-                  <td>{row.luminance}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p>
-          Series order is Indigo, Ember, Teal, Moss. Two-series charts get
-          the most separated pair first. Ember 900 can hold small paper text
-          if the fill must carry a caption.
-        </p>
-        {CHART_FAMILIES.map((family) => {
-          const copy = FAMILY_COPY[family.id];
-          return (
-            <div key={family.id} className="root-family">
-              <h3>{copy.title}</h3>
-              <p>{copy.body}</p>
-              <ChartRamp family={family.id} />
-            </div>
-          );
-        })}
-        <p>
-          These names are the public API of Pulse color. Views that draw a
-          plate use them. Views that draw chrome do not.
-        </p>
-        {PULSE_SEMANTIC_GROUPS.map((group) => (
-          <div key={group.title} className="root-alias-group">
-            <h3>{group.title}</h3>
-            <p>
-              {group.title === "Plot"
-                ? "What a chart asks for. Subject is still Blue. Moment is still Orange. Context is Neutral."
-                : group.title === "Series"
-                  ? "Unordered categories only. Never a state. Never a control."
-                  : "What a picture asks for. Same inks as the series. Wash steps are Chart 400."}
-            </p>
-            <div className="root-alias-list">
-              {group.tokens.map((name) => {
-                const token = chartSemantic(name);
-                return (
-                  <div key={name} className="root-alias">
-                    <div className="root-alias-pair">
-                      <Chip hex={token.hex} title={token.hex} />
-                    </div>
-                    <div className="root-alias-meta">
-                      <code>{name}</code>
-                      <span>{token.hex}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
       </section>
 
       <section className="root-doc-section">

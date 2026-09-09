@@ -14,13 +14,13 @@ export const ROOT_NAV: RootNavSection[] = [
     items: [
       { label: "Purpose", slug: "purpose" },
       { label: "Principles", slug: "principles" },
-      { label: "Pulse", slug: "pulse" },
     ],
   },
   {
     title: "Foundations",
     items: [
       { label: "Colors", slug: "colors" },
+      { label: "Pulse", slug: "pulse" },
       { label: "Typography", slug: "typography" },
       { label: "Iconography", slug: "iconography" },
     ],
