@@ -870,6 +870,30 @@ body {
     transform 220ms var(--ease-out);
 }
 
+.root-pulse-field {
+  width: 100%;
+  height: 240px;
+  margin-top: 24px;
+  overflow: hidden;
+  border: 1px solid var(--root-line);
+  border-radius: 8px;
+  background: var(--plot-paper, #fbfaf9);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.root-pulse-field canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.root-pulse-field-demo {
+  height: 176px;
+  margin-top: 0;
+}
+
 .root-contrast-sample {
   display: inline-flex;
   align-items: center;
@@ -1058,6 +1082,14 @@ body {
 
   .root-chip {
     height: 52px;
+  }
+
+  .root-pulse-field {
+    height: 360px;
+  }
+
+  .root-pulse-field-demo {
+    height: 176px;
   }
 }
 

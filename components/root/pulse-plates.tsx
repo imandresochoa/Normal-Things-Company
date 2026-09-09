@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useId, type CSSProperties } from "react";
+import { PULSE_WASH_SCENE } from "@/lib/scenes/pulse-wash";
+import { PulseField } from "./pulse-field";
+import { PulsePaint } from "./pulse-paint";
 
 const BAR_ROWS = [
   { label: "Mail", hours: 6.4, subject: false },
@@ -18,56 +21,8 @@ function snapSize(value: number) {
   return Math.max(SNAP, Math.round(value / SNAP) * SNAP);
 }
 
-function PulsePaint({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [painted, setPainted] = useState(false);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) {
-      return;
-    }
-
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduced.matches) {
-      setPainted(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          setPainted(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.25 },
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={className}
-      data-painted={painted ? "true" : "false"}
-    >
-      {children}
-    </div>
-  );
-}
-
 export function PulsePlates() {
   const inkId = useId().replace(/:/g, "");
-  const washId = useId().replace(/:/g, "");
 
   return (
     <>
@@ -110,45 +65,6 @@ export function PulsePlates() {
               values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.4 0 0 0 -0.62"
             />
             <feComposite in="rough" in2="toothA" operator="out" />
-          </filter>
-          <filter
-            id={`wash-${washId}`}
-            x="-12%"
-            y="-12%"
-            width="124%"
-            height="124%"
-            colorInterpolationFilters="sRGB"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.6"
-              numOctaves="2"
-              seed="3"
-              result="edge"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="edge"
-              scale="26"
-              xChannelSelector="R"
-              yChannelSelector="G"
-              result="rough"
-            />
-            <feGaussianBlur in="rough" stdDeviation="1.1" result="soft" />
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.6"
-              numOctaves="2"
-              seed="7"
-              result="tooth"
-            />
-            <feColorMatrix
-              in="tooth"
-              type="matrix"
-              result="toothA"
-              values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.4 0 0 0 -0.28"
-            />
-            <feComposite in="soft" in2="toothA" operator="out" />
           </filter>
         </defs>
       </svg>
@@ -236,61 +152,17 @@ export function PulsePlates() {
         </figure>
       </PulsePaint>
 
-      <PulsePaint className="root-pulse-paint">
-        <figure className="root-pulse-figure">
-          <div className="root-paper root-pulse-plate root-pulse-wash-plate">
-            <svg
-              viewBox="0 0 320 176"
-              width="320"
-              height="176"
-              aria-hidden="true"
-            >
-              <g
-                filter={`url(#wash-${washId})`}
-                style={{ mixBlendMode: "multiply" }}
-              >
-                <ellipse
-                  cx="118"
-                  cy="92"
-                  rx="92"
-                  ry="58"
-                  fill="var(--illust-moss-wash)"
-                  opacity="0.72"
-                />
-                <ellipse
-                  cx="118"
-                  cy="92"
-                  rx="70"
-                  ry="42"
-                  fill="var(--illust-moss)"
-                  opacity="0.28"
-                />
-                <ellipse
-                  cx="204"
-                  cy="78"
-                  rx="86"
-                  ry="52"
-                  fill="var(--illust-ember-wash)"
-                  opacity="0.7"
-                  transform="translate(2 1)"
-                />
-                <ellipse
-                  cx="168"
-                  cy="108"
-                  rx="64"
-                  ry="40"
-                  fill="var(--illust-indigo-wash)"
-                  opacity="0.62"
-                  transform="translate(-1 2)"
-                />
-              </g>
-            </svg>
-          </div>
-          <figcaption className="root-swatch-caption">
-            Illustration wash. Same inks. Multiply. Paper shows through.
-          </figcaption>
-        </figure>
-      </PulsePaint>
+      <figure className="root-pulse-figure">
+        <PulseField
+          scene={PULSE_WASH_SCENE}
+          label="Illustration wash in Pulse inks"
+          className="root-pulse-field-demo"
+        />
+        <figcaption className="root-swatch-caption">
+          Field wash. Same inks. Water under the pointer. Reload restores
+          the dry plate.
+        </figcaption>
+      </figure>
     </>
   );
 }

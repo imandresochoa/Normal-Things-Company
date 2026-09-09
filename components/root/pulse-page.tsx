@@ -68,6 +68,12 @@ const MOTION_ROWS = [
     easing: "cubic-bezier(.4,0,.2,1)",
     notes: "Matches the Root control transition.",
   },
+  {
+    moment: "Water",
+    duration: "20s soak",
+    easing: "linear accumulation",
+    notes: "Local wetness under the pointer. Does not dry until reload. Reduced motion stays dry.",
+  },
 ];
 
 function Chip({ hex, title }: { hex: string; title?: string }) {
@@ -120,10 +126,15 @@ export function PulsePage() {
           </li>
         </ul>
         <p>
-          Do not reach for a soft, dusty, watercolor look. It fights the
-          seeds, and warm cream with a muted terracotta accent is the house
-          style of every generated page on the internet right now. The seeds
-          are loud. Let them be loud and let the process do the softening.
+          Do not reach for a soft, dusty, muted look. Warm cream with a
+          terracotta accent is the house style of every generated page on
+          the internet right now. It fights the seeds. The seeds are loud.
+          Let them be loud and let the process do the softening.
+        </p>
+        <p>
+          A Field may use wet wash as process: bleed, paper show-through,
+          and water under the pointer. That is not a new palette. The inks
+          stay Indigo, Ember, Teal, Moss, and a rare Orange moment.
         </p>
       </section>
 
@@ -352,7 +363,10 @@ export function PulsePage() {
           </li>
           <li>
             <strong>Field.</strong> Not a chart. A texture that carries a
-            rate. For a hero or a section opener. Never label it.
+            rate. For a hero or a section opener. Never caption it as data.
+            Width matches the text column. Height is about 360px on
+            desktop. Leave air at the top. No sky. No distant mountains.
+            The live engine is <code>PulseField</code>.
           </li>
         </ul>
         <ul className="root-doc-list">
@@ -394,6 +408,11 @@ export function PulsePage() {
           )}
           . First plates use the wash aliases.
         </p>
+        <p>
+          Harmony is the balance of inks, not every hue at full strength.
+          Finesse is thin stems and small dabs. Delicacy is paper air and
+          slow water.
+        </p>
         <ul className="root-doc-list">
           <li>
             Let the paper show. Unpainted Neutral 100 is a color and usually
@@ -408,7 +427,20 @@ export function PulsePage() {
             Do not add a color that is not in the palette. If the picture
             needs a warmer green, overprint Moss with Ember.
           </li>
+          <li>
+            Do not put Blue Electric in a Field. Blue still marks what the
+            person can touch. Orange may appear as <code>plot-moment</code>,
+            never as ground.
+          </li>
         </ul>
+        <h3>How to add a Field</h3>
+        <p>
+          Write a scene file under <code>lib/scenes/</code>. Use only
+          illustration tokens, paper, and a rare <code>plot-moment</code>.
+          Pass it to <code>PulseField</code>. Do not fork a second watering
+          system. Chart plates still use SVG <code>#ink</code>. Fields use
+          a wetness map. Do not animate SVG filter attributes.
+        </p>
       </section>
 
       <section className="root-doc-section">
@@ -482,7 +514,11 @@ export function PulsePage() {
           </li>
           <li>
             Under <code>prefers-reduced-motion</code>, everything arrives in
-            its final state. Not faster. Arrived.
+            its final state. Not faster. Arrived. A Field stays dry.
+          </li>
+          <li>
+            Water answers the pointer. A brush-sized spot soaks in about
+            20 seconds. The plate does not dry until reload.
           </li>
         </ul>
       </section>
@@ -529,8 +565,8 @@ export function PulsePage() {
           </li>
           <li>
             The wash filter is expensive and has only been reasoned about,
-            not measured. Profile it on a mid-range phone before shipping an
-            illustration above the fold.
+            not measured. Fields rasterize once to canvas. Profile a Field
+            on a mid-range phone before shipping it above the fold.
           </li>
           <li>
             Dark mode is undefined here. Inverting paper is easy. Inverting

@@ -19,8 +19,11 @@ import {
   chartFamily700,
   chartFamilySteps,
   chartSemantic,
+  pulseCssVars,
   type ChartFamily,
 } from "@/lib/pulse-tokens";
+import { COLORS_MEADOW } from "@/lib/scenes/colors-meadow";
+import { PulseField } from "./pulse-field";
 
 const FAMILY_COPY: Record<
   PrimitiveFamily,
@@ -200,8 +203,10 @@ function Ramp({
 }
 
 export function ColorsPage() {
+  const cssVars = pulseCssVars();
+
   return (
-    <article className="root-doc">
+    <article className="root-doc" style={cssVars}>
       <header className="root-doc-header">
         <h1>Colors</h1>
         <p className="root-doc-lede">
@@ -215,6 +220,10 @@ export function ColorsPage() {
           current system mode: paper canvas and primary ink in light, inverted
           paper and ink in dark. The ramps below still show both modes.
         </p>
+        <PulseField
+          scene={COLORS_MEADOW}
+          label="Meadow painted in Pulse inks"
+        />
       </header>
 
       <section className="root-doc-section">
