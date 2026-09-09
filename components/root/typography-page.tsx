@@ -350,9 +350,7 @@ export function TypographyPage() {
           {WEB_TYPE_STYLES.map((style) => (
             <div key={`web-${style.token}`} className="root-type-specimen">
               <p
-                className={
-                  style.family === "mono" ? "root-type-mono" : "root-type-web"
-                }
+                className="root-type-web"
                 style={{
                   fontSize: `${style.size}px`,
                   lineHeight: `${style.lineHeight}px`,
@@ -363,7 +361,7 @@ export function TypographyPage() {
                       : "var(--text-secondary)",
                 }}
               >
-                {style.family === "mono" ? MONO_SAMPLE : SAMPLE}
+                {SAMPLE}
               </p>
               <p className="root-type-meta">
                 <code>{style.token}</code>
