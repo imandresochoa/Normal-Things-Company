@@ -303,13 +303,13 @@ body {
   outline: 2px solid var(--root-accent);
 }
 
-.root-mark-dot {
-  display: block;
-  width: 10px;
-  height: 10px;
+.root-mark-seed {
+  display: flex;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
-  border-radius: 999px;
-  background: var(--root-accent);
+  overflow: hidden;
+  border-radius: 6px;
 }
 
 .root-mark-pill {
