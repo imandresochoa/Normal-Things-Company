@@ -215,6 +215,8 @@ body {
 
 .root-docs {
   --root-top: 120px;
+  --root-bottom: 120px;
+  --root-gutter: 80px;
   --root-fade-height: 70px;
   --root-fade-blur: 4px;
   --root-fade-stop: 50%;
@@ -280,7 +282,7 @@ body {
   overflow-y: auto;
   scrollbar-width: none;
   background: var(--root-bg);
-  padding: var(--root-top) 40px 40px;
+  padding: var(--root-top) 40px var(--root-bottom);
   pointer-events: none;
   visibility: hidden;
   transform: translateX(-100%);
@@ -347,7 +349,7 @@ body {
 .root-main {
   flex: 1;
   min-width: 0;
-  padding: var(--root-top) 20px 64px;
+  padding: var(--root-top) 20px var(--root-bottom);
 }
 
 .root-page-title {
@@ -859,6 +861,7 @@ body {
   .root-shell {
     display: grid;
     grid-template-columns: 260px minmax(0, 1fr);
+    column-gap: var(--root-gutter);
     align-items: start;
   }
 
@@ -875,7 +878,7 @@ body {
     height: 100dvh;
     min-height: 0;
     overflow-y: auto;
-    padding: var(--root-top) 40px 40px;
+    padding: var(--root-top) 0 var(--root-bottom) var(--root-gutter);
     pointer-events: auto;
     visibility: visible;
     transform: none;
@@ -892,7 +895,7 @@ body {
 
   .root-main {
     min-width: 0;
-    padding: var(--root-top) 64px 80px;
+    padding: var(--root-top) var(--root-gutter) var(--root-bottom) 0;
   }
 
   .root-swatch-row,
