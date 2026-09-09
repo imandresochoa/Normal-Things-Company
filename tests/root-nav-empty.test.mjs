@@ -226,8 +226,8 @@ test("globals.css defines text-disabled and root-disabled tokens", () => {
   );
   assert.match(
     css,
-    /--root-disabled:\s*#928[eE]8[bB]\b/,
-    "globals.css must define --root-disabled as Neutral 500 (#928e8b)",
+    /--root-disabled:\s*#dad7d4\b/i,
+    "globals.css must define --root-disabled as Neutral 400 (#dad7d4)",
   );
 });
 
