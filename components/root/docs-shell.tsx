@@ -22,14 +22,6 @@ export function DocsShell({ children }: DocsShellProps) {
   }
 
   useEffect(() => {
-    document.documentElement.classList.add("root-docs-active");
-
-    return () => {
-      document.documentElement.classList.remove("root-docs-active");
-    };
-  }, []);
-
-  useEffect(() => {
     if (!open) {
       return;
     }

@@ -1,22 +1,29 @@
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap");
 @import "tailwindcss";
 
 :root {
-  --page-bg: #f4f2ef;
-  --page-text: #1a1a1a;
-  --page-selection: #9db1fb;
+  --bg-canvas: #fbfaf9;
+  --text-primary: #262524;
+  --text-secondary: #545250;
+  --text-tertiary: #63605d;
+  --border-hairline: #dad7d4;
+  --bg-accent: #2a56f7;
+  --bg-expressive: #f7452a;
+  --page-bg: var(--bg-canvas);
+  --page-text: var(--text-primary);
+  --page-selection: #d8e5ff;
   --font-letter: "Satoshi", sans-serif;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --underline-trace-ms: 700ms;
-  --root-bg: #000000;
-  --root-text: #f4f2ef;
-  --root-muted: #737373;
-  --root-idle: #8a8a8a;
-  --root-line: #2a2a2a;
-  --root-accent: #f7452a;
-  --root-body: #c8c4c0;
+  --root-bg: var(--bg-canvas);
+  --root-text: var(--text-primary);
+  --root-muted: var(--text-tertiary);
+  --root-idle: var(--text-secondary);
+  --root-line: var(--border-hairline);
+  --root-accent: var(--bg-expressive);
+  --root-body: var(--text-secondary);
 }
 
 @theme inline {
@@ -192,12 +199,6 @@ body {
   }
 }
 
-html.root-docs-active,
-html.root-docs-active body {
-  background: var(--root-bg);
-  color: var(--root-text);
-}
-
 .root-docs {
   min-height: 100dvh;
   overflow-x: hidden;
@@ -286,7 +287,6 @@ html.root-docs-active body {
 .root-page-title {
   font-size: 28px;
   font-weight: 400;
-  letter-spacing: -0.03em;
   line-height: 1.15;
 }
 
@@ -317,10 +317,9 @@ html.root-docs-active body {
   align-items: center;
   height: 26px;
   padding: 0 10px;
-  border: 1px solid rgb(255 255 255 / 0.72);
+  border: 1px solid var(--root-line);
   border-radius: 999px;
   font-size: 13px;
-  letter-spacing: 0.01em;
 }
 
 .root-nav {
@@ -380,7 +379,6 @@ html.root-docs-active body {
   margin: 0;
   font-size: 28px;
   font-weight: 400;
-  letter-spacing: -0.03em;
   line-height: 1.15;
 }
 
@@ -407,7 +405,6 @@ html.root-docs-active body {
   margin: 0 0 12px;
   font-size: 18px;
   font-weight: 400;
-  letter-spacing: -0.015em;
 }
 
 .root-doc h3 {
@@ -468,11 +465,11 @@ html.root-docs-active body {
   width: 100%;
   height: 44px;
   border-radius: 6px;
-  border: 1px solid rgb(255 255 255 / 0.08);
+  border: 1px solid var(--root-line);
 }
 
 .root-chip-alpha {
-  background: repeating-conic-gradient(#3a3a3a 0% 25%, #1c1c1c 0% 50%)
+  background: repeating-conic-gradient(#eae7e5 0% 25%, #fbfaf9 0% 50%)
     50% / 10px 10px;
   padding: 0;
   overflow: hidden;
@@ -633,7 +630,7 @@ html.root-docs-active body {
   border-radius: 4px;
   font-size: 13px;
   font-weight: 500;
-  border: 1px solid rgb(255 255 255 / 0.08);
+  border: 1px solid var(--root-line);
 }
 
 .root-type-family-sample {
@@ -687,6 +684,116 @@ html.root-docs-active body {
   font-size: 12px;
 }
 
+.root-type-web {
+  font-family: var(--font-letter);
+}
+
+.ntc-web-sans {
+  font-family: var(--font-letter);
+}
+
+.ntc-web-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.ntc-web-display {
+  font-family: var(--font-letter);
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 700;
+}
+
+.ntc-web-title-1 {
+  font-family: var(--font-letter);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+}
+
+.ntc-web-title-2 {
+  font-family: var(--font-letter);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.ntc-web-title-3 {
+  font-family: var(--font-letter);
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 500;
+}
+
+.ntc-web-headline {
+  font-family: var(--font-letter);
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 500;
+}
+
+.ntc-web-body {
+  font-family: var(--font-letter);
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+.ntc-web-body-emphasis {
+  font-family: var(--font-letter);
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 500;
+}
+
+.ntc-web-callout {
+  font-family: var(--font-letter);
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: 400;
+}
+
+.ntc-web-subheadline {
+  font-family: var(--font-letter);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.ntc-web-footnote {
+  font-family: var(--font-letter);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+.ntc-web-caption-1 {
+  font-family: var(--font-letter);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+.ntc-web-caption-2 {
+  font-family: var(--font-letter);
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 400;
+}
+
+.ntc-web-mono-body {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+.ntc-web-mono-footnote {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
 @media (min-width: 768px) {
   .root-shell {
     flex-direction: row;
@@ -705,6 +812,7 @@ html.root-docs-active body {
     visibility: visible;
     transform: none;
     transition: none;
+    border-right: 1px solid var(--root-line);
   }
 
   .root-main {

@@ -140,6 +140,11 @@ export function ColorsPage() {
           must use the semantic names. They must not use a primitive step
           directly.
         </p>
+        <p className="root-doc-lede">
+          This site uses the light aliases: paper canvas and primary ink.
+          The ramps below still show both modes. Dark is for native apps,
+          not for this chrome.
+        </p>
       </header>
 
       <section className="root-doc-section">

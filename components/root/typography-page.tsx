@@ -2,12 +2,15 @@ import {
   TYPE_FAMILIES,
   TYPE_STYLES,
   TYPE_WEIGHTS,
+  WEB_TYPE_FAMILIES,
+  WEB_TYPE_STYLES,
+  WEB_TYPE_WEIGHTS,
 } from "@/lib/root-tokens";
 
 const SAMPLE = "The kettle is already warm.";
 const MONO_SAMPLE = "07:42  18°";
 
-function cssWeight(weight: number) {
+function iosCssWeight(weight: number) {
   if (weight === 510) {
     return 500;
   }
@@ -24,9 +27,10 @@ export function TypographyPage() {
         <p className="root-doc-kicker">Foundations</p>
         <h1>Typography</h1>
         <p className="root-doc-lede">
-          Root does not invent a type scale. It aliases the iOS text styles.
-          Dynamic Type is the contract. Personality comes from family, a
-          narrow weight band, tracking, and color.
+          Root does not invent a type scale. It aliases one hierarchy onto
+          two platforms. iOS uses the system text styles. Web uses the same
+          names on Satoshi. Personality comes from family, a narrow weight
+          band, tracking, and color.
         </p>
       </header>
 
@@ -43,6 +47,10 @@ export function TypographyPage() {
           rescaled by hand. Someone will forget. Some text will not grow.
           That is not a foundation. So the scale is the system scale, and
           the four decisions below carry the character.
+        </p>
+        <p>
+          Web has no Dynamic Type contract. It still aliases the same names
+          and rank onto Satoshi. Do not invent a second ladder of sizes.
         </p>
       </section>
 
@@ -70,6 +78,7 @@ export function TypographyPage() {
       </section>
 
       <section className="root-doc-section">
+        <p className="root-doc-kicker">iOS</p>
         <h2>Families</h2>
         <p>
           All three are system fonts. There is no download, no license file,
@@ -178,7 +187,7 @@ export function TypographyPage() {
                 style={{
                   fontSize: `${style.size}px`,
                   lineHeight: `${style.lineHeight}px`,
-                  fontWeight: cssWeight(style.weight),
+                  fontWeight: iosCssWeight(style.weight),
                 }}
               >
                 {style.family === "mono" ? MONO_SAMPLE : SAMPLE}
@@ -248,6 +257,110 @@ export function TypographyPage() {
           A layout seen only at Large is not tested. Failures show at AX5,
           where body goes from 17pt to 53pt and a fixed row height breaks.
         </p>
+      </section>
+
+      <section className="root-doc-section">
+        <p className="root-doc-kicker">Web</p>
+        <h2>Satoshi</h2>
+        <p>
+          Web is a variant of the same hierarchy. Satoshi is the only sans
+          family. There is no New York on the web. <code>display</code> and{" "}
+          <code>title-1-serif</code> use Satoshi at 700. Mono uses the
+          system <code>ui-monospace</code> stack as a stand-in.
+        </p>
+        <div className="root-type-families">
+          {WEB_TYPE_FAMILIES.map((family) => (
+            <div key={family.id} className="root-type-family">
+              <p
+                className={`root-type-family-sample ${
+                  family.id === "mono" ? "root-type-mono" : "root-type-web"
+                }`}
+              >
+                {family.name}
+              </p>
+              <p className="root-swatch-label">
+                <code>{family.token}</code>
+              </p>
+              <p className="root-swatch-caption">{family.role}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="root-doc-section">
+        <h2>Web weight band</h2>
+        <p>
+          Satoshi ships 400, 500, and 700. The iOS 510 and 590 steps both
+          map to 500. Bold (700) is only for <code>display</code> and{" "}
+          <code>title-1-serif</code>. Hierarchy still comes from size,
+          color, and space.
+        </p>
+        <div className="root-table-wrap">
+          <table className="root-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>wght</th>
+                <th>Maps from iOS</th>
+                <th>Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {WEB_TYPE_WEIGHTS.map((row) => (
+                <tr key={row.token}>
+                  <td>
+                    <code>{row.token}</code>
+                  </td>
+                  <td>{row.value}</td>
+                  <td>{row.maps}</td>
+                  <td>{row.use}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="root-doc-section">
+        <h2>Web tracking</h2>
+        <p>
+          Do not override tracking on Satoshi. Leave the default. Do not
+          add tracking tokens to the semantic layer.
+        </p>
+      </section>
+
+      <section className="root-doc-section">
+        <h2>Web composite styles</h2>
+        <p>
+          Same names as iOS. Same sizes in pixels as the Large point
+          values. The home letter uses <code>body</code> (
+          <code>.ntc-web-body</code>): 17/22 at weight 400.
+        </p>
+        <div className="root-type-specimens">
+          {WEB_TYPE_STYLES.map((style) => (
+            <div key={`web-${style.token}`} className="root-type-specimen">
+              <p
+                className={
+                  style.family === "mono" ? "root-type-mono" : "root-type-web"
+                }
+                style={{
+                  fontSize: `${style.size}px`,
+                  lineHeight: `${style.lineHeight}px`,
+                  fontWeight: style.weight,
+                }}
+              >
+                {style.family === "mono" ? MONO_SAMPLE : SAMPLE}
+              </p>
+              <p className="root-type-meta">
+                <code>{style.token}</code>
+                <span>
+                  Web · {style.size}/{style.lineHeight} · {style.weight}
+                </span>
+              </p>
+              <p className="root-swatch-caption">{style.use}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="root-doc-section">

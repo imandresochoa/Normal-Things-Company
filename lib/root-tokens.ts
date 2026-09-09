@@ -405,6 +405,56 @@ export const TYPE_STYLES = [
   },
 ] as const;
 
+export function webWeight(weight: number) {
+  if (weight === 510 || weight === 590) {
+    return 500;
+  }
+
+  return weight;
+}
+
+export const WEB_TYPE_FAMILIES = [
+  {
+    id: "sans",
+    token: "family-sans-web",
+    name: "Satoshi",
+    role: "All web UI: the letter, docs, titles, and controls. Web only.",
+  },
+  {
+    id: "mono",
+    token: "family-mono-web",
+    name: "ui-monospace",
+    role: "Data, times, identifiers, and figures that you compare. System stand-in on the web.",
+  },
+] as const;
+
+export const WEB_TYPE_WEIGHTS = [
+  {
+    token: "weight-regular",
+    value: 400,
+    maps: "400",
+    use: "Body, labels, and the default.",
+  },
+  {
+    token: "weight-medium",
+    value: 500,
+    maps: "510 and 590",
+    use: "Emphasis, headlines, buttons, and section headers.",
+  },
+  {
+    token: "weight-bold",
+    value: 700,
+    maps: "700",
+    use: "Only display and title-1.",
+  },
+] as const;
+
+export const WEB_TYPE_STYLES = TYPE_STYLES.map((style) => ({
+  ...style,
+  family: style.family === "mono" ? ("mono" as const) : ("sans" as const),
+  weight: webWeight(style.weight),
+}));
+
 export type ContrastPair = {
   id: string;
   fg: string;
