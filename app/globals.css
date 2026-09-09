@@ -380,7 +380,7 @@ body {
 .root-page-title {
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-body-weight);
+  font-weight: var(--type-heading-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -502,7 +502,7 @@ body {
   margin: 0;
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-body-weight);
+  font-weight: var(--type-heading-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -528,7 +528,7 @@ body {
   margin: 0 0 12px;
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-body-weight);
+  font-weight: var(--type-heading-weight);
   line-height: var(--type-body-leading);
 }
 
@@ -536,7 +536,7 @@ body {
   margin: 28px 0 10px;
   color: var(--root-text);
   font-size: var(--type-body-size);
-  font-weight: var(--type-body-weight);
+  font-weight: var(--type-heading-weight);
   line-height: var(--type-body-leading);
 }
 

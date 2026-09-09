@@ -9,6 +9,8 @@ const globalsCssPath = path.join(root, "app", "globals.css");
 
 const BODY_WEIGHT_PATTERN =
   /^(?:400|var\(--type-body-weight\))$/;
+const HEADING_WEIGHT_PATTERN =
+  /^(?:500|var\(--type-heading-weight\))$/;
 
 function readSource(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -30,6 +32,12 @@ function parseFontWeight(ruleBody) {
   return match ? match[1].trim() : null;
 }
 
+function parseCustomProperty(ruleBody, name) {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = ruleBody.match(new RegExp(`${escaped}:\\s*([^;]+)`));
+  return match ? match[1].trim() : null;
+}
+
 function assertUsesBodyWeight(selector, ruleBody) {
   const fontWeight = parseFontWeight(ruleBody);
 
@@ -46,6 +54,25 @@ function assertUsesBodyWeight(selector, ruleBody) {
     fontWeight,
     /--type-heading-weight/,
     `${selector} must not use var(--type-heading-weight)`,
+  );
+}
+
+function assertUsesHeadingWeight(selector, ruleBody) {
+  const fontWeight = parseFontWeight(ruleBody);
+
+  assert.ok(
+    fontWeight,
+    `${selector} must declare font-weight`,
+  );
+  assert.match(
+    fontWeight,
+    HEADING_WEIGHT_PATTERN,
+    `${selector} font-weight must be var(--type-heading-weight) or 500, got "${fontWeight}"`,
+  );
+  assert.doesNotMatch(
+    fontWeight,
+    /--type-body-weight/,
+    `${selector} must not use var(--type-body-weight)`,
   );
 }
 
@@ -102,14 +129,37 @@ test(".root-nav-link[data-active=\"true\"] does not use heading font-weight", ()
   }
 });
 
-test(".root-page-title uses body font-weight", () => {
+test(":root type weights are 400 body and 500 heading", () => {
+  const css = readSource(globalsCssPath);
+  const rule = findRuleBySelector(css, ":root");
+  const bodyWeight = parseCustomProperty(rule.body, "--type-body-weight");
+  const headingWeight = parseCustomProperty(rule.body, "--type-heading-weight");
+
+  assert.equal(
+    bodyWeight,
+    "400",
+    `--type-body-weight must be 400, got "${bodyWeight}"`,
+  );
+  assert.equal(
+    headingWeight,
+    "500",
+    `--type-heading-weight must be 500, got "${headingWeight}"`,
+  );
+  assert.equal(
+    Number(headingWeight) - Number(bodyWeight),
+    100,
+    "--type-heading-weight must be exactly 100 more than --type-body-weight",
+  );
+});
+
+test(".root-page-title uses heading font-weight", () => {
   const css = readSource(globalsCssPath);
   const rule = findRuleBySelector(css, "\\.root-page-title");
 
-  assertUsesBodyWeight(rule.selector, rule.body);
+  assertUsesHeadingWeight(rule.selector, rule.body);
 });
 
-test(".root-doc-header h1 and .root-doc h1 use body font-weight", () => {
+test(".root-doc-header h1 and .root-doc h1 use heading font-weight", () => {
   const css = readSource(globalsCssPath);
   const rules = extractRuleBodies(
     css,
@@ -122,22 +172,22 @@ test(".root-doc-header h1 and .root-doc h1 use body font-weight", () => {
   );
 
   for (const rule of rules) {
-    assertUsesBodyWeight(rule.selector, rule.body);
+    assertUsesHeadingWeight(rule.selector, rule.body);
   }
 });
 
-test(".root-doc h2 uses body font-weight", () => {
+test(".root-doc h2 uses heading font-weight", () => {
   const css = readSource(globalsCssPath);
   const rule = findRuleBySelector(css, "\\.root-doc h2");
 
-  assertUsesBodyWeight(rule.selector, rule.body);
+  assertUsesHeadingWeight(rule.selector, rule.body);
 });
 
-test(".root-doc h3 uses body font-weight", () => {
+test(".root-doc h3 uses heading font-weight", () => {
   const css = readSource(globalsCssPath);
   const rule = findRuleBySelector(css, "\\.root-doc h3");
 
-  assertUsesBodyWeight(rule.selector, rule.body);
+  assertUsesHeadingWeight(rule.selector, rule.body);
 });
 
 test(".root-doc-list strong uses body font-weight", () => {
