@@ -16,7 +16,8 @@ const rootIndexPath = path.join(root, "app", "root", "page.tsx");
 const pulsePagePath = path.join(root, "app", "pulse", "page.tsx");
 const rootMarkPath = path.join(root, "components", "root", "root-mark.tsx");
 
-const READY_SLUGS = ["colors", "typography", "pulse", "spacing"];
+const READY_SLUGS = ["colors", "typography", "spacing"];
+const rootSlugPagePath = path.join(root, "app", "root", "[slug]", "page.tsx");
 
 function readSource(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -116,14 +117,29 @@ test("Introduction section keeps only purpose and principles", () => {
   );
 });
 
-test("Foundations section orders colors, pulse, typography, spacing, and iconography", () => {
+test("Foundations section orders colors, typography, spacing, and iconography", () => {
   const source = readSource(rootNavPath);
   const foundationsSlugs = parseFoundationsSlugs(source);
 
   assert.deepEqual(
     foundationsSlugs,
-    ["colors", "pulse", "typography", "spacing", "iconography"],
-    'Foundations section must include Colors, Pulse, Typography, Spacing, and Iconography in that order (slugs "colors", "pulse", "typography", "spacing", "iconography")',
+    ["colors", "typography", "spacing", "iconography"],
+    'Foundations section must include Colors, Typography, Spacing, and Iconography in that order (slugs "colors", "typography", "spacing", "iconography")',
+  );
+});
+
+test("ROOT_NAV must not include pulse slug or Pulse label", () => {
+  const source = readSource(rootNavPath);
+  const navSlugs = parseRootNavSlugs(source);
+  const navLabels = parseRootNavLabels(source);
+
+  assert.ok(
+    !navSlugs.includes("pulse"),
+    'lib/root-nav.ts must not include a nav item with slug "pulse"',
+  );
+  assert.ok(
+    !navLabels.includes("Pulse"),
+    'lib/root-nav.ts must not include a nav item with label "Pulse"',
   );
 });
 
@@ -137,7 +153,7 @@ test("root-nav exports isRootNavItemReady", () => {
   );
 });
 
-test("isRootNavItemReady returns true for colors, typography, pulse, and spacing", () => {
+test("isRootNavItemReady returns true for colors, typography, and spacing", () => {
   for (const slug of READY_SLUGS) {
     const result = callIsRootNavItemReady(slug);
 
@@ -153,6 +169,32 @@ test("isRootNavItemReady returns true for colors, typography, pulse, and spacing
   }
 });
 
+test("isRootNavItemReady returns false for pulse", () => {
+  const result = callIsRootNavItemReady("pulse");
+
+  assert.ok(
+    result.ok,
+    `isRootNavItemReady must be callable (slug "pulse"): ${result.error ?? ""}`,
+  );
+  assert.equal(
+    result.value,
+    false,
+    'isRootNavItemReady("pulse") must return false',
+  );
+});
+
+test("READY_SLUGS in root-nav source must not include pulse", () => {
+  const source = readSource(rootNavPath);
+  const readyMatch = source.match(/READY_SLUGS\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
+
+  assert.ok(readyMatch, "lib/root-nav.ts must define READY_SLUGS as a Set literal");
+  assert.doesNotMatch(
+    readyMatch[1],
+    /["']pulse["']/,
+    'READY_SLUGS must not include "pulse"',
+  );
+});
+
 test("isRootNavItemReady returns false for every other ROOT_NAV slug", () => {
   const source = readSource(rootNavPath);
   const navSlugs = parseRootNavSlugs(source);
@@ -160,7 +202,7 @@ test("isRootNavItemReady returns false for every other ROOT_NAV slug", () => {
 
   assert.ok(
     notReadySlugs.length > 0,
-    "ROOT_NAV must include slugs other than colors, typography, pulse, and spacing",
+    "ROOT_NAV must include slugs other than colors, typography, and spacing",
   );
 
   for (const slug of notReadySlugs) {
@@ -426,6 +468,21 @@ test("root index redirects to colors, not purpose", () => {
     source,
     /redirect\s*\(\s*["']\/root\/purpose["']\s*\)/,
     "app/root/page.tsx must not redirect to /root/purpose",
+  );
+});
+
+test("root slug page must not import PulsePage or render a pulse branch", () => {
+  const source = readSource(rootSlugPagePath);
+
+  assert.doesNotMatch(
+    source,
+    /import\s*\{[^}]*\bPulsePage\b[^}]*\}\s*from\s*["']@\/components\/root\/pulse-page["']/,
+    "app/root/[slug]/page.tsx must not import PulsePage from pulse-page",
+  );
+  assert.doesNotMatch(
+    source,
+    /slug\s*===\s*["']pulse["'][\s\S]*?<PulsePage\s*\/?>/,
+    'app/root/[slug]/page.tsx must not have a slug === "pulse" branch that renders <PulsePage />',
   );
 });
 

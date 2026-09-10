@@ -13,6 +13,8 @@ const rootDocHeaderPath = path.join(
 );
 const colorsPagePath = path.join(root, "components", "root", "colors-page.tsx");
 const pulsePagePath = path.join(root, "components", "root", "pulse-page.tsx");
+const pulsePlatesPath = path.join(root, "components", "root", "pulse-plates.tsx");
+const pulseWashPath = path.join(root, "lib", "scenes", "pulse-wash.ts");
 const typographyPagePath = path.join(
   root,
   "components",
@@ -24,7 +26,6 @@ const globalsCssPath = path.join(root, "app", "globals.css");
 
 const READY_PAGES = [
   { label: "colors", path: colorsPagePath, title: "Colors", hasPlate: true },
-  { label: "pulse", path: pulsePagePath, title: "Pulse", hasPlate: false },
   {
     label: "typography",
     path: typographyPagePath,
@@ -48,13 +49,6 @@ function extractLegacyHeaderBlock(source) {
 function extractRootDocHeaderUsage(source) {
   const match = source.match(/<RootDocHeader[\s\S]*?(?:\/>|<\/RootDocHeader>)/);
   return match ? match[0] : null;
-}
-
-function extractHowToAddFieldBlock(source) {
-  const match = source.match(
-    /<h3>How to add a Field<\/h3>([\s\S]*?)(?=<h[23]|<\/section>)/,
-  );
-  return match ? match[1] : null;
 }
 
 function findRootDocPlateRule(css) {
@@ -204,20 +198,21 @@ for (const page of READY_PAGES.filter((entry) => !entry.hasPlate)) {
   });
 }
 
-test("pulse page may still mount PulseField later in teaching demos", () => {
-  const source = readSource(pulsePagePath);
-  const usage = extractRootDocHeaderUsage(source);
-
-  assert.ok(usage, "pulse-page must render RootDocHeader");
-  assert.doesNotMatch(
-    usage,
-    /\bplate\s*=/,
-    "pulse-page header must not pass plate=; later PulseField demos are allowed below",
+test("Pulse section page file must not exist", () => {
+  assert.ok(
+    !fs.existsSync(pulsePagePath),
+    "components/root/pulse-page.tsx must be deleted (Pulse section removed from Root docs)",
   );
-  assert.match(
-    source,
-    /PulseField|PulsePlates/,
-    "pulse-page may still reference PulseField or PulsePlates outside the header",
+});
+
+test("Pulse section plate and wash scene files must not exist", () => {
+  assert.ok(
+    !fs.existsSync(pulsePlatesPath),
+    "components/root/pulse-plates.tsx must be deleted (Pulse section removed from Root docs)",
+  );
+  assert.ok(
+    !fs.existsSync(pulseWashPath),
+    "lib/scenes/pulse-wash.ts must be deleted (Pulse section removed from Root docs)",
   );
 });
 
@@ -248,38 +243,6 @@ test("colors header order is title then plate then lede, not lede then PulseFiel
   assert.ok(
     fieldIndex < ledeIndex,
     "colors-page header order must be title, PulseField plate, then lede — not lede then PulseField",
-  );
-});
-
-test("pulse page copy says page Field plate sits after the title and before the lede", () => {
-  const source = readSource(pulsePagePath);
-  const fieldCopy = extractHowToAddFieldBlock(source) ?? source;
-
-  assert.match(
-    fieldCopy,
-    /after the title/i,
-    'pulse-page "How to add a Field" must say the page plate sits after the title',
-  );
-  assert.match(
-    fieldCopy,
-    /before the lede|before the intro/i,
-    'pulse-page "How to add a Field" must say the page plate sits before the lede or intro',
-  );
-});
-
-test("pulse page copy says some pages have no plate and the order stays title then intro then first section", () => {
-  const source = readSource(pulsePagePath);
-  const fieldCopy = extractHowToAddFieldBlock(source) ?? source;
-
-  assert.match(
-    fieldCopy,
-    /no plate|without a plate|some pages have no plate/i,
-    "pulse-page must note that some pages have no header plate",
-  );
-  assert.match(
-    fieldCopy,
-    /title[\s\S]{0,120}(?:intro|lede)[\s\S]{0,120}first section|title, then (?:the )?intro, then (?:the )?first section/i,
-    "pulse-page must state the order remains title, intro, then first section when there is no plate",
   );
 });
 
