@@ -24,6 +24,7 @@ import {
 } from "@/lib/pulse-tokens";
 import { COLORS_MEADOW } from "@/lib/scenes/colors-meadow";
 import { PulseField } from "./pulse-field";
+import { RootDocHeader } from "./root-doc-header";
 
 const FAMILY_COPY: Record<
   PrimitiveFamily,
@@ -207,8 +208,15 @@ export function ColorsPage() {
 
   return (
     <article className="root-doc" style={cssVars}>
-      <header className="root-doc-header">
-        <h1>Colors</h1>
+      <RootDocHeader
+        title="Colors"
+        plate={
+          <PulseField
+            scene={COLORS_MEADOW}
+            label="Meadow painted in Pulse inks"
+          ></PulseField>
+        }
+      >
         <p className="root-doc-lede">
           Color in Root is a small, locked set. Three seeds define the
           primitives. Semantic names sit on top of those primitives. Views
@@ -220,11 +228,7 @@ export function ColorsPage() {
           current system mode: paper canvas and primary ink in light, inverted
           paper and ink in dark. The ramps below still show both modes.
         </p>
-        <PulseField
-          scene={COLORS_MEADOW}
-          label="Meadow painted in Pulse inks"
-        />
-      </header>
+      </RootDocHeader>
 
       <section className="root-doc-section">
         <h2>Seeds</h2>

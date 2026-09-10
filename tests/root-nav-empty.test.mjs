@@ -376,7 +376,7 @@ function findRootChipAlphaRule(css) {
 }
 
 const DARK_ROOT_TOKENS = [
-  { name: "--bg-canvas", hex: "#11100f" },
+  { name: "--bg-canvas", hex: "#090807" },
   { name: "--text-primary", hex: "#fbfaf9" },
   { name: "--text-secondary", hex: "#a9a7a5" },
   { name: "--text-tertiary", hex: "#94928f" },

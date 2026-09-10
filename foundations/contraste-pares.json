@@ -162,7 +162,7 @@
   {
     "id": "OSCURO / text-primary sobre bg-canvas",
     "fg": "#FBFAF9",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "texto",
     "size": 17,
     "weight": 400
@@ -170,7 +170,7 @@
   {
     "id": "OSCURO / text-secondary sobre bg-canvas",
     "fg": "#A9A7A5",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "texto",
     "size": 15,
     "weight": 400
@@ -178,7 +178,7 @@
   {
     "id": "OSCURO / text-tertiary sobre bg-canvas",
     "fg": "#94928F",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "texto",
     "size": 12,
     "weight": 400
@@ -186,7 +186,7 @@
   {
     "id": "OSCURO / text-disabled sobre bg-canvas",
     "fg": "#858380",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "texto",
     "size": 17,
     "weight": 400
@@ -202,19 +202,19 @@
   {
     "id": "OSCURO / border-hairline (decorativo)",
     "fg": "#32302E",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "decorativo"
   },
   {
     "id": "OSCURO / border-control",
     "fg": "#656360",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "ui"
   },
   {
     "id": "OSCURO / border-control-hover",
     "fg": "#75726F",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "ui"
   },
   {
@@ -228,7 +228,7 @@
   {
     "id": "OSCURO / text-link (blue-900)",
     "fg": "#80A6FF",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "texto",
     "size": 17,
     "weight": 400
@@ -244,13 +244,13 @@
   {
     "id": "OSCURO / icon-accent (blue-700) sobre lienzo",
     "fg": "#2A56F7",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "ui"
   },
   {
     "id": "OSCURO / focus-ring (blue-700) sobre lienzo",
     "fg": "#2A56F7",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "ui"
   },
   {
@@ -270,14 +270,14 @@
   {
     "id": "OSCURO / text-expressive (orange-900)",
     "fg": "#FF9683",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "texto",
     "size": 17,
     "weight": 400
   },
   {
     "id": "OSCURO / fill-expressive-700 + texto pequeno",
-    "fg": "#11100F",
+    "fg": "#090807",
     "bg": "#F7452A",
     "tipo": "texto",
     "size": 15,
@@ -285,7 +285,7 @@
   },
   {
     "id": "OSCURO / fill-expressive-700 + texto grande",
-    "fg": "#11100F",
+    "fg": "#090807",
     "bg": "#F7452A",
     "tipo": "texto",
     "size": 24,
@@ -293,7 +293,7 @@
   },
   {
     "id": "OSCURO / fill-expressive-800 + texto pequeno",
-    "fg": "#11100F",
+    "fg": "#090807",
     "bg": "#FF6C54",
     "tipo": "texto",
     "size": 15,
@@ -302,7 +302,7 @@
   {
     "id": "OSCURO / icon-expressive (orange-700) sobre lienzo",
     "fg": "#F7452A",
-    "bg": "#11100F",
+    "bg": "#090807",
     "tipo": "ui"
   },
   {
