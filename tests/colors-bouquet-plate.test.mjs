@@ -14,24 +14,24 @@ function readSource(filePath) {
   return fs.readFileSync(filePath, "utf8");
 }
 
-function extractPaintPlateBody(source) {
-  const match = source.match(/function paintPlate\s*\([^)]*\)\s*\{([\s\S]*?)\n\}/);
-  return match ? match[1] : null;
-}
-
-function extractPaintPlateWetBranch(body) {
-  if (!body) {
-    return null;
-  }
-  const match = body.match(/if\s*\(\s*wet\s*\)\s*\{([\s\S]*?)\}\s*else\s*\{/);
-  return match ? match[1] : null;
-}
-
 function findRootDocPlatePulseFieldRule(css) {
   const match = css.match(
     /\.root-doc-plate\s+\.root-pulse-field\s*\{([^}]+)\}/,
   );
   return match ? match[1] : null;
+}
+
+function extractPlateEffectBody(source) {
+  const useEffectMatch = source.match(
+    /useEffect\s*\(\s*\(\)\s*=>\s*\{([\s\S]*?)\n\s*\},\s*\[scene\]\s*\)/,
+  );
+  if (!useEffectMatch) {
+    return null;
+  }
+  const plateMatch = useEffectMatch[1].match(
+    /if\s*\(\s*scene\.plate\s*\)\s*\{([\s\S]*?)\n\s*\}\s*else\s*\{/,
+  );
+  return plateMatch ? plateMatch[1] : null;
 }
 
 test(".root-doc-plate .root-pulse-field uses aspect-ratio 16/9 and height auto", () => {
@@ -101,105 +101,95 @@ test("pulse-page Field copy describes the Colors watercolor plate and water stil
   );
 });
 
-test("paintPlate wet path fills paper first then uses source-over (not multiply)", () => {
-  const source = readSource(pulseFieldPath);
-  const body = extractPaintPlateBody(source);
+test("pulse-page distinguishes Colors plate live GPU wash from mark-field wetness map", () => {
+  const source = readSource(pulsePagePath);
 
-  assert.ok(body, "pulse-field must define paintPlate");
   assert.match(
-    body,
-    /fillStyle\s*=\s*PAPER[\s\S]*fillRect/,
-    "paintPlate must fill paper before painting the plate image",
-  );
-
-  const wetBranch = extractPaintPlateWetBranch(body);
-  assert.ok(wetBranch, "paintPlate must branch on wet mode");
-  assert.doesNotMatch(
-    wetBranch,
-    /globalCompositeOperation\s*=\s*["']multiply["']/,
-    "paintPlate wet path must not use multiply composite",
+    source,
+    /(?:WebGL|GPU)[\s\S]{0,160}(?:plate|Colors|watercolor)|(?:plate|Colors|watercolor)[\s\S]{0,160}(?:WebGL|GPU)/i,
+    "pulse-page must describe the Colors plate as a live GPU watercolor wash",
   );
   assert.match(
-    wetBranch,
-    /globalCompositeOperation\s*=\s*["']source-over["']/,
-    "paintPlate wet path must use source-over composite",
-  );
-});
-
-test("paintPlate wet path uses large blur, not width / 110", () => {
-  const source = readSource(pulseFieldPath);
-  const body = extractPaintPlateBody(source);
-  const wetBranch = extractPaintPlateWetBranch(body);
-
-  assert.ok(wetBranch, "paintPlate must branch on wet mode");
-  assert.match(
-    wetBranch,
-    /width\s*\/\s*1[4-8]\b/,
-    "paintPlate wet blur must use width / 14, /16, or /18 (large bloom)",
+    source,
+    /wetness map/i,
+    "pulse-page may still document wetness-map Fields for mark demos",
   );
   assert.doesNotMatch(
-    wetBranch,
-    /width\s*\/\s*110\b/,
-    "paintPlate wet path must not use the old width / 110 blur",
+    source,
+    /Colors[\s\S]{0,200}20 seconds[\s\S]{0,200}wetness map/i,
+    "pulse-page must not describe the Colors plate as a 20-second wetness-map soak",
   );
 });
 
-test("paintPlate wet path uses low-coverage globalAlpha for main wash", () => {
+test("pulse-field imports watercolor-meadow-live for plate scenes", () => {
   const source = readSource(pulseFieldPath);
-  const body = extractPaintPlateBody(source);
-  const wetBranch = extractPaintPlateWetBranch(body);
 
-  assert.ok(wetBranch, "paintPlate must branch on wet mode");
   assert.match(
-    wetBranch,
-    /globalAlpha\s*=\s*(?:0\.(?:25|28|3(?:0|2|5))|0\.35)\b/,
-    "paintPlate wet wash must use globalAlpha in 0.25–0.35 range",
+    source,
+    /from\s+["']@\/lib\/watercolor-meadow-live["']/,
+    "pulse-field must import the live watercolor engine module",
+  );
+  assert.match(
+    source,
+    /mountWatercolorMeadowLive/,
+    "pulse-field must mount the live watercolor engine for plate scenes",
   );
 });
 
-test("paintPlate wet path draws a second fainter bloom drawImage", () => {
+test("pulse-field plate path boots WebGL watercolor instead of paintPlate soak", () => {
   const source = readSource(pulseFieldPath);
-  const body = extractPaintPlateBody(source);
+  const plateEffectBody = extractPlateEffectBody(source);
+  const paintScenePlate = source.match(
+    /if\s*\(\s*scene\.plate\s*\)\s*\{([\s\S]*?)\n\s*return;/,
+  );
 
-  assert.ok(body, "pulse-field must define paintPlate");
-  const drawImageCount = (body.match(/\bdrawImage\b/g) ?? []).length;
   assert.ok(
-    drawImageCount >= 2,
-    `paintPlate must call drawImage at least twice for main wash + bloom (got ${drawImageCount})`,
+    plateEffectBody,
+    "pulse-field must branch on scene.plate in the plate effect",
+  );
+  assert.match(
+    plateEffectBody,
+    /mountWatercolorMeadowLive|watercolor-meadow-live/,
+    "scene.plate effect must boot the live WebGL engine",
+  );
+  assert.doesNotMatch(
+    plateEffectBody,
+    /accumulateWetness\s*\(/,
+    "scene.plate effect must not use the mark-demo wetness map",
+  );
+
+  assert.ok(paintScenePlate, "paintScene must handle scene.plate");
+  assert.doesNotMatch(
+    paintScenePlate[1],
+    /paintPlate\s*\(/,
+    "paintScene must not route scene.plate through 2D paintPlate soak",
+  );
+  assert.doesNotMatch(
+    source,
+    /function paintPlate[\s\S]*filter\s*=\s*`blur/,
+    "pulse-field must not keep paintPlate wet JPEG blur for Colors water",
   );
 });
 
-test("pulse-field brush radius uses map.width * 0.12", () => {
+test("pulse-field mark demo still uses wetness map when scene.plate is absent", () => {
   const source = readSource(pulseFieldPath);
 
   assert.match(
     source,
-    /map\.width\s*\*\s*0\.12\b/,
-    "brushRadius must use map.width * 0.12",
+    /accumulateWetness\s*\(/,
+    "mark-demo Fields without scene.plate must still accumulate wetness",
   );
-  assert.doesNotMatch(
+  assert.match(
     source,
-    /map\.width\s*\*\s*0\.08\b/,
-    "brushRadius must not use the old map.width * 0.08",
+    /createWetnessMap\s*\(/,
+    "mark-demo Fields without scene.plate must still use a wetness map",
   );
 });
 
-test("writeWetnessMask calls wetMaskAlpha instead of inline Math.pow(wetness, 0.62)", () => {
-  const source = readSource(pulseFieldPath);
-  const match = source.match(
-    /function writeWetnessMask\s*\([^)]*\)\s*\{([\s\S]*?)\n\}/,
-  );
-
-  assert.ok(match, "pulse-field must define writeWetnessMask");
-  const body = match[1];
-  assert.match(
-    body,
-    /wetMaskAlpha\s*\(/,
-    "writeWetnessMask must call wetMaskAlpha",
-  );
-  assert.doesNotMatch(
-    body,
-    /Math\.pow\s*\(\s*wetness\s*,\s*0\.62\s*\)/,
-    "writeWetnessMask must not inline Math.pow(wetness, 0.62)",
+test("public/root/colors-bouquet.jpg exists for the Colors header plate", () => {
+  const plateJpegPath = path.join(root, "public", "root", "colors-bouquet.jpg");
+  assert.ok(
+    fs.existsSync(plateJpegPath),
+    "public/root/colors-bouquet.jpg must exist",
   );
 });
