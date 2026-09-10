@@ -364,9 +364,10 @@ export function PulsePage() {
           <li>
             <strong>Field.</strong> Not a chart. A texture that carries a
             rate. For a hero or a section opener. Never caption it as data.
-            Width matches the text column. Height is about 360px on
-            desktop. Leave air at the top. No sky. No distant mountains.
-            The live engine is <code>PulseField</code>.
+            Width matches the text column. On Colors the plate is 16:9.
+            Leave air at the top when you paint with marks. On Colors, the
+            plate is a watercolor drawn on the Field. Water still answers
+            the pointer. The live engine is <code>PulseField</code>.
           </li>
         </ul>
         <ul className="root-doc-list">
@@ -441,10 +442,12 @@ export function PulsePage() {
         </p>
         <p>
           Write a scene file under <code>lib/scenes/</code>. Use only
-          illustration tokens, paper, and a rare <code>plot-moment</code>.
+          illustration tokens, paper, and a rare <code>plot-moment</code>,
+          or point <code>plate</code> at a watercolor image as on Colors.
           Pass it to <code>PulseField</code>. Do not fork a second watering
           system. Chart plates still use SVG <code>#ink</code>. Fields use
-          a wetness map. Do not animate SVG filter attributes.
+          a wetness map. Water still answers the pointer. Do not animate
+          SVG filter attributes.
         </p>
       </section>
 

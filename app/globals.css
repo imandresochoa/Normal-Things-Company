@@ -540,6 +540,8 @@ body {
 
 .root-doc-plate .root-pulse-field {
   margin-top: 0;
+  aspect-ratio: 16 / 9;
+  height: auto;
 }
 
 .root-doc-section {

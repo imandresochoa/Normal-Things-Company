@@ -8,6 +8,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fieldScenePath = path.join(root, "lib", "pulse-field-scene.ts");
 const colorsMeadowPath = path.join(root, "lib", "scenes", "colors-meadow.ts");
+const pulseFieldPath = path.join(root, "components", "root", "pulse-field.tsx");
+const plateJpegPath = path.join(root, "public", "root", "colors-bouquet.jpg");
 
 const EXPECTED_ILLUST_INKS = [
   "illust-indigo",
@@ -21,18 +23,6 @@ const EXPECTED_ILLUST_INKS = [
 ];
 
 const EXPECTED_PLOT_INKS = ["plot-paper", "plot-moment"];
-
-const REQUIRED_MEADOW_INKS = [
-  "illust-moss",
-  "illust-moss-wash",
-  "illust-teal",
-  "illust-teal-wash",
-  "illust-indigo",
-  "illust-indigo-wash",
-  "illust-ember",
-  "illust-ember-wash",
-  "plot-moment",
-];
 
 function readSource(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -125,7 +115,17 @@ test('isFieldInk("illust-moss") is true', () => {
   assert.equal(result.value, true);
 });
 
-test("COLORS_MEADOW is 720x360 with air in [0.22, 0.35]", () => {
+test("PulseFieldScene supports optional plate URL", () => {
+  const source = readSource(fieldScenePath);
+
+  assert.match(
+    source,
+    /plate\??:\s*string/,
+    "PulseFieldScene must declare optional plate?: string",
+  );
+});
+
+test("COLORS_MEADOW is 720x405 with air in [0.22, 0.35]", () => {
   const result = callColorsMeadow(`
     console.log(JSON.stringify({
       width: COLORS_MEADOW.width,
@@ -137,7 +137,7 @@ test("COLORS_MEADOW is 720x360 with air in [0.22, 0.35]", () => {
 
   assert.ok(result.ok, `COLORS_MEADOW must be importable: ${result.error ?? ""}`);
   assert.equal(result.value.width, 720);
-  assert.equal(result.value.height, 360);
+  assert.equal(result.value.height, 405);
   assert.equal(typeof result.value.id, "string");
   assert.ok(
     result.value.air >= 0.22 && result.value.air <= 0.35,
@@ -145,35 +145,102 @@ test("COLORS_MEADOW is 720x360 with air in [0.22, 0.35]", () => {
   );
 });
 
-test("every COLORS_MEADOW layer ink is a FIELD_INK", () => {
+test('COLORS_MEADOW.plate is "/root/colors-bouquet.jpg"', () => {
   const result = callColorsMeadow(`
-    import * as fieldScene from ${JSON.stringify(pathToFileURL(fieldScenePath).href)};
-    const bad = COLORS_MEADOW.layers
-      .filter((layer) => !fieldScene.isFieldInk(layer.ink))
-      .map((layer) => layer.ink);
-    console.log(JSON.stringify({ bad }));
+    console.log(JSON.stringify({ plate: COLORS_MEADOW.plate }));
   `);
 
-  assert.ok(result.ok, `COLORS_MEADOW layers must be readable: ${result.error ?? ""}`);
-  assert.deepEqual(
-    result.value.bad,
-    [],
-    `every layer ink must pass isFieldInk (invalid: ${result.value.bad.join(", ")})`,
+  assert.ok(result.ok, `COLORS_MEADOW must be importable: ${result.error ?? ""}`);
+  assert.equal(result.value.plate, "/root/colors-bouquet.jpg");
+});
+
+test("public/root/colors-bouquet.jpg exists for the Colors header plate", () => {
+  assert.ok(
+    fs.existsSync(plateJpegPath),
+    "public/root/colors-bouquet.jpg must exist (added in Green)",
   );
 });
 
-test("COLORS_MEADOW uses required meadow inks", () => {
+test("plate scenes may use empty layers; existing layers must still be FIELD_INKs", () => {
   const result = callColorsMeadow(`
-    const used = new Set(COLORS_MEADOW.layers.map((layer) => layer.ink));
-    const missing = ${JSON.stringify(REQUIRED_MEADOW_INKS)}.filter((ink) => !used.has(ink));
-    console.log(JSON.stringify({ missing }));
+    import * as fieldScene from ${JSON.stringify(pathToFileURL(fieldScenePath).href)};
+    const hasPlate = Boolean(COLORS_MEADOW.plate);
+    const bad = COLORS_MEADOW.layers
+      .filter((layer) => !fieldScene.isFieldInk(layer.ink))
+      .map((layer) => layer.ink);
+    const hasPlotSubject = COLORS_MEADOW.layers.some(
+      (layer) => layer.ink === "plot-subject",
+    );
+    console.log(JSON.stringify({
+      hasPlate,
+      layerCount: COLORS_MEADOW.layers.length,
+      bad,
+      hasPlotSubject,
+    }));
   `);
 
   assert.ok(result.ok, `COLORS_MEADOW layers must be readable: ${result.error ?? ""}`);
-  assert.deepEqual(
-    result.value.missing,
-    [],
-    `COLORS_MEADOW must use required inks (missing: ${result.value.missing.join(", ")})`,
+  assert.equal(
+    result.value.bad.length,
+    0,
+    `every layer ink must pass isFieldInk (invalid: ${result.value.bad.join(", ")})`,
+  );
+  assert.equal(result.value.hasPlotSubject, false);
+  if (result.value.hasPlate) {
+    assert.ok(
+      result.value.layerCount >= 0,
+      "plate scenes may use empty layers",
+    );
+  }
+});
+
+test("pulse-field.tsx loads scene.plate with Image and drawImage", () => {
+  const source = readSource(pulseFieldPath);
+
+  assert.match(
+    source,
+    /scene\.plate/,
+    "pulse-field must reference scene.plate",
+  );
+  assert.match(
+    source,
+    /\bnew\s+Image\s*\(/,
+    "pulse-field must load the plate with new Image()",
+  );
+  assert.match(
+    source,
+    /drawImage/,
+    "pulse-field must paint the plate with drawImage",
+  );
+});
+
+test("pulse-field does not clip plate painting with scene.air (air skip is mark-layer only)", () => {
+  const source = readSource(pulseFieldPath);
+
+  assert.match(
+    source,
+    /scene\.plate/,
+    "pulse-field must implement plate painting",
+  );
+
+  const airSkipInMarkLoop = /for\s*\(\s*const mark of scene\.layers\s*\)\s*\{[\s\S]*?mark\.y\s*<\s*scene\.air/;
+  assert.match(
+    source,
+    airSkipInMarkLoop,
+    "scene.air skip must live inside the mark layer loop",
+  );
+
+  const plateBranch = source.match(
+    /if\s*\(\s*scene\.plate\s*\)\s*\{([\s\S]*?)\n\s*\}/,
+  );
+  assert.ok(
+    plateBranch,
+    "pulse-field must branch on scene.plate before or outside mark air clipping",
+  );
+  assert.doesNotMatch(
+    plateBranch[1],
+    /scene\.air/,
+    "plate painting must not be gated by scene.air",
   );
 });
 

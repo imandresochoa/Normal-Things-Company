@@ -211,6 +211,132 @@ test("accumulateWetness returns changed false when dtMs is 0", () => {
   assert.equal(result.value.changed, false);
 });
 
+test("brushFalloff returns 0 when radius <= 0 or dist >= radius", () => {
+  const result = callWetness(`
+    console.log(JSON.stringify({
+      zeroRadius: wetness.brushFalloff(1, 0),
+      negativeRadius: wetness.brushFalloff(1, -2),
+      atRadius: wetness.brushFalloff(4, 4),
+      beyondRadius: wetness.brushFalloff(5, 4),
+    }));
+  `);
+
+  assert.ok(result.ok, `brushFalloff must be callable: ${result.error ?? ""}`);
+  assert.equal(result.value.zeroRadius, 0);
+  assert.equal(result.value.negativeRadius, 0);
+  assert.equal(result.value.atRadius, 0);
+  assert.equal(result.value.beyondRadius, 0);
+});
+
+test("brushFalloff returns 1 at dist <= 0", () => {
+  const result = callWetness(`
+    console.log(JSON.stringify({
+      center: wetness.brushFalloff(0, 4),
+      negativeDist: wetness.brushFalloff(-1, 4),
+    }));
+  `);
+
+  assert.ok(result.ok, `brushFalloff must be callable: ${result.error ?? ""}`);
+  assert.equal(result.value.center, 1);
+  assert.equal(result.value.negativeDist, 1);
+});
+
+test("brushFalloff uses Hermite smoothstep (0.5 at half radius)", () => {
+  const result = callWetness(`
+    const radius = 8;
+    console.log(JSON.stringify({
+      half: wetness.brushFalloff(0.5 * radius, radius),
+    }));
+  `);
+
+  assert.ok(result.ok, `brushFalloff must be callable: ${result.error ?? ""}`);
+  assert.ok(
+    Math.abs(result.value.half - 0.5) < 1e-6,
+    `brushFalloff at half radius must be 0.5 (got ${result.value.half})`,
+  );
+});
+
+test("brushFalloff at quarter radius is smoothstep ~0.84375, not linear 0.75", () => {
+  const result = callWetness(`
+    const radius = 8;
+    const dist = 0.25 * radius;
+    const smooth = wetness.brushFalloff(dist, radius);
+    const linear = 1 - dist / radius;
+    console.log(JSON.stringify({ smooth, linear }));
+  `);
+
+  assert.ok(result.ok, `brushFalloff must be callable: ${result.error ?? ""}`);
+  assert.ok(
+    Math.abs(result.value.smooth - 0.84375) < 1e-4,
+    `brushFalloff at quarter radius must be ~0.84375 (got ${result.value.smooth})`,
+  );
+  assert.ok(
+    result.value.smooth > result.value.linear,
+    `smoothstep (${result.value.smooth}) must exceed linear (${result.value.linear}) at quarter radius`,
+  );
+  assert.equal(result.value.linear, 0.75);
+});
+
+test("wetMaskAlpha clamps wetness to [0, 1]", () => {
+  const result = callWetness(`
+    console.log(JSON.stringify({
+      below: wetness.wetMaskAlpha(-0.5),
+      above: wetness.wetMaskAlpha(1.5),
+    }));
+  `);
+
+  assert.ok(result.ok, `wetMaskAlpha must be callable: ${result.error ?? ""}`);
+  assert.equal(result.value.below, 0);
+  assert.equal(result.value.above, 1);
+});
+
+test("wetMaskAlpha returns 0 at wetness 0 and 1 at wetness 1", () => {
+  const result = callWetness(`
+    console.log(JSON.stringify({
+      dry: wetness.wetMaskAlpha(0),
+      soaked: wetness.wetMaskAlpha(1),
+    }));
+  `);
+
+  assert.ok(result.ok, `wetMaskAlpha must be callable: ${result.error ?? ""}`);
+  assert.equal(result.value.dry, 0);
+  assert.equal(result.value.soaked, 1);
+});
+
+test("wetMaskAlpha uses exponent 0.4 for faster onset than 0.62", () => {
+  const result = callWetness(`
+    const level = 0.10;
+    const alpha = wetness.wetMaskAlpha(level);
+    const oldAlpha = Math.pow(level, 0.62);
+    console.log(JSON.stringify({ alpha, oldAlpha }));
+  `);
+
+  assert.ok(result.ok, `wetMaskAlpha must be callable: ${result.error ?? ""}`);
+  assert.ok(
+    result.value.alpha >= 0.35,
+    `wetMaskAlpha(0.10) must be >= 0.35 for faster onset (got ${result.value.alpha})`,
+  );
+  assert.ok(
+    result.value.alpha > result.value.oldAlpha,
+    `wetMaskAlpha(0.10) (${result.value.alpha}) must exceed old 0.62 curve (${result.value.oldAlpha})`,
+  );
+});
+
+test("accumulateWetness uses brushFalloff helper", () => {
+  const source = readSource(wetnessPath);
+
+  assert.match(
+    source,
+    /brushFalloff\s*\(/,
+    "accumulateWetness must call brushFalloff instead of inline linear falloff",
+  );
+  assert.doesNotMatch(
+    source,
+    /const falloff = 1 - dist \/ radius/,
+    "accumulateWetness must not use inline linear falloff",
+  );
+});
+
 test("lib/pulse-wetness.ts exports required public API", () => {
   const source = readSource(wetnessPath);
 
@@ -218,4 +344,6 @@ test("lib/pulse-wetness.ts exports required public API", () => {
   assert.match(source, /export function createWetnessMap\s*\(/);
   assert.match(source, /export function resetWetness\s*\(/);
   assert.match(source, /export function accumulateWetness\s*\(/);
+  assert.match(source, /export function brushFalloff\s*\(/);
+  assert.match(source, /export function wetMaskAlpha\s*\(/);
 });

@@ -18,6 +18,18 @@ export function resetWetness(map: WetnessMap): void {
   map.cells.fill(0);
 }
 
+export function brushFalloff(dist: number, radius: number): number {
+  if (radius <= 0 || dist >= radius) return 0;
+  if (dist <= 0) return 1;
+  const t = 1 - dist / radius;
+  return t * t * (3 - 2 * t);
+}
+
+export function wetMaskAlpha(wetness: number): number {
+  const w = Math.min(1, Math.max(0, wetness));
+  return w ** 0.4;
+}
+
 export function accumulateWetness(
   map: WetnessMap,
   x: number,
@@ -49,7 +61,7 @@ export function accumulateWetness(
         continue;
       }
 
-      const falloff = 1 - dist / radius;
+      const falloff = brushFalloff(dist, radius);
       const index = iy * width + ix;
       const next = Math.min(1, cells[index] + falloff * (dtMs / soakMs));
       if (next > cells[index]) {
