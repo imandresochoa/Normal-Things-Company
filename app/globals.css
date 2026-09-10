@@ -97,15 +97,23 @@ body {
   transition: stroke-dashoffset var(--underline-trace-ms) var(--ease-out);
 }
 
+.root-nav-link .underline-mark [data-underline-stroke] {
+  transition: stroke-dashoffset 160ms var(--ease-out);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .squiggle-link:hover .underline-mark [data-underline-stroke],
   .root-nav-link:hover .underline-mark [data-underline-stroke] {
     stroke-dashoffset: 0;
   }
+
+  .root-nav-link:hover,
+  .root-nav-link:visited:hover {
+    color: var(--root-text);
+  }
 }
 
-.squiggle-link:focus-visible .underline-mark [data-underline-stroke],
-.root-nav-link:focus-visible .underline-mark [data-underline-stroke] {
+.squiggle-link:focus-visible .underline-mark [data-underline-stroke] {
   stroke-dashoffset: 0;
 }
 
@@ -458,16 +466,12 @@ body {
   line-height: var(--type-body-leading);
   text-decoration: none;
   outline-offset: 3px;
+  touch-action: manipulation;
   transition: color 160ms ease;
 }
 
 .root-nav-link:visited {
   color: var(--root-idle);
-}
-
-.root-nav-link:hover,
-.root-nav-link:visited:hover {
-  color: var(--root-text);
 }
 
 .root-nav-link:focus-visible {
@@ -481,6 +485,7 @@ body {
 
 .root-nav-link[data-active="true"] .underline-mark [data-underline-stroke] {
   stroke-dashoffset: 0;
+  transition: none;
 }
 
 .root-nav-disabled {
@@ -1138,7 +1143,6 @@ body {
   .squiggle-link:hover .underline-mark [data-underline-stroke],
   .squiggle-link:focus-visible .underline-mark [data-underline-stroke],
   .root-nav-link:hover .underline-mark [data-underline-stroke],
-  .root-nav-link:focus-visible .underline-mark [data-underline-stroke],
   .root-nav-link[data-active="true"] .underline-mark [data-underline-stroke] {
     stroke-dashoffset: 0;
   }
