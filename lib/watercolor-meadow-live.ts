@@ -557,7 +557,6 @@ void main(){
   const progRender = program(`${HEAD}
 uniform sampler2D uDep, uSusp, uWater;
 uniform vec3 uPaperCol;
-uniform vec2 uTexel;
 out vec4 o;
 void main(){
   vec3 d = texture(uDep, vUv).rgb + texture(uSusp, vUv).rgb;
@@ -565,12 +564,6 @@ void main(){
   vec3 col = uPaperCol * exp(-d);
   float wet = smoothstep(0.02, 0.4, w.y) * clamp(w.x * 4.0, 0.0, 1.0);
   col *= 1.0 - 0.09 * wet;
-  float hL = texture(uWater, vUv - vec2(uTexel.x, 0.0)).x;
-  float hR = texture(uWater, vUv + vec2(uTexel.x, 0.0)).x;
-  float hB = texture(uWater, vUv - vec2(0.0, uTexel.y)).x;
-  float hT = texture(uWater, vUv + vec2(0.0, uTexel.y)).x;
-  vec3 n = normalize(vec3(hL - hR, hB - hT, 0.06));
-  col += pow(max(dot(n, normalize(vec3(-0.4, 0.5, 0.75))), 0.0), 24.0) * 0.16 * wet;
   o = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`);
 
@@ -778,7 +771,6 @@ void main(){
     gl.uniform1i(u.uSusp, bind(suspended.read.tex));
     gl.uniform1i(u.uWater, bind(water.read.tex));
     gl.uniform3fv(u.uPaperCol, PAPER_RGB);
-    gl.uniform2fv(u.uTexel, water.texel);
     target(null);
     draw();
   }
