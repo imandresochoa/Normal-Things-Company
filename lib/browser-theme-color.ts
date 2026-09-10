@@ -26,12 +26,11 @@ export function applyThemeColorMeta(
     return;
   }
 
-  const primary = metas[0];
-  primary.setAttribute("name", "theme-color");
-  primary.setAttribute("content", color);
-  primary.removeAttribute("media");
-
-  for (let i = 1; i < metas.length; i++) {
-    metas[i].remove();
+  // Keep Next.js-owned meta nodes in the tree. Removing them makes the next
+  // client navigation throw in React's commit (removeChild on a null parent),
+  // so the first sidebar click only changes the URL.
+  for (let i = 0; i < metas.length; i++) {
+    metas[i].setAttribute("name", "theme-color");
+    metas[i].setAttribute("content", color);
   }
 }
