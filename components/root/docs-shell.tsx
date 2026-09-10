@@ -12,14 +12,12 @@ type DocsShellProps = {
 export function DocsShell({ children }: DocsShellProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [openForPath, setOpenForPath] = useState(pathname);
   const sidebarId = useId();
   const currentSlug = pathname.split("/").filter(Boolean)[1] ?? "purpose";
 
-  if (openForPath !== pathname) {
-    setOpenForPath(pathname);
+  useEffect(() => {
     setOpen(false);
-  }
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) {

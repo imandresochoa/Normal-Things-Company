@@ -113,13 +113,14 @@ test("pageThemeColorFromStyle returns trimmed --bg-canvas value", () => {
   );
 });
 
-test("applyThemeColorMeta keeps exactly one theme-color meta without media", () => {
+test("applyThemeColorMeta does not remove Next-owned theme-color metas", () => {
   const result = callBrowserThemeColor(`
     function makeMeta(attrs) {
       const el = {
         tagName: "META",
         attrs: { ...attrs },
         parent: null,
+        removeCount: 0,
         getAttribute(name) {
           return this.attrs[name] ?? null;
         },
@@ -133,6 +134,7 @@ test("applyThemeColorMeta keeps exactly one theme-color meta without media", () 
           return Object.hasOwn(this.attrs, name);
         },
         remove() {
+          this.removeCount += 1;
           const idx = head.children.indexOf(this);
           if (idx !== -1) head.children.splice(idx, 1);
           this.parent = null;
@@ -154,6 +156,7 @@ test("applyThemeColorMeta keeps exactly one theme-color meta without media", () 
     for (const el of head.children) {
       el.parent = head;
     }
+    const original = [...head.children];
 
     const document = {
       head,
@@ -175,8 +178,9 @@ test("applyThemeColorMeta keeps exactly one theme-color meta without media", () 
     const metas = document.querySelectorAll('meta[name="theme-color"]');
     console.log(JSON.stringify({
       count: metas.length,
-      content: metas[0]?.getAttribute("content") ?? null,
-      hasMedia: metas.some((meta) => meta.hasAttribute("media")),
+      contents: metas.map((meta) => meta.getAttribute("content")),
+      parents: original.map((el) => el.parent === head),
+      removeCount: original.reduce((sum, el) => sum + el.removeCount, 0),
     }));
   `);
 
@@ -184,16 +188,25 @@ test("applyThemeColorMeta keeps exactly one theme-color meta without media", () 
     result.ok,
     `applyThemeColorMeta must be callable: ${result.error ?? ""}`,
   );
-  assert.equal(result.value.count, 1, "applyThemeColorMeta must leave exactly one theme-color meta");
   assert.equal(
-    normalizeHex(result.value.content),
-    "#222221",
-    "applyThemeColorMeta must set content to the passed color",
+    result.value.count,
+    2,
+    "applyThemeColorMeta must keep Next.js theme-color metas in the document",
+  );
+  assert.deepEqual(
+    result.value.contents.map((value) => normalizeHex(value)),
+    ["#222221", "#222221"],
+    "applyThemeColorMeta must set content on every existing theme-color meta",
+  );
+  assert.deepEqual(
+    result.value.parents,
+    [true, true],
+    "applyThemeColorMeta must not detach theme-color metas from head",
   );
   assert.equal(
-    result.value.hasMedia,
-    false,
-    "applyThemeColorMeta must remove media attributes from theme-color metas",
+    result.value.removeCount,
+    0,
+    "applyThemeColorMeta must not call remove() on theme-color metas",
   );
 });
 
