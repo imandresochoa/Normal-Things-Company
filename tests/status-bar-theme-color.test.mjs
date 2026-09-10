@@ -65,7 +65,7 @@ test("BROWSER_THEME_COLOR matches foundations/tokens.json semantic bg-canvas", (
   const expectedDark = semanticBgCanvasHex(tokens, "dark");
 
   assert.equal(expectedLight, "#FBFAF9", "tokens.json light bg-canvas resolved is #FBFAF9");
-  assert.equal(expectedDark, "#11100F", "tokens.json dark bg-canvas resolved is #11100F");
+  assert.equal(expectedDark, "#090807", "tokens.json dark bg-canvas resolved is #090807");
 
   const result = callBrowserThemeColor(`
     console.log(JSON.stringify({

@@ -5,6 +5,7 @@ import {
   pulseCssVars,
 } from "@/lib/pulse-tokens";
 import { PulsePlates } from "./pulse-plates";
+import { RootDocHeader } from "./root-doc-header";
 
 const PLOT_SUBSTRATE = [
   { name: "plot-paper", role: "Every plate" },
@@ -91,8 +92,7 @@ export function PulsePage() {
 
   return (
     <article className="root-doc root-pulse" style={cssVars}>
-      <header className="root-doc-header">
-        <h1>Pulse</h1>
+      <RootDocHeader title="Pulse">
         <p className="root-doc-lede">
           Every chart, illustration, and icon in Root is printed. There is
           paper, there is ink, and the ink is laid down one plate at a time.
@@ -103,7 +103,7 @@ export function PulsePage() {
           input, or the nav. Chart inks live on Colors. Pulse stays the
           plate: printing, ink, motion, and illustration.
         </p>
-      </header>
+      </RootDocHeader>
 
       <section className="root-doc-section">
         <h2>Why printing</h2>
@@ -434,6 +434,11 @@ export function PulsePage() {
           </li>
         </ul>
         <h3>How to add a Field</h3>
+        <p>
+          On a page that uses a header plate, put the Field after the title
+          and before the lede. Some pages have no plate. The order stays
+          title, then intro, then first section.
+        </p>
         <p>
           Write a scene file under <code>lib/scenes/</code>. Use only
           illustration tokens, paper, and a rare <code>plot-moment</code>.

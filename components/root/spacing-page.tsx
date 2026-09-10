@@ -1,15 +1,15 @@
 import { SPACE_ROLES } from "@/lib/root-tokens";
+import { RootDocHeader } from "./root-doc-header";
 
 export function SpacingPage() {
   return (
     <article className="root-doc">
-      <header className="root-doc-header">
-        <h1>Spacing</h1>
+      <RootDocHeader title="Spacing">
         <p className="root-doc-lede">
           Closer means more related. Space groups. Air lets the eye scan.
           Do not invent a gap. Pick a role.
         </p>
-      </header>
+      </RootDocHeader>
 
       <section className="root-doc-section">
         <h2>Two layers</h2>

@@ -1,6 +1,6 @@
 export const BROWSER_THEME_COLOR = {
   light: "#fbfaf9",
-  dark: "#11100f",
+  dark: "#090807",
 } as const;
 
 export function pageThemeColorFromStyle(style: CSSStyleDeclaration): string {
