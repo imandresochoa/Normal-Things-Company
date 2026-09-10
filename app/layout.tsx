@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { CopyToast } from "@/components/copy-toast";
+import ThemeColor from "@/components/theme-color";
+import { BROWSER_THEME_COLOR } from "@/lib/browser-theme-color";
 import "./globals.css";
 
 const inter = Inter({
@@ -28,8 +30,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fbfaf9" },
-    { media: "(prefers-color-scheme: dark)", color: "#090807" },
+    { media: "(prefers-color-scheme: light)", color: BROWSER_THEME_COLOR.light },
+    { media: "(prefers-color-scheme: dark)", color: BROWSER_THEME_COLOR.dark },
   ],
 };
 
@@ -39,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className={`${inter.className} min-h-full bg-background antialiased`}>
         {children}
         <CopyToast />
+        <ThemeColor />
       </body>
     </html>
   );
