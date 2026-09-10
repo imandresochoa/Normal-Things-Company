@@ -35,5 +35,6 @@ export type PulseFieldScene = {
   width: number;
   height: number;
   air: number;
+  plate?: string;
   layers: FieldMark[];
 };

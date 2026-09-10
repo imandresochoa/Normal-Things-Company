@@ -213,7 +213,7 @@ export function ColorsPage() {
         plate={
           <PulseField
             scene={COLORS_MEADOW}
-            label="Meadow painted in Pulse inks"
+            label="Wildflower watercolor over hills"
           ></PulseField>
         }
       >

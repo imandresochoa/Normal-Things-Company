@@ -43,9 +43,41 @@ function markSize(mark: FieldMark, width: number, height: number) {
   };
 }
 
-function paintScene(
+function plateReady(img: HTMLImageElement | null) {
+  return Boolean(img?.complete && img.naturalWidth > 0);
+}
+
+function coverPlateRect(
+  img: HTMLImageElement,
+  width: number,
+  height: number,
+  scale: number,
+) {
+  const imgAspect = img.naturalWidth / img.naturalHeight;
+  const canvasAspect = width / height;
+  if (imgAspect > canvasAspect) {
+    const drawH = height * scale;
+    const drawW = drawH * imgAspect;
+    return {
+      x: (width - drawW) / 2,
+      y: (height - drawH) / 2,
+      w: drawW,
+      h: drawH,
+    };
+  }
+  const drawW = width * scale;
+  const drawH = drawW / imgAspect;
+  return {
+    x: (width - drawW) / 2,
+    y: (height - drawH) / 2,
+    w: drawW,
+    h: drawH,
+  };
+}
+
+function paintPlate(
   ctx: CanvasRenderingContext2D,
-  scene: PulseFieldScene,
+  img: HTMLImageElement | null,
   mode: "dry" | "wet",
 ) {
   const { width, height } = ctx.canvas;
@@ -59,6 +91,49 @@ function paintScene(
   ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = PAPER;
   ctx.fillRect(0, 0, width, height);
+
+  if (!plateReady(img)) {
+    return;
+  }
+
+  if (wet) {
+    ctx.filter = `blur(${Math.max(8, width / 110)}px)`;
+    ctx.globalCompositeOperation = "multiply";
+    ctx.globalAlpha = opacityMul;
+  } else {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.globalAlpha = 1;
+  }
+
+  const rect = coverPlateRect(img!, width, height, scale);
+  ctx.drawImage(img!, rect.x, rect.y, rect.w, rect.h);
+  ctx.globalAlpha = 1;
+  ctx.filter = "none";
+  ctx.globalCompositeOperation = "source-over";
+}
+
+function paintScene(
+  ctx: CanvasRenderingContext2D,
+  scene: PulseFieldScene,
+  mode: "dry" | "wet",
+  plateImage: HTMLImageElement | null = null,
+) {
+  const { width, height } = ctx.canvas;
+  const wet = mode === "wet";
+  const scale = wet ? 1.16 : 1;
+  const opacityMul = wet ? 0.58 : 1;
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalCompositeOperation = "source-over";
+  ctx.filter = "none";
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = PAPER;
+  ctx.fillRect(0, 0, width, height);
+
+  if (scene.plate) {
+    paintPlate(ctx, plateImage, mode);
+    return;
+  }
 
   if (wet) {
     ctx.filter = `blur(${Math.max(8, width / 110)}px)`;
@@ -135,6 +210,7 @@ function writeWetnessMask(ctx: CanvasRenderingContext2D, map: WetnessMap) {
 export function PulseField({ scene, label, className }: PulseFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef(0);
+  const plateImageRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -142,6 +218,20 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
       return;
     }
     const surface: HTMLCanvasElement = canvas;
+    let plateImage: HTMLImageElement | null = null;
+
+    if (scene.plate) {
+      plateImage = new Image();
+      plateImageRef.current = plateImage;
+      plateImage.src = scene.plate;
+      const onPlateReady = () => {
+        sizeCanvases();
+      };
+      plateImage.onload = onPlateReady;
+      void plateImage.decode?.().then(onPlateReady).catch(() => {});
+    } else {
+      plateImageRef.current = null;
+    }
 
     const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     let reduced = reducedQuery.matches;
@@ -181,8 +271,8 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
         return;
       }
 
-      paintScene(dryCtx, scene, "dry");
-      paintScene(wetCtx, scene, "wet");
+      paintScene(dryCtx, scene, "dry", plateImage);
+      paintScene(wetCtx, scene, "wet", plateImage);
 
       const mapW = Math.max(32, Math.round(cssW / 4));
       const mapH = Math.max(16, Math.round(cssH / 4));
