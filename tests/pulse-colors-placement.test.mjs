@@ -62,27 +62,9 @@ test("colors page does not defer Chart family inks to the Pulse page", () => {
   );
 });
 
-test("pulse page does not own Chart family ramps or Pulse palettes heading", () => {
-  const source = readSource(pulsePagePath);
-
-  assert.doesNotMatch(
-    source,
-    /<h2>Pulse palettes<\/h2>/,
-    'pulse-page must not render a "Pulse palettes" section heading',
-  );
-  assert.doesNotMatch(
-    source,
-    /function ChartRamp\s*\(/,
-    "pulse-page must not define ChartRamp for Chart family ramps",
-  );
-  assert.doesNotMatch(
-    source,
-    /<ChartRamp\b/,
-    "pulse-page must not render ChartRamp components",
-  );
-  assert.doesNotMatch(
-    source,
-    /chartFamilySteps\s*\(/,
-    "pulse-page must not render Chart family step ramps",
+test("Pulse section page file must not exist", () => {
+  assert.ok(
+    !fs.existsSync(pulsePagePath),
+    "components/root/pulse-page.tsx must be deleted (Pulse section removed from Root docs)",
   );
 });

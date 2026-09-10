@@ -7,7 +7,6 @@ import { fileURLToPath } from "node:url";
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const globalsCssPath = path.join(root, "app", "globals.css");
 const colorsPagePath = path.join(root, "components", "root", "colors-page.tsx");
-const pulsePagePath = path.join(root, "components", "root", "pulse-page.tsx");
 const pulseFieldPath = path.join(root, "components", "root", "pulse-field.tsx");
 
 function readSource(filePath) {
@@ -54,16 +53,39 @@ test(".root-doc-plate .root-pulse-field uses aspect-ratio 16/9 and height auto",
   );
 });
 
-test(".root-pulse-field-demo height stays 176px (header plate CSS must not change demo fields)", () => {
+test("globals.css must not define Pulse-page-only .root-pulse-field-demo", () => {
   const css = readSource(globalsCssPath);
-  const match = css.match(/\.root-pulse-field-demo\s*\{([^}]+)\}/);
 
-  assert.ok(match, "globals.css must define .root-pulse-field-demo");
-  assert.match(
-    match[1],
-    /height:\s*176px\b/,
-    ".root-pulse-field-demo must keep height: 176px",
+  assert.doesNotMatch(
+    css,
+    /\.root-pulse-field-demo\s*\{/,
+    "globals.css must not define .root-pulse-field-demo (Pulse section demo CSS removed)",
   );
+});
+
+const PULSE_PAGE_ONLY_CSS_CLASSES = [
+  ".root-pulse-substrate",
+  ".root-pulse-defs",
+  ".root-pulse-figure",
+  ".root-pulse-plate",
+  ".root-pulse-plot",
+  ".root-pulse-bar-labels",
+  ".root-pulse-wash-plate",
+  ".root-pulse-diverging",
+  ".root-pulse-overprint",
+];
+
+test("globals.css must not define Pulse-page-only plate and wash rules", () => {
+  const css = readSource(globalsCssPath);
+
+  for (const selector of PULSE_PAGE_ONLY_CSS_CLASSES) {
+    const escaped = selector.replace(/\./g, "\\.");
+    assert.doesNotMatch(
+      css,
+      new RegExp(`${escaped}\\s*\\{`),
+      `globals.css must not define ${selector} (Pulse section CSS removed)`,
+    );
+  }
 });
 
 test("colors-page PulseField label describes the wildflower watercolor plate", () => {
@@ -78,46 +100,6 @@ test("colors-page PulseField label describes the wildflower watercolor plate", (
     source,
     /label="[^"]*(?:wildflower|watercolor|poppy|hills)[^"]*"/i,
     "colors-page PulseField label must describe the wildflower watercolor plate",
-  );
-});
-
-test("pulse-page Field copy describes the Colors watercolor plate and water still works", () => {
-  const source = readSource(pulsePagePath);
-
-  assert.doesNotMatch(
-    source,
-    /No sky\. No distant mountains\./,
-    "pulse-page must not forbid sky or mountains for the Colors watercolor plate",
-  );
-  assert.match(
-    source,
-    /Colors[\s\S]{0,120}watercolor|watercolor[\s\S]{0,120}Colors/i,
-    "pulse-page must describe the Colors plate as a watercolor",
-  );
-  assert.match(
-    source,
-    /water[\s\S]{0,80}(?:still|answers|pointer)/i,
-    "pulse-page must say water still answers the pointer on the Field",
-  );
-});
-
-test("pulse-page distinguishes Colors plate live GPU wash from mark-field wetness map", () => {
-  const source = readSource(pulsePagePath);
-
-  assert.match(
-    source,
-    /(?:WebGL|GPU)[\s\S]{0,160}(?:plate|Colors|watercolor)|(?:plate|Colors|watercolor)[\s\S]{0,160}(?:WebGL|GPU)/i,
-    "pulse-page must describe the Colors plate as a live GPU watercolor wash",
-  );
-  assert.match(
-    source,
-    /wetness map/i,
-    "pulse-page may still document wetness-map Fields for mark demos",
-  );
-  assert.doesNotMatch(
-    source,
-    /Colors[\s\S]{0,200}20 seconds[\s\S]{0,200}wetness map/i,
-    "pulse-page must not describe the Colors plate as a 20-second wetness-map soak",
   );
 });
 
