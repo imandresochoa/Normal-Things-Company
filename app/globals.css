@@ -252,6 +252,7 @@ body {
   --root-top: var(--space-canvas);
   --root-bottom: var(--space-canvas);
   --root-gutter: var(--space-gutter);
+  --root-head: max(calc(64px * 34 / 74), var(--type-body-leading));
   --root-fade-height: 70px;
   --root-fade-blur: 4px;
   --root-fade-stop: 50%;
@@ -1095,10 +1096,23 @@ body {
 
   .root-sidebar-head {
     display: flex;
+    min-height: var(--root-head);
+    justify-content: flex-end;
+  }
+
+  .root-doc-header h1 {
+    display: flex;
+    align-items: flex-end;
+    min-height: var(--root-head);
   }
 
   .root-nav {
-    margin-top: var(--space-inset);
+    margin-top: var(--space-gutter);
+  }
+
+  .root-doc-header h1 + .root-doc-plate,
+  .root-doc-header h1 + .root-doc-lede {
+    margin-top: var(--space-gutter);
   }
 
   .root-main {
