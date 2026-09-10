@@ -11,6 +11,7 @@ import {
 import {
   accumulateWetness,
   createWetnessMap,
+  wetMaskAlpha,
   type WetnessMap,
 } from "@/lib/pulse-wetness";
 import { PulsePaint } from "./pulse-paint";
@@ -82,8 +83,6 @@ function paintPlate(
 ) {
   const { width, height } = ctx.canvas;
   const wet = mode === "wet";
-  const scale = wet ? 1.16 : 1;
-  const opacityMul = wet ? 0.58 : 1;
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.globalCompositeOperation = "source-over";
@@ -97,16 +96,21 @@ function paintPlate(
   }
 
   if (wet) {
-    ctx.filter = `blur(${Math.max(8, width / 110)}px)`;
-    ctx.globalCompositeOperation = "multiply";
-    ctx.globalAlpha = opacityMul;
+    ctx.globalCompositeOperation = "source-over";
+    ctx.filter = `blur(${Math.max(24, width / 16)}px)`;
+    ctx.globalAlpha = 0.30;
+    const mainRect = coverPlateRect(img!, width, height, 1.08);
+    ctx.drawImage(img!, mainRect.x, mainRect.y, mainRect.w, mainRect.h);
+    ctx.globalAlpha = 0.12;
+    const bloomRect = coverPlateRect(img!, width, height, 1.22);
+    ctx.drawImage(img!, bloomRect.x, bloomRect.y, bloomRect.w, bloomRect.h);
   } else {
     ctx.globalCompositeOperation = "source-over";
     ctx.globalAlpha = 1;
+    const rect = coverPlateRect(img!, width, height, 1);
+    ctx.drawImage(img!, rect.x, rect.y, rect.w, rect.h);
   }
 
-  const rect = coverPlateRect(img!, width, height, scale);
-  ctx.drawImage(img!, rect.x, rect.y, rect.w, rect.h);
   ctx.globalAlpha = 1;
   ctx.filter = "none";
   ctx.globalCompositeOperation = "source-over";
@@ -197,7 +201,7 @@ function writeWetnessMask(ctx: CanvasRenderingContext2D, map: WetnessMap) {
   const data = image.data;
   for (let i = 0; i < map.cells.length; i += 1) {
     const wetness = map.cells[i];
-    const alpha = Math.round(Math.pow(wetness, 0.62) * 255);
+    const alpha = Math.round(wetMaskAlpha(wetness) * 255);
     const offset = i * 4;
     data[offset] = 255;
     data[offset + 1] = 255;
@@ -320,7 +324,7 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
       if (!map) {
         return 4;
       }
-      return Math.max(6, map.width * 0.08);
+      return Math.max(6, map.width * 0.12);
     }
 
     function tick(now: number) {
