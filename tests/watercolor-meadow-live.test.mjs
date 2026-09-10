@@ -283,3 +283,55 @@ test("mountWatercolorMeadowLive is exported for PulseField plate scenes", () => 
   assert.ok(result.ok, `mountWatercolorMeadowLive must import: ${result.error ?? ""}`);
   assert.equal(result.value.hasMount, true);
 });
+
+/** GLSL body of progRender only (not advection/capillary shaders that also sample hL–hT). */
+function extractProgRenderShader(source) {
+  const match = source.match(/const progRender = program\(`[\s\S]*?`\)/);
+  assert.ok(match, "engine must define const progRender = program(...)");
+  return match[0];
+}
+
+test("progRender shader uses Beer–Lambert and wet darkening without additive specular", () => {
+  const render = extractProgRenderShader(readSource(enginePath));
+
+  assert.match(
+    render,
+    /uPaperCol\s*\*\s*exp\s*\(\s*-\s*d\s*\)/,
+    "progRender must use Beer–Lambert: paper * exp(-d)",
+  );
+  assert.match(
+    render,
+    /col\s*\*=\s*1\.0\s*-\s*0\.09\s*\*\s*wet/,
+    "progRender must darken wet paper: col *= 1.0 - 0.09 * wet",
+  );
+  assert.doesNotMatch(
+    render,
+    /col\s*\+=\s*pow\s*\(\s*max\s*\(\s*dot\s*\(/,
+    "progRender must not add a Phong specular: col += pow(max(dot(...",
+  );
+  assert.doesNotMatch(
+    render,
+    /normalize\s*\(\s*vec3\s*\(\s*hL\s*-\s*hR\s*,\s*hB\s*-\s*hT/,
+    "progRender must not build water-height normals for lighting",
+  );
+  assert.doesNotMatch(
+    render,
+    /col\s*\+=[\s\S]{0,120}wet/,
+    "progRender must not add col += highlight terms involving wet",
+  );
+});
+
+test("progRender shader does not sample water height for a specular highlight", () => {
+  const render = extractProgRenderShader(readSource(enginePath));
+
+  assert.doesNotMatch(
+    render,
+    /float\s+hL\s*=\s*texture\s*\(\s*uWater/,
+    "progRender must not sample hL from uWater for specular normals",
+  );
+  assert.doesNotMatch(
+    render,
+    /pow\s*\(\s*max\s*\(\s*dot\s*\([^)]+\)\s*,\s*0\.0\s*\)\s*,\s*\d+/,
+    "progRender must not use pow(max(dot(...), 0.0), exponent) specular",
+  );
+});
