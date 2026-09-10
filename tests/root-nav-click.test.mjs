@@ -282,6 +282,23 @@ test("sidebar keeps Link for ready nav items", () => {
   );
 });
 
+test("docs shell closes the mobile menu after path change in an effect", () => {
+  const source = readSource(
+    path.join(root, "components", "root", "docs-shell.tsx"),
+  );
+
+  assert.doesNotMatch(
+    source,
+    /if\s*\(\s*openForPath\s*!==\s*pathname\s*\)/,
+    "docs-shell must not setState during render when the path changes",
+  );
+  assert.match(
+    source,
+    /useEffect\s*\(\s*\(\s*\)\s*=>\s*\{[\s\S]*setOpen\s*\(\s*false\s*\)[\s\S]*\}\s*,\s*\[\s*pathname\s*\]\s*\)/,
+    "docs-shell must close the menu in a useEffect that depends on pathname",
+  );
+});
+
 test("root-nav-link should use touch-action manipulation", () => {
   const css = readSource(globalsCssPath);
   const rules = collectCssRules(css);
