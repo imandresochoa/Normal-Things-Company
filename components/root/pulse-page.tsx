@@ -71,9 +71,10 @@ const MOTION_ROWS = [
   },
   {
     moment: "Water",
-    duration: "20s soak",
-    easing: "linear accumulation",
-    notes: "Local wetness under the pointer. Does not dry until reload. Reduced motion stays dry.",
+    duration: "mark Field: 20s soak · Colors plate: live GPU",
+    easing: "linear accumulation · WebGL sim",
+    notes:
+      "Mark Fields use a wetness map under the pointer. The Colors plate runs a live WebGL watercolor wash. Reduced motion stays dry.",
   },
 ];
 
@@ -366,8 +367,9 @@ export function PulsePage() {
             rate. For a hero or a section opener. Never caption it as data.
             Width matches the text column. On Colors the plate is 16:9.
             Leave air at the top when you paint with marks. On Colors, the
-            plate is a watercolor drawn on the Field. Water still answers
-            the pointer. The live engine is <code>PulseField</code>.
+            plate is a live WebGL watercolor wash: pigment moves on the GPU.
+            Water still answers the pointer. The live engine is{" "}
+            <code>PulseField</code>.
           </li>
         </ul>
         <ul className="root-doc-list">
@@ -525,8 +527,9 @@ export function PulsePage() {
             its final state. Not faster. Arrived. A Field stays dry.
           </li>
           <li>
-            Water answers the pointer. A brush-sized spot soaks in about
-            20 seconds. The plate does not dry until reload.
+            Water answers the pointer. Mark Fields use a wetness map: a
+            brush-sized spot soaks in about 20 seconds and does not dry
+            until reload. The Colors plate uses live GPU watercolor instead.
           </li>
         </ul>
       </section>
