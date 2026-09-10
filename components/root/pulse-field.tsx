@@ -14,6 +14,7 @@ import {
   wetMaskAlpha,
   type WetnessMap,
 } from "@/lib/pulse-wetness";
+import { mountWatercolorMeadowLive } from "@/lib/watercolor-meadow-live";
 import { PulsePaint } from "./pulse-paint";
 
 const PAPER = chartSemantic("plot-paper").hex;
@@ -76,44 +77,17 @@ function coverPlateRect(
   };
 }
 
-function paintPlate(
+function drawPlateCover(
   ctx: CanvasRenderingContext2D,
-  img: HTMLImageElement | null,
-  mode: "dry" | "wet",
+  img: HTMLImageElement,
+  width: number,
+  height: number,
 ) {
-  const { width, height } = ctx.canvas;
-  const wet = mode === "wet";
-
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.globalCompositeOperation = "source-over";
-  ctx.filter = "none";
-  ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = PAPER;
-  ctx.fillRect(0, 0, width, height);
-
   if (!plateReady(img)) {
     return;
   }
-
-  if (wet) {
-    ctx.globalCompositeOperation = "source-over";
-    ctx.filter = `blur(${Math.max(24, width / 16)}px)`;
-    ctx.globalAlpha = 0.30;
-    const mainRect = coverPlateRect(img!, width, height, 1.08);
-    ctx.drawImage(img!, mainRect.x, mainRect.y, mainRect.w, mainRect.h);
-    ctx.globalAlpha = 0.12;
-    const bloomRect = coverPlateRect(img!, width, height, 1.22);
-    ctx.drawImage(img!, bloomRect.x, bloomRect.y, bloomRect.w, bloomRect.h);
-  } else {
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 1;
-    const rect = coverPlateRect(img!, width, height, 1);
-    ctx.drawImage(img!, rect.x, rect.y, rect.w, rect.h);
-  }
-
-  ctx.globalAlpha = 1;
-  ctx.filter = "none";
-  ctx.globalCompositeOperation = "source-over";
+  const rect = coverPlateRect(img, width, height, 1);
+  ctx.drawImage(img, rect.x, rect.y, rect.w, rect.h);
 }
 
 function paintScene(
@@ -135,7 +109,9 @@ function paintScene(
   ctx.fillRect(0, 0, width, height);
 
   if (scene.plate) {
-    paintPlate(ctx, plateImage, mode);
+    if (plateImage) {
+      drawPlateCover(ctx, plateImage, width, height);
+    }
     return;
   }
 
@@ -221,23 +197,18 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     if (!canvas) {
       return;
     }
-    const surface: HTMLCanvasElement = canvas;
-    let plateImage: HTMLImageElement | null = null;
 
     if (scene.plate) {
-      plateImage = new Image();
+      const plateImage = new Image();
       plateImageRef.current = plateImage;
       plateImage.src = scene.plate;
-      const onPlateReady = () => {
-        sizeCanvases();
+      const live = mountWatercolorMeadowLive(canvas, { source: scene.plate });
+      return () => {
+        live.destroy();
       };
-      plateImage.onload = onPlateReady;
-      void plateImage.decode?.().then(onPlateReady).catch(() => {});
     } else {
-      plateImageRef.current = null;
-    }
-
-    const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const surface: HTMLCanvasElement = canvas;
+    let reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     let reduced = reducedQuery.matches;
     let hovering = false;
     let pointerX = 0.5;
@@ -249,6 +220,8 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
     let wetLayer: HTMLCanvasElement | null = null;
     let map: WetnessMap | null = null;
     let hasWetness = false;
+
+    plateImageRef.current = null;
 
     const view = surface.getContext("2d", { alpha: false });
     if (!view) {
@@ -275,8 +248,8 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
         return;
       }
 
-      paintScene(dryCtx, scene, "dry", plateImage);
-      paintScene(wetCtx, scene, "wet", plateImage);
+      paintScene(dryCtx, scene, "dry");
+      paintScene(wetCtx, scene, "wet");
 
       const mapW = Math.max(32, Math.round(cssW / 4));
       const mapH = Math.max(16, Math.round(cssH / 4));
@@ -414,6 +387,7 @@ export function PulseField({ scene, label, className }: PulseFieldProps) {
         cancelAnimationFrame(frameRef.current);
       }
     };
+    }
   }, [scene]);
 
   const classes = ["root-pulse-field", className].filter(Boolean).join(" ");
